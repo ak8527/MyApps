@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#03A9F4</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="dividerColor">#BDBDBD</color>
+    <color name="lightPrimaryColor">#BBDEFB</color>
+    <color name="textIconColor">#FFFFFF</color>
+    <color name="folderColor">#009688</color>
+    <color name="phoneColor">#039BE5</color>
+    <color name="songColor">#F4511E</color>
+    <color name="movieColor">#e53935</color>
+    <color name="imageColor">#43A047</color>
+    <color name="audioColor">#FB8C00</color>
+    <color name="fileColor">#6D4C41</color>
+    <color name="settingTextColor">#757575</color>
+</resources>

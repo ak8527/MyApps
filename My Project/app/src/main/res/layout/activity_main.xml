@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/parentLayout"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="11"
+            android:background="@android:color/white"
+            app:iconifiedByDefault="false"
+
+            >
+
+
+        </android.support.v7.widget.SearchView>
+
+
+        <ImageView
+            android:id="@+id/threeDotMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_more_vert_black_24dp" />
+
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/appName"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="App"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/appRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/contactHelper"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="Contact"
+                android:visibility="gone" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/contactRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/songName"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="Song"
+                android:visibility="gone" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/songRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/videoName"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="Video"
+                android:visibility="gone" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/videoRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/filesName"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="Files"
+                android:visibility="gone" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/storageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/moreFileView"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:background="@android:color/white"
+                android:text="MORE"/>
+
+
+
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@android:color/white"
+                android:id="@+id/permissionLayout"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_action_song"
+                        app:civ_circle_background_color="@color/audioColor"/>
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_action_movie"
+                        app:civ_circle_background_color="@color/movieColor"/>
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_action_file"
+                        app:civ_circle_background_color="@color/folderColor"/>
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_account_action"
+                        app:civ_circle_background_color="@color/phoneColor" />
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Permission Required"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/primaryTextColor"
+                    />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/permission_desc"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@color/primaryTextColor"
+                    />
+
+                <Button
+                    android:id="@+id/permissionBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Allow Permission"
+                    android:textSize="16sp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorAccent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

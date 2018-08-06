@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@android:color/white">
+
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:id="@+id/appImageView"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:maxWidth="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12dp"
+            android:text="Hello"
+            android:id="@+id/appNameTv"/>
+
+</LinearLayout>

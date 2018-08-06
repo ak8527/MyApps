@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Spotlight</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="search_hint">Text</string>
+    <string name="app_label">Super</string>
+    <string name="permission_desc">Super Search need access to storage and contacts to search songs, video, files,
+     and contacts.</string>
+</resources>
