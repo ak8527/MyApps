@@ -275,6 +275,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //            Log.e(TAG, "onCreate: " + Environment.getExternalStorageDirectory().getPath());
 //
 //        }
+        Log.e(TAG, "storageItemSearch: "+ Environment.isExternalStorageEmulated());
+
         storageAdapter = new StorageAdapter(this, myStorageList);
         recyclerView.setAdapter(storageAdapter);
 
@@ -405,8 +407,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         @Override
         protected ArrayList<ContactList> doInBackground(Void... voids) {
-            ArrayList<ContactList> contactLists1 = infoList.getAllContact();
-            return contactLists1;
+            return infoList.getAllContact();
         }
 
         @Override
@@ -423,8 +424,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         @Override
         protected ArrayList<App> doInBackground(Void... voids) {
-           ArrayList<App> appArrayList1 = (ArrayList<App>) infoList.GetAllInstalledApkInfo();
-            return appArrayList1;
+            return (ArrayList<App>) infoList.GetAllInstalledApkInfo();
         }
 
         @Override

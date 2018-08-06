@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.ashu.supersearch.FloatingWidget.ChatHeadService;
 import com.example.ashu.supersearch.R;
 
 public class SettingActivity extends AppCompatActivity {
@@ -94,13 +93,13 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initializeView() {
-        findViewById(R.id.floatingWidgetService).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startService(new Intent(SettingActivity.this, ChatHeadService.class));
+//        findViewById(R.id.floatingWidgetService).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+                startService(new Intent(SettingActivity.this, MyWidgetService.class));
                 finish();
-            }
-        });
+//            }
+//        });
     }
 
 

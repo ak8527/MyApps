@@ -190,7 +190,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.setDataAndType(uri,"text");
+                intent.setDataAndType(uri,"text/*");
                 context.startActivity(intent);
             }
         });
