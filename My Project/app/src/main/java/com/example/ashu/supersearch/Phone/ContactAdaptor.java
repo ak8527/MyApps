@@ -100,10 +100,10 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
 
     @Override
     public int getItemCount() {
-        if (myContactList.size() <= 4)
+        if (myContactList.size() <= 3)
            return myContactList.size();
         else
-            return 5;
+            return 3;
     }
 
     public boolean filter(String text) {

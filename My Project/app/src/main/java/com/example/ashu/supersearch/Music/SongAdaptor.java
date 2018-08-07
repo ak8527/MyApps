@@ -70,8 +70,8 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
 
     @Override
     public int getItemCount() {
-        if (mySongList.size() > 4){
-            return 4;
+        if (mySongList.size() > 3){
+            return 3;
             }
         else{
             return mySongList.size();

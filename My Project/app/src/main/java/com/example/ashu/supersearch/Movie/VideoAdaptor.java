@@ -65,10 +65,10 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
 
     @Override
     public int getItemCount() {
-        if (myVideoList.size() <= 4){
+        if (myVideoList.size() <= 3){
             return myVideoList.size();
         } else {
-            return 5;
+            return 3;
         }
     }
 
