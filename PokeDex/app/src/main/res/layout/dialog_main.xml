@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="360dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+        <!--android:id="@+id/pokemonId"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="Enter the id of Pokemon"/>-->
+
+    <EditText
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+        android:id="@+id/editIdView"
+        />
+        <!--android:layout_below="@id/pokemonId"-->
+
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_below="@id/editIdView">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/saveBtn"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:textSize="16sp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Yes"-->
+            <!--android:clickable="true"-->
+            <!--/>-->
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/cancelBtn"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:textSize="16sp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="No"-->
+            <!--android:clickable="true"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:gravity="center"-->
+            <!--/>-->
+
+    <!--</LinearLayout>-->
+
+</LinearLayout>
