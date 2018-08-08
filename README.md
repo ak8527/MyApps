@@ -1,4 +1,4 @@
-# MyApps
+# My Apps
 
 ## Spotlight
 
