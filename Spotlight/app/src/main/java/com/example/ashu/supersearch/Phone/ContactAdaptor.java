@@ -2,13 +2,13 @@ package com.example.ashu.supersearch.Phone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -21,17 +21,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactHolder> {
     Context context;
     ArrayList<ContactList> contactLists;
     ArrayList<ContactList> myContactList = new ArrayList<>();
     String spannableText;
+    public String phoneNumber;
+    public static final int MY_REQUEST_CODE = 111;
+
 
 
     public ContactAdaptor(Context context, ArrayList<ContactList> contactLists) {
@@ -63,7 +67,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         holder.nameTv.setText(str);
-        final String phoneNumber = contactList.getPhoneNumber();
+        phoneNumber = contactList.getPhoneNumber();
 
         holder.chatImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,22 +84,39 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
             @SuppressLint("MissingPermission")
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + phoneNumber));
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
                         Log.e("If", "onClick: " );
-                        Intent intent = new Intent(Intent.ACTION_CALL);
-                        intent.setData(Uri.parse("tel:" + phoneNumber));
+//                        Intent intent = new Intent(Intent.ACTION_CALL);
+//                        intent.setData(Uri.parse("tel:" + phoneNumber));
                         context.startActivity(intent);
 
                     } else {
                         Log.e("Else", "onClick: " );
-                        ActivityCompat.requestPermissions(
-                            (MainActivity)context, new String[]{Manifest.permission.CALL_PHONE},420);
+                        requestPermissions(
+                                (Activity) context, new String[]{Manifest.permission.CALL_PHONE},MY_REQUEST_CODE);
+
+
                 }
+
 
             }
         });
 
 
+
+
+    }
+
+
+
+
+    @SuppressLint("MissingPermission")
+    public void calling(){
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        context.startActivity(intent);
     }
 
     @Override
@@ -125,6 +146,8 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
         }
         return ans;
     }
+
+
     class ContactHolder extends RecyclerView.ViewHolder{
         TextView nameTv;
         ImageView callImageView, chatImageView;
@@ -138,6 +161,5 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
 
         }
     }
-
 
 }
