@@ -35,12 +35,15 @@ import com.example.ashu.supersearch.Phone.ContactAdaptor;
 import com.example.ashu.supersearch.Phone.ContactList;
 import com.example.ashu.supersearch.Settings.SettingActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private static final String TAG = "MainActivity";
     private static final int MY_STORAGE_REQUEST_CODE = 222;
+    private static final int MY_CONTACT_REQUEST_CODE = 333;
+    private static final int MY_STORAGE_AND_CONTACT_REQUEST_CODE = 444;
     SearchView searchView;
     StorageAdapter storageAdapter;
     RecyclerView recyclerView, appRecyclerView, contactRecyclerView, songRecyclerView, videoRecyclerView;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     ArrayList<App> appArrayList = new ArrayList<>();
     ArrayList<Video> videoArrayList = new ArrayList<>();
     ArrayList<Storage> myStorageList = new ArrayList<>();
+    boolean checkStorageTaskExecution = false,checkContactTaskExecution = false;
 
 
     InfoList infoList;
@@ -67,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     LinearLayout permissionLayout;
     ImageView settingMenu;
 
-
-    TextView contactView, appView, songView, fileView, videoView;
+//    int myContactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+//    int myStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+     TextView contactView, appView, songView, fileView, videoView;
     Button permissionBtn;
     boolean contactPermission, storagePermission;
 
@@ -155,18 +160,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         storagePermission = (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
 
-        permission();
+      //  permission();
         permissionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (isPermissionGranted()){
-                   Log.e("Button", "onClick: ");
-                   permissionLayout.setVisibility(View.GONE);
-                   contactTask.execute();
-
-               }
+               isPermissionGranted();
             }
         });
+
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)){
+            isPermissionGranted();
+        }
+
+
 
         moreTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         contactSearch();
         storageItemSearch();
         appSearch();
+        appTask.execute();
 
 //
 //        for (ResolveInfo r : browserList){
@@ -266,8 +274,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void storageItemSearch() {
-        /**
-         * Checking Storage State and setting storage recyclerView
+        /*
+          Checking Storage State and setting storage recyclerView
          */
 //        final String state = Environment.getExternalStorageState();
 //        if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {  // we can read the External Storage...
@@ -323,22 +331,22 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    public void permission() {
-        appTask.execute();
-        if (contactPermission) {
-            contactTask.execute();
-            permissionLayout.setVisibility(View.GONE);
-    }
-    if (storagePermission){
-            songTask.execute();
-            videoTask.execute();
-            storageTask.execute();
-    }
-
-    if (contactPermission && storagePermission){
-            permissionLayout.setVisibility(View.GONE);
-    }
-    }
+//    public void permission() {
+//        appTask.execute();
+//        if (contactPermission) {
+//            contactTask.execute();
+//            permissionLayout.setVisibility(View.GONE);
+//    }
+//    if (storagePermission){
+//            songTask.execute();
+//            videoTask.execute();
+//            storageTask.execute();
+//    }
+//
+//    if (contactPermission && storagePermission){
+//            permissionLayout.setVisibility(View.GONE);
+//    }
+//    }
 
 
 
@@ -349,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             final String state = Environment.getExternalStorageState();
             ArrayList<Storage> myStorageList1 = new ArrayList<>();
             if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {  // we can read the External Storage...
-                myStorageList1 = infoList.getMyStorageList(Environment.getExternalStorageDirectory());
+                myStorageList1 = infoList.getMyStorageList(new File("/storage/"));
                 Log.e("StorageTask", "onCreate: " + Environment.getExternalStorageDirectory().getPath());
 
             }
@@ -402,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    public class ContactTask extends AsyncTask<Void, Void, ArrayList<ContactList>> {
+    public  class ContactTask extends AsyncTask<Void, Void, ArrayList<ContactList>> {
 
         @Override
         protected ArrayList<ContactList> doInBackground(Void... voids) {
@@ -436,30 +444,36 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    public boolean isPermissionGranted(){
-        if ((contactPermission && !storagePermission) || (!contactPermission && storagePermission)) {
-            if (contactPermission) {
+    public void isPermissionGranted(){
+        if ((isContactPermission() && !isStoragePermission()) || (!isContactPermission() && isStoragePermission())) {
+            if (isContactPermission()) {
                 Log.e("MainActivity1", "onClick: ");
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_STORAGE_REQUEST_CODE);
                 if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Log.e("MainActivity2", "onClick: ");
                     storagePermission = true;
-                    return true;
+//                    return true;
                 }
             } else {
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, MY_STORAGE_REQUEST_CODE);
                 if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                     Log.e("MainActivity3", "onClick: ");
                     contactPermission = true;
-                    return true;
+//                    return true;
 
                 }
             }
-        } else  {
+        } else if ((ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE}, MY_STORAGE_REQUEST_CODE);
-            return true;
+//            return true;
+        } else {
+            permissionLayout.setVisibility(View.GONE);
+            contactTask.execute();
+            storageTask.execute();
+            videoTask.execute();
+            songTask.execute();
         }
-        return false;
+//        return false;
 
     }
 
@@ -472,43 +486,51 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     contactAdaptor.calling();
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    Log.e(TAG, "Permission already granted" );
                 }
                 return;
             }
 
-//            case MY_STORAGE_REQUEST_CODE: {
-//                if (grantResults.length>0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                    Log.e(TAG, "onRequestPermissionsResult: "+"Contact" );
-//                    contactTask.execute();
-//
-//
-//                }
-//
-//                if (grantResults.length >0
-//                        && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-//                    Log.e(TAG, "onRequestPermissionsResult: "+"Storage");
-//                    songTask.execute();
-//                    videoTask.execute();
-//                    storageTask.execute();
-//
-//
-//                }
-//            }
-//
+            case MY_STORAGE_REQUEST_CODE: {
+                if (grantResults.length>0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && !checkContactTaskExecution){
+                    Log.e(TAG, "onRequestPermissionsResult: "+"Contact" );
+                    contactTask.execute();
+                    checkContactTaskExecution = true;
 
+                }
+                Log.e(TAG, "onRequestPermissionsResult: "+"Middle" );
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
+                if (grantResults.length >0
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && !checkStorageTaskExecution){
+                    Log.e(TAG, "onRequestPermissionsResult: "+"Storage");
+                    songTask.execute();
+                    videoTask.execute();
+                    storageTask.execute();
+                    storagePermission = true;
+                    checkStorageTaskExecution = true;
+
+                }
+
+                if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS ) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED){
+                    permissionLayout.setVisibility(View.GONE);
+                }
+            }
+
         }
+    }
+
+    private boolean isStoragePermission(){
+        return (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+
+    private boolean isContactPermission(){
+        return (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED);
     }
 
 }
