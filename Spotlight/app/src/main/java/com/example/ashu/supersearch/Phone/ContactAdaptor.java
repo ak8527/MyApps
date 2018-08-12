@@ -34,7 +34,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
     ArrayList<ContactList> myContactList = new ArrayList<>();
     String spannableText;
     public String phoneNumber;
-    public static final int MY_REQUEST_CODE = 111;
+    public static final int MY_TELEPHONE_REQUEST_CODE = 111;
 
 
 
@@ -95,7 +95,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
                     } else {
                         Log.e("Else", "onClick: " );
                         requestPermissions(
-                                (Activity) context, new String[]{Manifest.permission.CALL_PHONE},MY_REQUEST_CODE);
+                                (Activity) context, new String[]{Manifest.permission.CALL_PHONE},MY_TELEPHONE_REQUEST_CODE);
 
 
                 }
