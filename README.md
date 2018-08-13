@@ -25,14 +25,3 @@
 
 
 
-## PokeDex
-##### A simple pokedex app for finding the detail of pokemon.
-
-<br/>
-<br/>
-
-<p float="middle">
-<img src="https://github.com/ak8527/MyApps/blob/master/Screenshots/Pokedex2.png" alt="alt text" width="240" height="427" hspace="100">       
-<img src="https://github.com/ak8527/MyApps/blob/master/Screenshots/Pokedex1.png" alt="alt text" width="240" height="427"> </p>
-
-
