@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder> {
-    Context context;
-    ArrayList<Video> videoArrayList;
-    ArrayList<Video> myVideoList = new ArrayList<>();
-    String spannableText;
+    private final Context context;
+    private final ArrayList<Video> videoArrayList;
+    private final ArrayList<Video> myVideoList = new ArrayList<>();
+    private String spannableText;
 
     public VideoAdaptor(Context context, ArrayList<Video> videoArrayList) {
         this.context = context;
@@ -73,9 +73,9 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
     }
 
     class VideoHolder extends RecyclerView.ViewHolder{
-        TextView nameTv;
-        ImageView imageView;
-        public VideoHolder(View itemView) {
+        final TextView nameTv;
+        final ImageView imageView;
+        VideoHolder(View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.videoNameTv);
             imageView = itemView.findViewById(R.id.videoImageView);

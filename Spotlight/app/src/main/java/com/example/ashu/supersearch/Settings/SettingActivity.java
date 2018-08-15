@@ -16,19 +16,19 @@ import android.widget.Toast;
 
 import com.example.ashu.supersearch.R;
 
+import java.util.Objects;
+
 public class SettingActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
-    public static final String CHANNEL_ID = "420YOLO";
-    NotificationManager notificationManager;
-    LinearLayout assistTv, widgetSv;
+    public static final String CHANNEL_ID = "420";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        assistTv = findViewById(R.id.settingAssistView);
-        widgetSv = findViewById(R.id.settingWidgetServiceView);
+        LinearLayout assistTv = findViewById(R.id.settingAssistView);
+        LinearLayout widgetSv = findViewById(R.id.settingWidgetServiceView);
 
         assistTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +39,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel =
@@ -47,7 +47,7 @@ public class SettingActivity extends AppCompatActivity {
                             "Default Channel",
                             NotificationManager.IMPORTANCE_DEFAULT);
 
-            notificationManager.createNotificationChannel(notificationChannel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(notificationChannel);
 
 
             widgetSv.setOnClickListener(new View.OnClickListener() {

@@ -1,7 +1,8 @@
 package com.example.ashu.supersearch.FileBrowser;
 
 public class Storage {
-    String fileName , filePath;
+    private final String fileName;
+    private final String filePath;
 
     public Storage(String fileName, String filePath) {
         this.fileName = fileName;

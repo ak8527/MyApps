@@ -1,5 +1,6 @@
 package com.example.ashu.supersearch.FileBrowser;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,11 +27,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageHolder> {
-    private Context context;
-    private ArrayList<Storage> storageArrayList;
-    private ArrayList<Storage> mySearchStorageList = new ArrayList<>();
+    private final Context context;
+    private final ArrayList<Storage> storageArrayList;
+    private final ArrayList<Storage> mySearchStorageList = new ArrayList<>();
     private String spannableText;
-    public boolean moreFiles = false;
+    private boolean moreFiles = false;
 
 
     public StorageAdapter(Context context, ArrayList<Storage> storageArrayList) {
@@ -63,22 +64,28 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         final File file = new File(storage.getFilePath());
 
         String extension = extensionFind(storage.getFileName());
-        if (extension.equals("image")) {
-            holder.imageView.setImageResource(R.drawable.ic_image_action);
-            holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
-        } else if (extension.equals("text")){
-            holder.imageView.setImageResource(R.drawable.ic_action_file);
-            holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
-        } else if (extension.equals("video")){
-            holder.imageView.setImageResource(R.drawable.ic_action_movie);
-            holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
-        } else if (extension.equals("audio")) {
-            holder.imageView.setImageResource(R.drawable.ic_action_song);
-            holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.songColor));
-        } else {
-            holder.imageView.setImageResource(R.drawable.ic_folder_action);
-            holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.folderColor));
+        switch (extension) {
+            case "image":
+                holder.imageView.setImageResource(R.drawable.ic_image_action);
+                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
+                break;
+            case "text":
+                holder.imageView.setImageResource(R.drawable.ic_action_file);
+                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
+                break;
+            case "video":
+                holder.imageView.setImageResource(R.drawable.ic_action_movie);
+                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
+                break;
+            case "audio":
+                holder.imageView.setImageResource(R.drawable.ic_action_song);
+                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.songColor));
+                break;
+            default:
+                holder.imageView.setImageResource(R.drawable.ic_folder_action);
+                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.folderColor));
 
+                break;
         }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,10 +117,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
 
 
         public boolean isMoreFiles(){
-        if (mySearchStorageList.size()>4)
-            return true;
-        else
-            return false;
+            return mySearchStorageList.size() > 4;
         }
 
     @Override
@@ -155,10 +159,10 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         return ans;
     }
 
-    public void resultDialog(final String file){
-        final String newFile = file;
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view,null,true);
-        AlertDialog customdialog = new AlertDialog.Builder(context)
+    private void resultDialog(final String file){
+
+        @SuppressLint("InflateParams") View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view, null,true);
+        new AlertDialog.Builder(context)
                 .setTitle("Open As")
                 .setView(dialogView)
                 .show();
@@ -169,7 +173,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         textView = dialogView.findViewById(R.id.dialogTextView);
 
         final Intent intent = new Intent(Intent.ACTION_VIEW);
-        final Uri uri = Uri.parse(newFile);
+        final Uri uri = Uri.parse(file);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,40 +211,39 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
     }
 
         class StorageHolder extends RecyclerView.ViewHolder {
-            TextView storageNameTv;
-            CircleImageView imageView;
+            final TextView storageNameTv;
+            final CircleImageView imageView;
 
-            public StorageHolder(View itemView) {
+            StorageHolder(View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.storageImageView);
                 storageNameTv = itemView.findViewById(R.id.searchStorageTv);
             }
         }
 
-     public String extensionFind(String text){
-        String fileName = text;
-        String[] image = new String[]{".jpg",".jpeg",".png",".gif"};
+     private String extensionFind(String text){
+         String[] image = new String[]{".jpg",".jpeg",".png",".gif"};
         String[] video = new String[]{".mkv",".mp4",".mpeg",".3gp",".avi",".mpeg4"};
         String[] audio = new String[]{".mp3",".aac",".wav",".wma",".ogg"};
         String[] doc = new String[]{".txt",".doc",".pdf",".docx",".xls"};
 
         for (String extension : image){
-            if (fileName.toLowerCase().endsWith(extension))
+            if (text.toLowerCase().endsWith(extension))
                 return "image";
         }
 
         for (String extension : video){
-            if (fileName.toLowerCase().endsWith(extension))
+            if (text.toLowerCase().endsWith(extension))
                 return "video";
         }
 
         for (String extension : doc){
-            if (fileName.toLowerCase().endsWith(extension))
+            if (text.toLowerCase().endsWith(extension))
                 return "text";
         }
 
         for (String extension : audio){
-            if (fileName.toLowerCase().endsWith(extension))
+            if (text.toLowerCase().endsWith(extension))
                 return "audio";
         }
 

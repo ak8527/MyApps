@@ -1,7 +1,8 @@
 package com.example.ashu.supersearch.Phone;
 
 public class ContactList  {
-    String name,phoneNumber;
+    private final String name;
+    private final String phoneNumber;
 
     public ContactList(String name, String phoneNumber) {
         this.name = name;

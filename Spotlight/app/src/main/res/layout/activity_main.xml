@@ -13,7 +13,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/parentLayout"
         android:background="@android:color/white"
         android:orientation="horizontal">
 
@@ -39,7 +38,8 @@
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_more_vert_black_24dp" />
+            android:src="@drawable/ic_more_vertical_black_24dp"
+            android:contentDescription="@string/menu_3_setting" />
 
 
 
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:text="App"
+                android:text="@string/apps"
                 android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:text="Contact"
+                android:text="@string/contact"
                 android:visibility="gone" />
 
 
@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:text="Song"
+                android:text="@string/song"
                 android:visibility="gone" />
 
 
@@ -115,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:text="Video"
+                android:text="@string/videos"
                 android:visibility="gone" />
 
 
@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:text="Files"
+                android:text="@string/files"
                 android:visibility="gone" />
 
 
@@ -150,7 +150,7 @@
                 android:visibility="gone"
                 android:textAlignment="center"
                 android:background="@android:color/white"
-                android:text="MORE"/>
+                android:text="@string/more"/>
 
 
 
@@ -210,7 +210,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Permission Required"
+                    android:text="@string/permission_required"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:textSize="20sp"
@@ -235,7 +235,7 @@
                     android:id="@+id/permissionBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Allow Permission"
+                    android:text="@string/allow_permission"
                     android:textSize="16sp"
                     android:paddingEnd="4dp"
                     android:paddingStart="4dp"

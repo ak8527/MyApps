@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set as assist app"
+            android:text="@string/set_as_assist_app"
             android:textColor="@color/primaryTextColor"
             android:textAlignment="viewStart"
             android:fontFamily="sans-serif"
@@ -31,7 +31,7 @@
             android:textSize="12sp"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:text="Long click on home button to launch the app"
+            android:text="@string/launch_app"
             android:textAlignment="viewStart"
             />
     </LinearLayout>
@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Background"
+            android:text="@string/background"
             android:textSize="16sp"
             android:textColor="@color/primaryTextColor"
             android:fontFamily="sans-serif"
@@ -67,7 +67,7 @@
             android:textSize="12sp"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:text="Start Background Service"
+            android:text="@string/background_service"
             android:textAlignment="viewStart"
             />
 
@@ -95,7 +95,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Search anywhere"
+            android:text="@string/search_anywhere"
             android:textSize="16sp"
             android:textColor="@color/primaryTextColor"
             android:fontFamily="sans-serif"
@@ -110,7 +110,7 @@
             android:textSize="12sp"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:text="Tap or swipe on edge to launch the app"
+            android:text="@string/tap_to_launch"
             android:textAlignment="viewStart"
             />
 

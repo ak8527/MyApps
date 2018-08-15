@@ -1,7 +1,8 @@
 package com.example.ashu.supersearch.Movie;
 
 public class Video {
-    String videoName,videoPath;
+    private final String videoName;
+    private final String videoPath;
 
     public Video(String videoName, String videoPath) {
         this.videoName = videoName;

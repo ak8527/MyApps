@@ -29,11 +29,11 @@ import java.util.Locale;
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactHolder> {
-    Context context;
-    ArrayList<ContactList> contactLists;
-    ArrayList<ContactList> myContactList = new ArrayList<>();
-    String spannableText;
-    public String phoneNumber;
+    private final Context context;
+    private final ArrayList<ContactList> contactLists;
+    private final ArrayList<ContactList> myContactList = new ArrayList<>();
+    private String spannableText;
+    private String phoneNumber;
     public static final int MY_TELEPHONE_REQUEST_CODE = 111;
 
 
@@ -73,6 +73,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
+                //noinspection SpellCheckingInspection
                 intent.setData(Uri.parse("smsto:"+Uri.encode(phoneNumber)));
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
@@ -149,10 +150,11 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
 
 
     class ContactHolder extends RecyclerView.ViewHolder{
-        TextView nameTv;
-        ImageView callImageView, chatImageView;
+        final TextView nameTv;
+        final ImageView callImageView;
+        final ImageView chatImageView;
 
-        public ContactHolder(View itemView) {
+        ContactHolder(View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.contactName);
             callImageView = itemView.findViewById(R.id.callIcon);

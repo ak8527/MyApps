@@ -3,8 +3,9 @@ package com.example.ashu.supersearch.App;
 import android.graphics.drawable.Drawable;
 
 public class App {
-    String appName,packageName;
-    Drawable icon;
+    private final String appName;
+    private final String packageName;
+    private final Drawable icon;
 
     public App(String appName, String packageName, Drawable icon) {
         this.appName = appName;

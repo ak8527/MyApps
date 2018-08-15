@@ -1,7 +1,8 @@
 package com.example.ashu.supersearch.Music;
 
 public class Song {
-    String songName,songPath;
+    private final String songName;
+    private final String songPath;
 
     public Song(String songName, String songPath) {
         this.songName = songName;

@@ -21,7 +21,7 @@
 
         android:src="@drawable/ic_crop_square_black_24dp"
         android:background="#AB47BC"
-        android:contentDescription="F" />
+        android:contentDescription="@string/app_name" />
 
 </android.support.v7.widget.CardView>
 

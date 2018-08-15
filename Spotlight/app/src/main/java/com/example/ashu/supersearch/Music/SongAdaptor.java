@@ -21,10 +21,10 @@ import java.util.Locale;
 
 public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
 
-    Context context;
-    ArrayList<Song> songArrayList;
-    ArrayList<Song> mySongList = new ArrayList<>();
-    String spannableText;
+    private final Context context;
+    private final ArrayList<Song> songArrayList;
+    private final ArrayList<Song> mySongList = new ArrayList<>();
+    private String spannableText;
 
     public SongAdaptor(Context context, ArrayList<Song> songArrayList) {
         this.context = context;
@@ -79,9 +79,9 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
     }
 
     class SongHolder extends RecyclerView.ViewHolder {
-        TextView songTv;
+        final TextView songTv;
 
-        public SongHolder(View itemView) {
+        SongHolder(View itemView) {
             super(itemView);
             songTv = itemView.findViewById(R.id.songNameTv);
         }

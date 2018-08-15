@@ -16,7 +16,6 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/textDialogIv"
             android:layout_width="40dp"
             android:src="@drawable/ic_action_file"
             app:civ_circle_background_color="@color/phoneColor"
@@ -31,7 +30,7 @@
             android:id="@+id/dialogTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TEXT" />
+            android:text="@string/text" />
 
 
     </LinearLayout>
@@ -46,7 +45,6 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageDialogIv"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_image_action"
@@ -62,7 +60,7 @@
             android:id="@+id/dialogImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="IMAGE" />
+            android:text="@string/image" />
 
 
     </LinearLayout>
@@ -78,7 +76,6 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/audioDialogIv"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_action_song"
@@ -93,7 +90,7 @@
             android:id="@+id/dialogAudioView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AUDIO" />
+            android:text="@string/audio" />
 
 
     </LinearLayout>
@@ -109,7 +106,6 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/videoDialogIv"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_action_movie"
@@ -124,7 +120,7 @@
             android:id="@+id/dialogVideoView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="VIDEO" />
+            android:text="@string/video" />
 
     </LinearLayout>
 

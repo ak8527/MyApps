@@ -1,5 +1,6 @@
 package com.example.ashu.supersearch.Settings;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -69,6 +70,7 @@ public class MyWidgetService extends Service {
 
 
 
+    @SuppressLint("InflateParams")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -76,12 +78,22 @@ public class MyWidgetService extends Service {
         floatingWidgetView = LayoutInflater.from(this).inflate(R.layout.floating_box, null);
 
         //Add the view to the window.
-        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
+        WindowManager.LayoutParams params ;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+        } else {
+            params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+        }
 
         //Specify the chat head position
         params.gravity = Gravity.CENTER_VERTICAL | Gravity.END;        //Initially view will be added to top-left corner
@@ -96,7 +108,7 @@ public class MyWidgetService extends Service {
 
 
         //Drag and move chat head using user's touch action.
-        final ImageView chatHeadImage = (ImageView) floatingWidgetView.findViewById(R.id.floatingBox);
+        final ImageView chatHeadImage = floatingWidgetView.findViewById(R.id.floatingBox);
         chatHeadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

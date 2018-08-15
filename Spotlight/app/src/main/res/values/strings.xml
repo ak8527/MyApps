@@ -1,8 +1,31 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Spotlight</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="search_hint">Text</string>
-    <string name="app_label">Super</string>
+    <string name="appwidget_text" tools:keep="@string/appwidget_text">EXAMPLE</string>
+    <string name="add_widget" tools:keep="@string/add_widget">Add widget</string>
+    <string name="search_hint" tools:keep="@string/search_hint">Text</string>
+    <string name="app_label" tools:keep="@string/app_label">Super</string>
     <string name="permission_desc">Spotlight need access to storage and contacts to search songs, video, files, and contacts.</string>
+    <string name="allow_permission">Allow Permission</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="more">MORE</string>
+    <string name="files">Files</string>
+    <string name="song">Song</string>
+    <string name="contact">Contact</string>
+    <string name="apps">Apps</string>
+    <string name="videos">Video</string>
+    <string name="image_for_call">Image For Call</string>
+    <string name="image_for_message">Image For Message</string>
+    <string name="menu_3_setting">Three dot menu Setting</string>
+    <string name="app_icon">App icon</string>
+    <string name="setting">Setting</string>
+    <string name="text">TEXT</string>
+    <string name="image">IMAGE</string>
+    <string name="audio">AUDIO</string>
+    <string name="video">VIDEO</string>
+    <string name="set_as_assist_app">Set as assist app</string>
+    <string name="launch_app">Long click on home button to launch the app</string>
+    <string name="background">Background</string>
+    <string name="background_service">Start Background Service</string>
+    <string name="search_anywhere">Search anywhere</string>
+    <string name="tap_to_launch">Tap or swipe on edge to launch the app</string>
 </resources>

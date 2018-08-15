@@ -18,8 +18,7 @@
         android:src="@drawable/ic_action_song"
         android:padding="4dp"
         app:civ_circle_background_color="@color/songColor"
-        app:civ_border_color="#FFFFFF"
-        android:id="@+id/songImageView"/>
+        app:civ_border_color="#FFFFFF" />
 
 
     <TextView
@@ -27,7 +26,7 @@
         style="@style/TextTheme"
         android:textAlignment="viewStart"
         android:gravity="center|start"
-        tools:text="tcgb"
+        tools:text="song"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:maxLines="1"

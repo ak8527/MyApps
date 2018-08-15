@@ -27,20 +27,15 @@ import java.util.List;
 
 public class InfoList {
 
-    Context context;
-    String name,path;
+    private final Context context;
+    private String name;
+    private String path;
 
 
     public InfoList(Context context) {
         this.context = context;
     }
 
-
-    /**
-     * Method for getting list of video
-     */
-
-    Video video;
 
     public List<Video> getAllVideoFromDevice(){
         List<Video> tempVideoList = new ArrayList<>();
@@ -59,7 +54,10 @@ public class InfoList {
 
                 name = path.substring(path.lastIndexOf("/") + 1);
 
-                video = new Video(name,path);
+                /*
+      Method for getting list of video
+     */
+                Video video = new Video(name, path);
 
                 tempVideoList.add(video);
             }
@@ -71,11 +69,6 @@ public class InfoList {
     }
 
 
-    /**
-     * Method for getting list of all song.
-     */
-
-    Song audioModel;
     public List<Song> getAllAudioFromDevice() {
 
         final List<Song> tempAudioList = new ArrayList<>();
@@ -94,7 +87,10 @@ public class InfoList {
 
                 name = path.substring(path.lastIndexOf("/") + 1);
 
-                audioModel = new Song(name,path);
+                /*
+      Method for getting list of all song.
+     */
+                Song audioModel = new Song(name, path);
 
                 tempAudioList.add(audioModel);
             }
@@ -140,7 +136,7 @@ public class InfoList {
     }
 
 
-    public Drawable getAppIconByPackageName(String ApkTempPackageName){
+    private Drawable getAppIconByPackageName(String ApkTempPackageName){
 
         Drawable drawable;
 
@@ -157,7 +153,7 @@ public class InfoList {
         return drawable;
     }
 
-    public String GetAppName(String ApkPackageName){
+    private String GetAppName(String ApkPackageName){
 
         String Name = "";
 
@@ -186,7 +182,7 @@ public class InfoList {
      * Method for getting file and folder name.
      */
 
-    ArrayList<Storage> myStorageList = new ArrayList<>();
+    private final ArrayList<Storage> myStorageList = new ArrayList<>();
 
     public ArrayList<Storage> getMyStorageList(File directory) {
         getAllFilesOfDir(directory);
@@ -250,9 +246,8 @@ public class InfoList {
                         String displayNumber = cursor.getString(indexOfDisplayNumber);
                         contactLists.add(new ContactList(displayName,displayNumber));
                         //haven't seen this number yet: do something with this contact!
-                    } else {
-                        //don't do anything with this contact because we've already found this number
-                    }
+                    }  //don't do anything with this contact because we've already found this number
+
                 }
             } finally {
                 cursor.close();
@@ -262,25 +257,27 @@ public class InfoList {
         return contactLists;
     }
 
-    /**
-     * Get list of browser.
-     */
-
-    public List<ResolveInfo> getBrowserList(){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("google.com"));
-
-        PackageManager pm = context.getPackageManager();
-
-
-        List<ResolveInfo> browserList;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            browserList = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
-        } else {
-            browserList = pm.queryIntentActivities(intent, 0);
-        }
-
-        return browserList;
-    }
+// --Commented out by Inspection START (15/8/18 9:45 PM):
+//    /**
+//     * Get list of browser.
+//     */
+//
+//    public List<ResolveInfo> getBrowserList(){
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(Uri.parse("google.com"));
+//
+//        PackageManager pm = context.getPackageManager();
+//
+//
+//        List<ResolveInfo> browserList;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+//            browserList = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
+//        } else {
+//            browserList = pm.queryIntentActivities(intent, 0);
+//        }
+//
+//        return browserList;
+//    }
+// --Commented out by Inspection STOP (15/8/18 9:45 PM)
 
 }

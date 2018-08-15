@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
-    Context context;
-    ArrayList<App> appArrayList;
-    ArrayList<App> myAppArrayList = new ArrayList<>();
-    String spannableText;
+    private final Context context;
+    private final ArrayList<App> appArrayList;
+    private final ArrayList<App> myAppArrayList = new ArrayList<>();
+    private String spannableText;
 
     public AppAdaptor(Context context, ArrayList<App> appArrayList) {
         this.context = context;
@@ -79,10 +79,10 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
     class AppHolder extends RecyclerView.ViewHolder {
 
-        TextView textView;
-        ImageView imageView;
+        final TextView textView;
+        final ImageView imageView;
 
-        public AppHolder(View itemView) {
+        AppHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.appNameTv);
             imageView = itemView.findViewById(R.id.appImageView);

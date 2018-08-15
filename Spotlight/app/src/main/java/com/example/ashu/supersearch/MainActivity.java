@@ -44,32 +44,37 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private static final int MY_STORAGE_REQUEST_CODE = 222;
     private static final int MY_CONTACT_REQUEST_CODE = 333;
     private static final int MY_STORAGE_AND_CONTACT_REQUEST_CODE = 444;
-    SearchView searchView;
-    StorageAdapter storageAdapter;
-    RecyclerView recyclerView, appRecyclerView, contactRecyclerView, songRecyclerView, videoRecyclerView;
-    AppAdaptor appAdaptor;
-    ContactAdaptor contactAdaptor;
-    SongAdaptor songAdaptor;
-    VideoAdaptor videoAdaptor;
-    ArrayList<Song> mySongArrayList = new ArrayList<>();
-    ArrayList<ContactList> myContactList = new ArrayList<>();
-    ArrayList<App> appArrayList = new ArrayList<>();
-    ArrayList<Video> videoArrayList = new ArrayList<>();
-    ArrayList<Storage> myStorageList = new ArrayList<>();
+    private StorageAdapter storageAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView appRecyclerView;
+    private RecyclerView contactRecyclerView;
+    private RecyclerView songRecyclerView;
+    private RecyclerView videoRecyclerView;
+    private AppAdaptor appAdaptor;
+    private ContactAdaptor contactAdaptor;
+    private SongAdaptor songAdaptor;
+    private VideoAdaptor videoAdaptor;
+    private final ArrayList<Song> mySongArrayList = new ArrayList<>();
+    private final ArrayList<ContactList> myContactList = new ArrayList<>();
+    private final ArrayList<App> appArrayList = new ArrayList<>();
+    private final ArrayList<Video> videoArrayList = new ArrayList<>();
+    private final ArrayList<Storage> myStorageList = new ArrayList<>();
 
-    InfoList infoList;
+    private InfoList infoList;
 
-    TextView moreTv;
-    AppTask appTask = new AppTask();
+    private TextView moreTv;
+    private final AppTask appTask = new AppTask();
 
-    StorageTask storageTask = new StorageTask();
-    VideoTask videoTask = new VideoTask();
-    SongTask songTask = new SongTask();
-    ContactTask contactTask = new ContactTask();
-    LinearLayout permissionLayout;
-    ImageView settingMenu;
-    TextView contactView, appView, songView, fileView, videoView;
-    Button permissionBtn;
+    private final StorageTask storageTask = new StorageTask();
+    private final VideoTask videoTask = new VideoTask();
+    private final SongTask songTask = new SongTask();
+    private final ContactTask contactTask = new ContactTask();
+    private LinearLayout permissionLayout;
+    private TextView contactView;
+    private TextView appView;
+    private TextView songView;
+    private TextView fileView;
+    private TextView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         songView = findViewById(R.id.songName);
         fileView = findViewById(R.id.filesName);
         videoView = findViewById(R.id.videoName);
-        permissionBtn = findViewById(R.id.permissionBtn);
+        Button permissionBtn = findViewById(R.id.permissionBtn);
         permissionLayout = findViewById(R.id.permissionLayout);
-        settingMenu = findViewById(R.id.threeDotMenu);
+        ImageView settingMenu = findViewById(R.id.threeDotMenu);
 
         moreTv = findViewById(R.id.moreFileView);
 
@@ -118,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         /*
          * Calling findViewById on recyclerView and searchView.
          */
-        searchView = findViewById(R.id.searchView);
+        SearchView searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.storageRecyclerView);
         appRecyclerView = findViewById(R.id.appRecyclerView);
         contactRecyclerView = findViewById(R.id.contactRecyclerView);
@@ -277,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * initializing and setting adaptor for song, video and files.
      */
 
-    public void setStorageAdapter() {
+    private void setStorageAdapter() {
         storageAdapter = new StorageAdapter(this, myStorageList);
         recyclerView.setAdapter(storageAdapter);
 
@@ -294,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * initializing and setting adaptor for contact.
      */
 
-    public void setContactAdaptor() {
+    private void setContactAdaptor() {
 
         contactAdaptor = new ContactAdaptor(this, myContactList);
         contactRecyclerView.setAdapter(contactAdaptor);
@@ -302,10 +307,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
-    public void setAppAdaptor() {
-        /**
-         *  Set recyclerView for App.
-         *  (ArrayList<App>) infoList.GetAllInstalledApkInfo()
+    private void setAppAdaptor() {
+        /*
+           Set recyclerView for App.
+           (ArrayList<App>) infoList.GetAllInstalledApkInfo()
          */
         appAdaptor = new AppAdaptor(this, appArrayList);
         appRecyclerView.setNestedScrollingEnabled(false);
@@ -315,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    public void isPermissionGranted() {
+    private void isPermissionGranted() {
         if (!isContactPermission() && !isStoragePermission()) {
 
             /*
@@ -454,11 +459,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         }
         @Override
-        protected void onPostExecute(ArrayList<Storage> storages) {
-            super.onPostExecute(storages);
-            Log.e("OnPost", "onPostExecute: " + storages.get(6).getFileName());
+        protected void onPostExecute(ArrayList<Storage> storage) {
+            super.onPostExecute(storage);
             myStorageList.clear();
-            myStorageList.addAll(storages);
+            myStorageList.addAll(storage);
             storageAdapter.notifyDataSetChanged();
         }
     }
@@ -467,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define videoTask for getting list of videos.
      */
 
-    public class VideoTask extends AsyncTask<Void, Void, ArrayList<Video>> {
+    class VideoTask extends AsyncTask<Void, Void, ArrayList<Video>> {
         @Override
         protected ArrayList<Video> doInBackground(Void... voids) {
             return (ArrayList<Video>) infoList.getAllVideoFromDevice();
@@ -507,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define contactTask for getting the list of contacts.
      */
 
-    public class ContactTask extends AsyncTask<Void, Void, ArrayList<ContactList>> {
+    class ContactTask extends AsyncTask<Void, Void, ArrayList<ContactList>> {
 
         @Override
         protected ArrayList<ContactList> doInBackground(Void... voids) {
@@ -528,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define appTask for getting the list of installed apps.
      */
 
-    public class AppTask extends AsyncTask<Void, Void, ArrayList<App>> {
+    class AppTask extends AsyncTask<Void, Void, ArrayList<App>> {
 
         @Override
         protected ArrayList<App> doInBackground(Void... voids) {
