@@ -22,17 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.example.ashu.supersearch.App.App;
 import com.example.ashu.supersearch.App.AppAdaptor;
-import com.example.ashu.supersearch.FileBrowser.Storage;
 import com.example.ashu.supersearch.FileBrowser.StorageAdapter;
 import com.example.ashu.supersearch.Info.InfoList;
-import com.example.ashu.supersearch.Movie.Video;
+import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.Movie.VideoAdaptor;
-import com.example.ashu.supersearch.Music.Song;
 import com.example.ashu.supersearch.Music.SongAdaptor;
 import com.example.ashu.supersearch.Phone.ContactAdaptor;
-import com.example.ashu.supersearch.Phone.ContactList;
 import com.example.ashu.supersearch.Settings.SettingActivity;
 
 import java.io.File;
@@ -54,11 +50,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private ContactAdaptor contactAdaptor;
     private SongAdaptor songAdaptor;
     private VideoAdaptor videoAdaptor;
-    private final ArrayList<Song> mySongArrayList = new ArrayList<>();
-    private final ArrayList<ContactList> myContactList = new ArrayList<>();
-    private final ArrayList<App> appArrayList = new ArrayList<>();
-    private final ArrayList<Video> videoArrayList = new ArrayList<>();
-    private final ArrayList<Storage> myStorageList = new ArrayList<>();
+    private final ArrayList<MediaInfo> mySongArrayList = new ArrayList<>();
+    private final ArrayList<MediaInfo> myContactList = new ArrayList<>();
+    private final ArrayList<MediaInfo> appArrayList = new ArrayList<>();
+    private final ArrayList<MediaInfo> videoArrayList = new ArrayList<>();
+    private final ArrayList<MediaInfo> myStorageList = new ArrayList<>();
 
     private InfoList infoList;
 
@@ -444,12 +440,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define storageTask for getting thee list of files and folders.
      */
 
-    class StorageTask extends AsyncTask<Void, Void, ArrayList<Storage>> {
+    class StorageTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
 
         @Override
-        protected ArrayList<Storage> doInBackground(Void... voids) {
+        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
             final String state = Environment.getExternalStorageState();
-            ArrayList<Storage> myStorageList1 = new ArrayList<>();
+            ArrayList<MediaInfo> myStorageList1 = new ArrayList<>();
             if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {  // we can read the External Storage...
                 myStorageList1 = infoList.getMyStorageList(new File("/storage/"));
                 Log.e("StorageTask", "onCreate: " + Environment.getExternalStorageDirectory().getPath());
@@ -459,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         }
         @Override
-        protected void onPostExecute(ArrayList<Storage> storage) {
+        protected void onPostExecute(ArrayList<MediaInfo> storage) {
             super.onPostExecute(storage);
             myStorageList.clear();
             myStorageList.addAll(storage);
@@ -471,14 +467,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define videoTask for getting list of videos.
      */
 
-    class VideoTask extends AsyncTask<Void, Void, ArrayList<Video>> {
+    class VideoTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
         @Override
-        protected ArrayList<Video> doInBackground(Void... voids) {
-            return (ArrayList<Video>) infoList.getAllVideoFromDevice();
+        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
+            return (ArrayList<MediaInfo>) infoList.getAllVideoFromDevice();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Video> videos) {
+        protected void onPostExecute(ArrayList<MediaInfo> videos) {
             super.onPostExecute(videos);
             videoArrayList.clear();
             videoArrayList.addAll(videos);
@@ -491,15 +487,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define songTask for getting the list of songs.
      */
 
-    class SongTask extends AsyncTask<Void, Void, ArrayList<Song>> {
+    class SongTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
         @Override
-        protected ArrayList<Song> doInBackground(Void... voids) {
-            return (ArrayList<Song>) infoList.getAllAudioFromDevice();
+        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
+            return (ArrayList<MediaInfo>) infoList.getAllAudioFromDevice();
         }
 
 
         @Override
-        protected void onPostExecute(ArrayList<Song> songs) {
+        protected void onPostExecute(ArrayList<MediaInfo> songs) {
             super.onPostExecute(songs);
             mySongArrayList.clear();
             mySongArrayList.addAll(songs);
@@ -511,15 +507,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define contactTask for getting the list of contacts.
      */
 
-    class ContactTask extends AsyncTask<Void, Void, ArrayList<ContactList>> {
+    class ContactTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
 
         @Override
-        protected ArrayList<ContactList> doInBackground(Void... voids) {
+        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
             return infoList.getAllContact();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<ContactList> contactLists) {
+        protected void onPostExecute(ArrayList<MediaInfo> contactLists) {
             super.onPostExecute(contactLists);
             myContactList.clear();
             myContactList.addAll(contactLists);
@@ -532,15 +528,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      * define appTask for getting the list of installed apps.
      */
 
-    class AppTask extends AsyncTask<Void, Void, ArrayList<App>> {
+    class AppTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
 
         @Override
-        protected ArrayList<App> doInBackground(Void... voids) {
-            return (ArrayList<App>) infoList.GetAllInstalledApkInfo();
+        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
+            return (ArrayList<MediaInfo>) infoList.GetAllInstalledApkInfo();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<App> apps) {
+        protected void onPostExecute(ArrayList<MediaInfo> apps) {
             super.onPostExecute(apps);
             appArrayList.clear();
             appArrayList.addAll(apps);

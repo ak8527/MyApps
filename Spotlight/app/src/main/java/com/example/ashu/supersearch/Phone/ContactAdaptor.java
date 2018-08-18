@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.util.ArrayList;
@@ -30,15 +31,15 @@ import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactHolder> {
     private final Context context;
-    private final ArrayList<ContactList> contactLists;
-    private final ArrayList<ContactList> myContactList = new ArrayList<>();
+    private final ArrayList<MediaInfo> contactLists;
+    private final ArrayList<MediaInfo> myContactList = new ArrayList<>();
     private String spannableText;
     private String phoneNumber;
     public static final int MY_TELEPHONE_REQUEST_CODE = 111;
 
 
 
-    public ContactAdaptor(Context context, ArrayList<ContactList> contactLists) {
+    public ContactAdaptor(Context context, ArrayList<MediaInfo> contactLists) {
         this.context = context;
         this.contactLists = contactLists;
     }
@@ -52,9 +53,9 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
 
     @Override
     public void onBindViewHolder(@NonNull ContactHolder holder, int position) {
-        ContactList contactList = myContactList.get(position);
+        MediaInfo contactList = myContactList.get(position);
 
-        String contactName = contactList.getName();
+        String contactName = contactList.getMediaName();
         SpannableString str = new SpannableString(contactName);
 
 
@@ -67,7 +68,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         holder.nameTv.setText(str);
-        phoneNumber = contactList.getPhoneNumber();
+        phoneNumber = contactList.getMediaPath();
 
         holder.chatImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,9 +136,9 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
         text = text.toLowerCase();
         myContactList.clear();
         if (!text.isEmpty()) {
-            for (ContactList wp : contactLists) {
-                if (wp.getName().toLowerCase(Locale.getDefault()).contains(text)) {
-                    myContactList.add(wp);
+            for (MediaInfo contact : contactLists) {
+                if (contact.getMediaName().toLowerCase(Locale.getDefault()).contains(text)) {
+                    myContactList.add(contact);
                     ans = true;
                 }
             }

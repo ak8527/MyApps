@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.io.File;
@@ -28,13 +29,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageHolder> {
     private final Context context;
-    private final ArrayList<Storage> storageArrayList;
-    private final ArrayList<Storage> mySearchStorageList = new ArrayList<>();
+    private final ArrayList<MediaInfo> storageArrayList;
+    private final ArrayList<MediaInfo> mySearchStorageList = new ArrayList<>();
     private String spannableText;
     private boolean moreFiles = false;
 
 
-    public StorageAdapter(Context context, ArrayList<Storage> storageArrayList) {
+    public StorageAdapter(Context context, ArrayList<MediaInfo> storageArrayList) {
         this.context = context;
         this.storageArrayList = storageArrayList;
     }
@@ -48,8 +49,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
 
     @Override
     public void onBindViewHolder(@NonNull final StorageHolder holder, int position) {
-        final Storage storage = mySearchStorageList.get(position);
-        String fileName = storage.getFileName();
+        final MediaInfo storage = mySearchStorageList.get(position);
+        String fileName = storage.getMediaName();
         SpannableString str = new SpannableString(fileName);
 
 
@@ -61,9 +62,9 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
 
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.storageNameTv.setText(str);
-        final File file = new File(storage.getFilePath());
+        final File file = new File(storage.getMediaPath());
 
-        String extension = extensionFind(storage.getFileName());
+        String extension = extensionFind(storage.getMediaName());
         switch (extension) {
             case "image":
                 holder.imageView.setImageResource(R.drawable.ic_image_action);
@@ -92,11 +93,11 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
             @Override
             public void onClick(View v) {
                 if (file.isFile()){
-                    resultDialog(storage.getFilePath());
+                    resultDialog(storage.getMediaPath());
 
                 } else {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri.parse(storage.getFilePath());
+                    Uri uri = Uri.parse(storage.getMediaPath());
                     intent.setDataAndType(uri,"*/*");
                     context.startActivity(intent);
 
@@ -145,11 +146,11 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         if (!text.isEmpty()) {
             Log.e("Filter", "filter1: "+text);
 
-            for (Storage wp : storageArrayList) {
-                Log.e("Filter2", "filter: "+storageArrayList.get(0).getFileName());
-                if (wp.getFileName().toLowerCase(Locale.getDefault()).contains(text)) {
-                    mySearchStorageList.add(wp);
-                    Log.e("StorageFilter", "filter: "+mySearchStorageList.get(0).getFileName());
+            for (MediaInfo storage : storageArrayList) {
+                Log.e("Filter2", "filter: "+storageArrayList.get(0).getMediaName());
+                if (storage.getMediaName().toLowerCase(Locale.getDefault()).contains(text)) {
+                    mySearchStorageList.add(storage);
+                    Log.e("StorageFilter", "filter: "+mySearchStorageList.get(0).getMediaName());
                     ans = true;
                 }
             }

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.util.ArrayList;
@@ -23,11 +24,11 @@ import java.util.Locale;
 
 public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder> {
     private final Context context;
-    private final ArrayList<Video> videoArrayList;
-    private final ArrayList<Video> myVideoList = new ArrayList<>();
+    private final ArrayList<MediaInfo> videoArrayList;
+    private final ArrayList<MediaInfo> myVideoList = new ArrayList<>();
     private String spannableText;
 
-    public VideoAdaptor(Context context, ArrayList<Video> videoArrayList) {
+    public VideoAdaptor(Context context, ArrayList<MediaInfo> videoArrayList) {
         this.context = context;
         this.videoArrayList = videoArrayList;
     }
@@ -41,9 +42,9 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
 
     @Override
     public void onBindViewHolder(@NonNull VideoHolder holder, int position) {
-        Video video = myVideoList.get(position);
+        MediaInfo video = myVideoList.get(position);
 
-        String videoName = video.getVideoName();
+        String videoName = video.getMediaName();
         SpannableString str = new SpannableString(videoName);
 
 
@@ -58,7 +59,7 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
         holder.nameTv.setText(str);
         Glide.with(context)
                 .asBitmap()
-                .load(video.getVideoPath())
+                .load(video.getMediaPath())
                 .into(holder.imageView);
 
         }
@@ -82,9 +83,9 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Video video = myVideoList.get(getAdapterPosition());
+                    MediaInfo video = myVideoList.get(getAdapterPosition());
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(video.getVideoPath()),"video/*");
+                    intent.setDataAndType(Uri.parse(video.getMediaPath()),"video/*");
                     context.startActivity(intent);
                 }
             });
@@ -97,9 +98,9 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
         text = text.toLowerCase();
         myVideoList.clear();
         if (!text.isEmpty()) {
-            for (Video wp : videoArrayList) {
-                if (wp.getVideoName().toLowerCase(Locale.getDefault()).contains(text)) {
-                    myVideoList.add(wp);
+            for (MediaInfo video : videoArrayList) {
+                if (video.getMediaName().toLowerCase(Locale.getDefault()).contains(text)) {
+                    myVideoList.add(video);
                     ans = true;
                 }
             }

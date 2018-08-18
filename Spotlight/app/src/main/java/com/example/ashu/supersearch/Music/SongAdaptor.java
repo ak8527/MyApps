@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ import java.util.Locale;
 public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
 
     private final Context context;
-    private final ArrayList<Song> songArrayList;
-    private final ArrayList<Song> mySongList = new ArrayList<>();
+    private final ArrayList<MediaInfo> songArrayList;
+    private final ArrayList<MediaInfo> mySongList = new ArrayList<>();
     private String spannableText;
 
-    public SongAdaptor(Context context, ArrayList<Song> songArrayList) {
+    public SongAdaptor(Context context, ArrayList<MediaInfo> songArrayList) {
         this.context = context;
         this.songArrayList = songArrayList;
     }
@@ -40,9 +41,9 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SongHolder holder, int position) {
-        final Song song = mySongList.get(position);
+        final MediaInfo song = mySongList.get(position);
 
-        String songName = song.getSongName();
+        String songName = song.getMediaName();
         SpannableString str = new SpannableString(songName);
 
 
@@ -59,7 +60,7 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(song.getSongPath()), "audio/*");
+                intent.setDataAndType(Uri.parse(song.getMediaPath()), "audio/*");
                 context.startActivity(intent);
 
 
@@ -93,9 +94,9 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
         text = text.toLowerCase();
         mySongList.clear();
         if (!text.isEmpty()) {
-            for (Song wp : songArrayList) {
-                if (wp.getSongName().toLowerCase(Locale.getDefault()).contains(text)) {
-                    mySongList.add(wp);
+            for (MediaInfo song : songArrayList) {
+                if (song.getMediaName().toLowerCase(Locale.getDefault()).contains(text)) {
+                    mySongList.add(song);
                     ans = true;
                 }
             }

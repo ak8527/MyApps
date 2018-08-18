@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ import java.util.Locale;
 
 public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
     private final Context context;
-    private final ArrayList<App> appArrayList;
-    private final ArrayList<App> myAppArrayList = new ArrayList<>();
+    private final ArrayList<MediaInfo> appArrayList;
+    private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
     private String spannableText;
 
-    public AppAdaptor(Context context, ArrayList<App> appArrayList) {
+    public AppAdaptor(Context context, ArrayList<MediaInfo> appArrayList) {
         this.context = context;
         this.appArrayList = appArrayList;
     }
@@ -40,9 +41,9 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AppHolder holder, int position) {
-        App app = myAppArrayList.get(position);
+        MediaInfo app = myAppArrayList.get(position);
 
-        String appName = app.getAppName();
+        String appName = app.getMediaName();
         SpannableString str = new SpannableString(appName);
 
 
@@ -54,9 +55,9 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        holder.imageView.setImageDrawable(app.getIcon());
+        holder.imageView.setImageDrawable(app.getDrawableIcon());
         holder.textView.setText(str);
-        final String packageName = app.getPackageName();
+        final String packageName = app.getMediaPath();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,9 +96,9 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
         text = text.toLowerCase();
         myAppArrayList.clear();
         if (!text.isEmpty()) {
-            for (App wp : appArrayList) {
-                if (wp.getAppName().toLowerCase(Locale.getDefault()).contains(text)) {
-                    myAppArrayList.add(wp);
+            for (MediaInfo app : appArrayList) {
+                if (app.getMediaName().toLowerCase(Locale.getDefault()).contains(text)) {
+                    myAppArrayList.add(app);
                     ans = true;
                 }
             }
