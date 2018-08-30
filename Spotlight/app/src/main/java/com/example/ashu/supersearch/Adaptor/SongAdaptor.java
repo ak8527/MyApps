@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Music;
+package com.example.ashu.supersearch.Adaptor;
 
 import android.content.Context;
 import android.content.Intent;

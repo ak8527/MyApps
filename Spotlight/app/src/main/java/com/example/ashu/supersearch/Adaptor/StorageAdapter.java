@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.FileBrowser;
+package com.example.ashu.supersearch.Adaptor;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

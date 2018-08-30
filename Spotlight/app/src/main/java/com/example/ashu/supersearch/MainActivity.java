@@ -22,13 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.example.ashu.supersearch.App.AppAdaptor;
-import com.example.ashu.supersearch.FileBrowser.StorageAdapter;
+import com.example.ashu.supersearch.Adaptor.AppAdaptor;
+import com.example.ashu.supersearch.Adaptor.StorageAdapter;
 import com.example.ashu.supersearch.Info.InfoList;
 import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.Movie.VideoAdaptor;
-import com.example.ashu.supersearch.Music.SongAdaptor;
-import com.example.ashu.supersearch.Phone.ContactAdaptor;
+import com.example.ashu.supersearch.Adaptor.VideoAdaptor;
+import com.example.ashu.supersearch.Adaptor.SongAdaptor;
+import com.example.ashu.supersearch.Adaptor.ContactAdaptor;
 import com.example.ashu.supersearch.Settings.SettingActivity;
 
 import java.io.File;
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         /*
-         * Setting Layout Manger for recyclerView.
+         * Setting Layout Manager for recyclerView.
          */
 
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -192,6 +192,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setAppAdaptor();
         setStorageAdapter();
         setContactAdaptor();
+        ArrayList<String> setting = infoList.getAllSettingList();
+        for (String s :setting){
+            String a = s.replaceAll("ACTION_","");
+            String t = a.replace("_"," ");
+            Log.e("SettingList", "onCreate: "+t);
+        }
 
     }
 
@@ -541,7 +547,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             appArrayList.clear();
             appArrayList.addAll(apps);
             appAdaptor.notifyDataSetChanged();
-
         }
     }
 }

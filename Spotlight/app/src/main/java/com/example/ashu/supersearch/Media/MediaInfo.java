@@ -3,8 +3,9 @@ package com.example.ashu.supersearch.Media;
 import android.graphics.drawable.Drawable;
 
 public class MediaInfo {
-    String mediaName,mediaPath;
-    Drawable drawableIcon;
+    private final String mediaName;
+    private final String mediaPath;
+    private Drawable drawableIcon;
 
     public MediaInfo(String mediaName, String mediaPath) {
         this.mediaName = mediaName;

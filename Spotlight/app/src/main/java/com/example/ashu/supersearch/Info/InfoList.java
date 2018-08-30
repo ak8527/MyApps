@@ -11,12 +11,15 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +30,7 @@ public class InfoList {
     private String name;
     private String path;
 
-    MediaInfo media;
+    private MediaInfo media;
 
 
     public InfoList(Context context) {
@@ -276,5 +279,23 @@ public class InfoList {
 //        return browserList;
 //    }
 // --Commented out by Inspection STOP (15/8/18 9:45 PM)
+
+
+    public ArrayList<String> getAllSettingList(){
+        ArrayList<String> settingList = new ArrayList<>();
+
+        Field[] fields = Settings.class.getDeclaredFields();
+
+
+
+        for (Field field : fields){
+            if (Modifier.isStatic(field.getModifiers())){
+                String s = field.getName();
+                settingList.add(s);
+            }
+        }
+
+        return settingList;
+    }
 
 }

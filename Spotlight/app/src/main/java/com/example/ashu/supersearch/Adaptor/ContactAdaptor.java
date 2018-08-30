@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Phone;
+package com.example.ashu.supersearch.Adaptor;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
