@@ -11,15 +11,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -281,19 +278,41 @@ public class InfoList {
 // --Commented out by Inspection STOP (15/8/18 9:45 PM)
 
 
-    public ArrayList<String> getAllSettingList(){
-        ArrayList<String> settingList = new ArrayList<>();
+    public ArrayList<MediaInfo> getAllSettingList(){
+        ArrayList<MediaInfo> settingList = new ArrayList<>();
 
-        Field[] fields = Settings.class.getDeclaredFields();
+//        Field[] fields = Settings.class.getDeclaredFields();
+//
+//
+//
+//        for (Field field : fields){
+//            if (Modifier.isStatic(field.getModifiers())){
+//                String s = field.getName();
+//                settingList.add(s);
+//            }
+//        }
 
-
-
-        for (Field field : fields){
-            if (Modifier.isStatic(field.getModifiers())){
-                String s = field.getName();
-                settingList.add(s);
-            }
-        }
+        settingList.add(new MediaInfo("Airplane Mode","android.settings.AIRPLANE_MODE_SETTINGS"));
+        settingList.add(new MediaInfo("Developer options","android.settings.APPLICATION_DEVELOPMENT_SETTINGS"));
+        settingList.add(new MediaInfo("Bluetooth","android.settings.BLUETOOTH_SETTINGS"));
+        settingList.add(new MediaInfo("Cast","android.settings.CAST_SETTINGS"));
+        settingList.add(new MediaInfo("Data roaming","android.settings.DATA_ROAMING_SETTINGS"));
+        settingList.add(new MediaInfo("Device info","android.settings.DEVICE_INFO_SETTINGS"));
+        settingList.add(new MediaInfo("Display","android.settings.DISPLAY_SETTINGS"));
+        settingList.add(new MediaInfo("Home","android.settings.HOME_SETTINGS"));
+        settingList.add(new MediaInfo("Internal storage","android.settings.INTERNAL_STORAGE_SETTINGS"));
+        settingList.add(new MediaInfo("Manage applications","android.settings.MANAGE_ALL_APPLICATIONS_SETTINGS"));
+        settingList.add(new MediaInfo("NFC","android.settings.NFC_SETTINGS"));
+        settingList.add(new MediaInfo("Sound","android.settings.SOUND_SETTINGS"));
+        settingList.add(new MediaInfo("Usage access","android.settings.USAGE_ACCESS_SETTINGS"));
+        settingList.add(new MediaInfo("Wifi","android.settings.WIFI_SETTINGS"));
+        settingList.add(new MediaInfo("Notification access","android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+        settingList.add(new MediaInfo("Battery saver","android.settings.BATTERY_SAVER_SETTINGS"));
+        settingList.add(new MediaInfo("Ignore battery optimizations","android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS"));
+        settingList.add(new MediaInfo("Manage overlay","android.settings.action.MANAGE_OVERLAY_PERMISSION"));
+        settingList.add(new MediaInfo("VPN","android.settings.VPN_SETTINGS"));
+        settingList.add(new MediaInfo("Manage default apps","android.settings.MANAGE_DEFAULT_APPS_SETTINGS"));
+        settingList.add(new MediaInfo("Manage unknown app sources","android.settings.MANAGE_UNKNOWN_APP_SOURCES"));
 
         return settingList;
     }

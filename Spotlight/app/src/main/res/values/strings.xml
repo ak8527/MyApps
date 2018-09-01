@@ -28,4 +28,5 @@
     <string name="background_service">Start Background Service</string>
     <string name="search_anywhere">Search anywhere</string>
     <string name="tap_to_launch">Tap or swipe on edge to launch the app</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -1,18 +1,19 @@
 package com.example.ashu.supersearch.Adaptor;
 
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
@@ -21,13 +22,15 @@ import com.example.ashu.supersearch.R;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageHolder> {
     private final Context context;
     private final ArrayList<MediaInfo> appArrayList;
     private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
     private String spannableText;
 
-    public AppAdaptor(Context context, ArrayList<MediaInfo> appArrayList) {
+    public SettingAdaptor(Context context, ArrayList<MediaInfo> appArrayList) {
         this.context = context;
         this.appArrayList = appArrayList;
     }
@@ -35,13 +38,13 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
     @NonNull
     @Override
-    public AppHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.app_list_item, parent, false);
-        return (new AppHolder(view));
+    public StorageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.storage_list_item, parent, false);
+        return (new StorageHolder(view));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AppHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StorageHolder holder, int position) {
         MediaInfo app = myAppArrayList.get(position);
 
         String appName = app.getMediaName();
@@ -56,14 +59,21 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        holder.imageView.setImageDrawable(app.getDrawableIcon());
-        holder.textView.setText(str);
+//        holder.imageView.setImageResource(R.drawable.ic_action_setting);
+        Drawable drawable = null;
+        try {
+            drawable = context.getPackageManager().getApplicationIcon("com.android.settings");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        holder.imageView.setImageDrawable(drawable);
+       // holder.imageView.setCircleBackgroundColor(R.color.colorPrimary);\
+        holder.storageNameTv.setText(str);
         final String packageName = app.getMediaPath();
-        Log.e("AppAdaptor", "onBindViewHolder: "+packageName);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                Intent intent = new Intent(packageName);
                 context.startActivity(intent);
             }
         });
@@ -80,15 +90,14 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
         }
     }
 
-    class AppHolder extends RecyclerView.ViewHolder {
+    class StorageHolder extends RecyclerView.ViewHolder {
+        final TextView storageNameTv;
+        final CircleImageView imageView;
 
-        final TextView textView;
-        final ImageView imageView;
-
-        AppHolder(View itemView) {
+        StorageHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.appNameTv);
-            imageView = itemView.findViewById(R.id.appImageView);
+            imageView = itemView.findViewById(R.id.storageImageView);
+            storageNameTv = itemView.findViewById(R.id.searchStorageTv);
         }
     }
 

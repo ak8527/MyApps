@@ -23,6 +23,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.ashu.supersearch.Adaptor.AppAdaptor;
+import com.example.ashu.supersearch.Adaptor.SettingAdaptor;
 import com.example.ashu.supersearch.Adaptor.StorageAdapter;
 import com.example.ashu.supersearch.Info.InfoList;
 import com.example.ashu.supersearch.Media.MediaInfo;
@@ -46,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView contactRecyclerView;
     private RecyclerView songRecyclerView;
     private RecyclerView videoRecyclerView;
+    private RecyclerView settingRecyclerView;
     private AppAdaptor appAdaptor;
+    SettingAdaptor settingAdaptor;
     private ContactAdaptor contactAdaptor;
     private SongAdaptor songAdaptor;
     private VideoAdaptor videoAdaptor;
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private final ArrayList<MediaInfo> appArrayList = new ArrayList<>();
     private final ArrayList<MediaInfo> videoArrayList = new ArrayList<>();
     private final ArrayList<MediaInfo> myStorageList = new ArrayList<>();
+    private final ArrayList<MediaInfo> mySettingList = new ArrayList<>();
+
 
     private InfoList infoList;
 
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private TextView songView;
     private TextView fileView;
     private TextView videoView;
+    private TextView settingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +89,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         songView = findViewById(R.id.songName);
         fileView = findViewById(R.id.filesName);
         videoView = findViewById(R.id.videoName);
+        settingView = findViewById(R.id.settingName);
         Button permissionBtn = findViewById(R.id.permissionBtn);
         permissionLayout = findViewById(R.id.permissionLayout);
         ImageView settingMenu = findViewById(R.id.threeDotMenu);
+
 
         moreTv = findViewById(R.id.moreFileView);
 
@@ -125,7 +133,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         contactRecyclerView = findViewById(R.id.contactRecyclerView);
         songRecyclerView = findViewById(R.id.songRecyclerView);
         videoRecyclerView = findViewById(R.id.videoRecyclerView);
+        settingRecyclerView = findViewById(R.id.settingRecyclerView);
 
+        settingRecyclerView.setNestedScrollingEnabled(false);
         recyclerView.setNestedScrollingEnabled(false);
         contactRecyclerView.setNestedScrollingEnabled(false);
         songRecyclerView.setNestedScrollingEnabled(false);
@@ -136,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
          * Setting Layout Manager for recyclerView.
          */
 
+        settingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         songRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -192,12 +203,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setAppAdaptor();
         setStorageAdapter();
         setContactAdaptor();
-        ArrayList<String> setting = infoList.getAllSettingList();
-        for (String s :setting){
-            String a = s.replaceAll("ACTION_","");
-            String t = a.replace("_"," ");
-            Log.e("SettingList", "onCreate: "+t);
-        }
+
 
     }
 
@@ -216,13 +222,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextChange(String newText) {
 
-        boolean appAns;
+        boolean appAns,settingAns;
         appAns = appAdaptor.filter(newText);
         appAdaptor.notifyDataSetChanged();
         if (appAns) {
             appView.setVisibility(View.VISIBLE);
         } else {
             appView.setVisibility(View.GONE);
+        }
+
+        settingAns = settingAdaptor.filter(newText);
+        settingAdaptor.notifyDataSetChanged();
+        if (settingAns){
+            settingView.setVisibility(View.VISIBLE);
+        } else {
+            settingView.setVisibility(View.GONE);
         }
 
         if (isContactPermission()) {
@@ -306,6 +320,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         contactAdaptor = new ContactAdaptor(this, myContactList);
         contactRecyclerView.setAdapter(contactAdaptor);
 
+
+
     }
 
 
@@ -317,6 +333,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         appAdaptor = new AppAdaptor(this, appArrayList);
         appRecyclerView.setNestedScrollingEnabled(false);
         appRecyclerView.setAdapter(appAdaptor);
+
+        settingAdaptor = new SettingAdaptor(this,mySettingList);
+        settingRecyclerView.setAdapter(settingAdaptor);
+
         appTask.execute();
 
 
@@ -547,6 +567,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             appArrayList.clear();
             appArrayList.addAll(apps);
             appAdaptor.notifyDataSetChanged();
+
+            mySettingList.clear();
+            mySettingList.addAll(infoList.getAllSettingList());
+            settingAdaptor.notifyDataSetChanged();
         }
     }
 }

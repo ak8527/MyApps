@@ -95,6 +95,22 @@
 
 
             <TextView
+                android:id="@+id/settingName"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="@string/settings"
+                android:visibility="gone" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/settingRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
                 android:id="@+id/songName"
                 style="@style/HelperTextTheme"
                 android:layout_width="match_parent"
