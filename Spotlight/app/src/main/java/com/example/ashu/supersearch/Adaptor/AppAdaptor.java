@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,32 +41,35 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AppHolder holder, int position) {
-        MediaInfo app = myAppArrayList.get(position);
+            MediaInfo app = myAppArrayList.get(position);
 
-        String appName = app.getMediaName();
-        SpannableString str = new SpannableString(appName);
-
-
-        String testText = appName.toLowerCase(Locale.US);
-        String testTextToBold = spannableText.toLowerCase(Locale.US);
-        int startingIndex = testText.indexOf(testTextToBold);
-        int endingIndex = startingIndex + testTextToBold.length();
+            String appName = app.getMediaName();
+            SpannableString str = new SpannableString(appName);
 
 
-        str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String testText = appName.toLowerCase(Locale.US);
+            String testTextToBold = spannableText.toLowerCase(Locale.US);
+            int startingIndex = testText.indexOf(testTextToBold);
+            int endingIndex = startingIndex + testTextToBold.length();
 
-        holder.imageView.setImageDrawable(app.getDrawableIcon());
-        holder.textView.setText(str);
-        final String packageName = app.getMediaPath();
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                context.startActivity(intent);
-            }
-        });
+
+            str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            holder.imageView.setImageDrawable(app.getDrawableIcon());
+            holder.textView.setText(str);
+            final String packageName = app.getMediaPath();
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                    context.startActivity(intent);
+                }
+            });
+
+
 
     }
+
 
     @Override
     public int getItemCount() {

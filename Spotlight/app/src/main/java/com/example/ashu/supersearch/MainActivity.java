@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.example.ashu.supersearch.Adaptor.AppAdaptor;
 import com.example.ashu.supersearch.Adaptor.ContactAdaptor;
+import com.example.ashu.supersearch.Adaptor.SearchAppAdaptor;
 import com.example.ashu.supersearch.Adaptor.SettingAdaptor;
 import com.example.ashu.supersearch.Adaptor.SongAdaptor;
 import com.example.ashu.supersearch.Adaptor.StorageAdapter;
@@ -52,7 +53,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView songRecyclerView;
     private RecyclerView videoRecyclerView;
     private RecyclerView settingRecyclerView;
+    private RecyclerView searchAppRecyclerView;
     private AppAdaptor appAdaptor;
+    private SearchAppAdaptor searchAppAdaptor;
     private SettingAdaptor settingAdaptor;
     private ContactAdaptor contactAdaptor;
     private SongAdaptor songAdaptor;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private final ArrayList<MediaInfo> videoArrayList = new ArrayList<>();
     private final ArrayList<MediaInfo> myStorageList = new ArrayList<>();
     private final ArrayList<MediaInfo> mySettingList = new ArrayList<>();
+
 
 
     private InfoList infoList;
@@ -141,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         songRecyclerView = findViewById(R.id.songRecyclerView);
         videoRecyclerView = findViewById(R.id.videoRecyclerView);
         settingRecyclerView = findViewById(R.id.settingRecyclerView);
+        searchAppRecyclerView = findViewById(R.id.searchAppRecyclerView);
+
 
         settingRecyclerView.setNestedScrollingEnabled(false);
         recyclerView.setNestedScrollingEnabled(false);
@@ -165,6 +171,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         };
 
+        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false){
+            @Override
+            public boolean canScrollHorizontally() {
+                return false;
+            }
+        };
+
+        searchAppRecyclerView.setLayoutManager(searchLayoutManager);
         appRecyclerView.setLayoutManager(linearLayoutManager);
 
         /*
@@ -212,6 +226,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContactAdaptor();
 
 
+
+        searchAppAdaptor = new SearchAppAdaptor(this, (ArrayList<MediaInfo>) infoList.getBrowserList());
+        searchAppRecyclerView.setAdapter(searchAppAdaptor);
+        searchAppRecyclerView.setVisibility(View.GONE);
+
+
+
+
+
     }
 
 
@@ -230,9 +253,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onQueryTextChange(String newText) {
 
         if (!newText.isEmpty()){
+            searchAppRecyclerView.setVisibility(View.VISIBLE);
             searchNameTv.setVisibility(View.VISIBLE);
+            searchAppAdaptor.filter(newText);
             setSearchApp(newText);
         } else {
+            searchAppRecyclerView.setVisibility(View.GONE);
             searchNameTv.setVisibility(View.GONE);
         }
 
@@ -603,5 +629,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchNameTv.setText(str);
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }
