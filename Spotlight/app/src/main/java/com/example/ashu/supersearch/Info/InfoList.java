@@ -259,27 +259,42 @@ public class InfoList {
 //     * Get list of browser.
 //     */
 //
-//    public List<ResolveInfo> getBrowserList(){
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setData(Uri.parse("google.com"));
-//
-//        PackageManager pm = context.getPackageManager();
-//
-//
-//        List<ResolveInfo> browserList;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//            browserList = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
-//        } else {
-//            browserList = pm.queryIntentActivities(intent, 0);
-//        }
-//
-//        return browserList;
-//    }
+    public List<MediaInfo> getBrowserList(){
+        List<MediaInfo> browserAppList = new ArrayList<>();
+        String appName,packageName;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://www.google.com"));
+
+        PackageManager pm = context.getPackageManager();
+
+
+        List<ResolveInfo> browserList;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            browserList = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
+        } else {
+            browserList = pm.queryIntentActivities(intent, 0);
+        }
+
+
+        for (ResolveInfo resolveInfo : browserList){
+                packageName = resolveInfo.activityInfo.packageName;
+                appName = GetAppName(packageName);
+                browserAppList.add(new MediaInfo(appName,packageName));
+        }
+
+        browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
+        browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
+
+
+        return browserAppList;
+    }
 // --Commented out by Inspection STOP (15/8/18 9:45 PM)
 
 
     public ArrayList<MediaInfo> getAllSettingList(){
         ArrayList<MediaInfo> settingList = new ArrayList<>();
+
+
 
 //        Field[] fields = Settings.class.getDeclaredFields();
 //

@@ -170,6 +170,20 @@
 
 
 
+            <TextView
+                android:id="@+id/searchNameTv"
+                style="@style/HelperTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/searchAppView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
 
 
             <LinearLayout

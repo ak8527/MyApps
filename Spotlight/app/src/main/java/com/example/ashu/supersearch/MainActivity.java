@@ -3,6 +3,7 @@ package com.example.ashu.supersearch;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +27,13 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.ashu.supersearch.Adaptor.AppAdaptor;
+import com.example.ashu.supersearch.Adaptor.ContactAdaptor;
 import com.example.ashu.supersearch.Adaptor.SettingAdaptor;
+import com.example.ashu.supersearch.Adaptor.SongAdaptor;
 import com.example.ashu.supersearch.Adaptor.StorageAdapter;
+import com.example.ashu.supersearch.Adaptor.VideoAdaptor;
 import com.example.ashu.supersearch.Info.InfoList;
 import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.Adaptor.VideoAdaptor;
-import com.example.ashu.supersearch.Adaptor.SongAdaptor;
-import com.example.ashu.supersearch.Adaptor.ContactAdaptor;
 import com.example.ashu.supersearch.Settings.SettingActivity;
 
 import java.io.File;
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView videoRecyclerView;
     private RecyclerView settingRecyclerView;
     private AppAdaptor appAdaptor;
-    SettingAdaptor settingAdaptor;
+    private SettingAdaptor settingAdaptor;
     private ContactAdaptor contactAdaptor;
     private SongAdaptor songAdaptor;
     private VideoAdaptor videoAdaptor;
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private TextView fileView;
     private TextView videoView;
     private TextView settingView;
+    private TextView searchNameTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +97,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         settingView = findViewById(R.id.settingName);
         Button permissionBtn = findViewById(R.id.permissionBtn);
         permissionLayout = findViewById(R.id.permissionLayout);
+        searchNameTv = findViewById(R.id.searchNameTv);
         ImageView settingMenu = findViewById(R.id.threeDotMenu);
 
 
         moreTv = findViewById(R.id.moreFileView);
+
 
 
         final PopupMenu popupMenu = new PopupMenu(getBaseContext(), settingMenu);
@@ -221,6 +228,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        if (!newText.isEmpty()){
+            searchNameTv.setVisibility(View.VISIBLE);
+            setSearchApp(newText);
+        } else {
+            searchNameTv.setVisibility(View.GONE);
+        }
 
         boolean appAns,settingAns;
         appAns = appAdaptor.filter(newText);
@@ -572,5 +586,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             mySettingList.addAll(infoList.getAllSettingList());
             settingAdaptor.notifyDataSetChanged();
         }
+    }
+
+    private void setSearchApp(String text){
+        String searchStart = "Search ";
+        String newText = searchStart + text;
+
+        SpannableString str = new SpannableString(newText);
+
+        int startingIndex = searchStart.length();
+        int endingIndex = startingIndex + text.length();
+
+
+        str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        searchNameTv.setText(str);
     }
 }
