@@ -59,7 +59,6 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
         holder.imageView.setImageDrawable(app.getDrawableIcon());
         holder.textView.setText(str);
         final String packageName = app.getMediaPath();
-        Log.e("AppAdaptor", "onBindViewHolder: "+packageName);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

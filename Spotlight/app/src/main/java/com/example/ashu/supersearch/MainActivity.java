@@ -602,4 +602,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         searchNameTv.setText(str);
     }
+
+
 }
