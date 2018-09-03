@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
-    android:orientation="horizontal"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:paddingEnd="8dp"
@@ -13,42 +12,44 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/mediaImage"
         android:layout_width="56dp"
         android:layout_height="56dp"
         app:civ_border_color="#FFFFFF"
-        app:civ_circle_background_color="@color/phoneColor"
         android:padding="4dp"
-        android:src="@drawable/ic_account_action" />
+       />
 
 
     <TextView
-        android:layout_weight="7"
-        android:id="@+id/contactName"
+        android:id="@+id/mediaName"
         style="@style/TextTheme"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center|start"
         android:maxLines="1"
         android:textAlignment="viewStart"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/mediaImage"
         tools:text="contact" />
 
     <ImageView
         android:id="@+id/callIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:padding="16dp"
         android:src="@drawable/ic_call_black_24dp"
+        android:layout_toStartOf="@id/chatIcon"
+        android:visibility="gone"
         android:contentDescription="@string/image_for_call" />
 
 
     <ImageView
+        android:layout_alignParentEnd="true"
         android:id="@+id/chatIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:padding="16dp"
+        android:visibility="gone"
         android:src="@drawable/ic_chat_black_24dp"
         android:contentDescription="@string/image_for_message" />
 
-</LinearLayout>
+</RelativeLayout>

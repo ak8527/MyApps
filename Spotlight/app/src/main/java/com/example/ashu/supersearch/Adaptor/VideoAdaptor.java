@@ -12,7 +12,6 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +20,8 @@ import com.example.ashu.supersearch.R;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder> {
     private final Context context;
@@ -36,7 +37,7 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
     @NonNull
     @Override
     public VideoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.video_list_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.media_list_item,parent,false);
         return (new VideoHolder(view));
     }
 
@@ -75,11 +76,11 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
 
     class VideoHolder extends RecyclerView.ViewHolder{
         final TextView nameTv;
-        final ImageView imageView;
+        final CircleImageView imageView;
         VideoHolder(View itemView) {
             super(itemView);
-            nameTv = itemView.findViewById(R.id.videoNameTv);
-            imageView = itemView.findViewById(R.id.videoImageView);
+            nameTv = itemView.findViewById(R.id.mediaName);
+            imageView = itemView.findViewById(R.id.mediaImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

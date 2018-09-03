@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -171,13 +172,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         };
 
-        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false){
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            }
-        };
-
+        GridLayoutManager searchLayoutManager = new GridLayoutManager(this,infoList.getBrowserList().size());
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
         appRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -629,9 +624,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchNameTv.setText(str);
     }
 
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (isStoragePermission() && isContactPermission()){
+//            finish();
+//        }
+//
+//    }
+
+
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         finish();
     }
 }

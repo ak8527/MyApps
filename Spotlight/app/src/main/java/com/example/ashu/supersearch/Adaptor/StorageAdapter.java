@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
     @NonNull
     @Override
     public StorageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.storage_list_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.media_list_item,parent,false);
         return (new StorageHolder(view));
     }
 
@@ -140,17 +139,13 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
-        Log.e("Filter", "filter: "+text);
         text = text.toLowerCase();
         mySearchStorageList.clear();
         if (!text.isEmpty()) {
-            Log.e("Filter", "filter1: "+text);
 
             for (MediaInfo storage : storageArrayList) {
-                Log.e("Filter2", "filter: "+storageArrayList.get(0).getMediaName());
                 if (storage.getMediaName().toLowerCase(Locale.getDefault()).contains(text)) {
                     mySearchStorageList.add(storage);
-                    Log.e("StorageFilter", "filter: "+mySearchStorageList.get(0).getMediaName());
                     ans = true;
                 }
             }
@@ -217,8 +212,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
 
             StorageHolder(View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.storageImageView);
-                storageNameTv = itemView.findViewById(R.id.searchStorageTv);
+                imageView = itemView.findViewById(R.id.mediaImage);
+                storageNameTv = itemView.findViewById(R.id.mediaName);
             }
         }
 

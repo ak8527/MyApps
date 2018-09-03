@@ -275,15 +275,15 @@ public class InfoList {
             browserList = pm.queryIntentActivities(intent, 0);
         }
 
+        browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
+        browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
+
 
         for (ResolveInfo resolveInfo : browserList){
                 packageName = resolveInfo.activityInfo.packageName;
                 appName = GetAppName(packageName);
                 browserAppList.add(new MediaInfo(appName,packageName));
         }
-
-        browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
-        browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
 
 
         return browserAppList;
@@ -294,18 +294,6 @@ public class InfoList {
     public ArrayList<MediaInfo> getAllSettingList(){
         ArrayList<MediaInfo> settingList = new ArrayList<>();
 
-
-
-//        Field[] fields = Settings.class.getDeclaredFields();
-//
-//
-//
-//        for (Field field : fields){
-//            if (Modifier.isStatic(field.getModifiers())){
-//                String s = field.getName();
-//                settingList.add(s);
-//            }
-//        }
 
         settingList.add(new MediaInfo("Airplane Mode","android.settings.AIRPLANE_MODE_SETTINGS"));
         settingList.add(new MediaInfo("Developer options","android.settings.APPLICATION_DEVELOPMENT_SETTINGS"));

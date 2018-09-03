@@ -27,6 +27,8 @@ import com.example.ashu.supersearch.R;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactHolder> {
@@ -47,7 +49,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
     @NonNull
     @Override
     public ContactHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.contact_list_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.media_list_item,parent,false);
         return (new ContactHolder(view));
     }
 
@@ -152,14 +154,20 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
 
     class ContactHolder extends RecyclerView.ViewHolder{
         final TextView nameTv;
+        final CircleImageView contactImageView;
         final ImageView callImageView;
         final ImageView chatImageView;
 
         ContactHolder(View itemView) {
             super(itemView);
-            nameTv = itemView.findViewById(R.id.contactName);
+            contactImageView = itemView.findViewById(R.id.mediaImage);
+            contactImageView.setCircleBackgroundColor(context.getResources().getColor(R.color.phoneColor));
+            contactImageView.setImageResource(R.drawable.ic_account_action);
+            nameTv = itemView.findViewById(R.id.mediaName);
             callImageView = itemView.findViewById(R.id.callIcon);
+            callImageView.setVisibility(View.VISIBLE);
             chatImageView = itemView.findViewById(R.id.chatIcon);
+            chatImageView.setVisibility(View.VISIBLE);
 
 
         }

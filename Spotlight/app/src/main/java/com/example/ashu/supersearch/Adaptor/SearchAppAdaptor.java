@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppHolder> {
     private final Context context;
     private final ArrayList<MediaInfo> appArrayList;
-    String searchText = "";
+    private String searchText = "";
 
 
     public SearchAppAdaptor(Context context, ArrayList<MediaInfo> appArrayList) {
@@ -75,20 +75,20 @@ public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppH
 
     }
 
-    public boolean filter(String text) {
+    public void filter(String text) {
         searchText = text;
         notifyDataSetChanged();
-        return false;
     }
 
     @Override
     public int getItemCount() {
-        if (appArrayList.size() <= 4){
+        if (appArrayList.size() <= 6){
             return appArrayList.size();
 
         } else {
-            return 5;
-        }    }
+            return 6;
+        }
+    }
 
     class AppHolder extends RecyclerView.ViewHolder {
 
@@ -100,8 +100,17 @@ public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppH
             textView = itemView.findViewById(R.id.appNameTv);
 
             imageView = itemView.findViewById(R.id.appImageView);
-
+            imageView.getLayoutParams().height = dpToPixel(32);
+            imageView.getLayoutParams().width = dpToPixel(32);
         }
     }
+
+    private int dpToPixel(int dp) {
+        float density = context.getResources()
+                .getDisplayMetrics()
+                .density;
+        return Math.round((float) dp * density);
+    }
+
 
 }

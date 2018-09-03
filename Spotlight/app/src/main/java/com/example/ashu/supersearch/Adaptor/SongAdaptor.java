@@ -20,6 +20,8 @@ import com.example.ashu.supersearch.R;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
 
     private final Context context;
@@ -35,7 +37,7 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
     @NonNull
     @Override
     public SongHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.song_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.media_list_item, parent, false);
         return (new SongHolder(view));
     }
 
@@ -81,10 +83,15 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
 
     class SongHolder extends RecyclerView.ViewHolder {
         final TextView songTv;
+        final CircleImageView songImageView;
 
         SongHolder(View itemView) {
             super(itemView);
-            songTv = itemView.findViewById(R.id.songNameTv);
+            songTv = itemView.findViewById(R.id.mediaName);
+            songImageView = itemView.findViewById(R.id.mediaImage);
+            songImageView.setImageResource(R.drawable.ic_action_song);
+            songImageView.setCircleBackgroundColor(context.getResources().getColor(R.color.songColor));
+
         }
     }
 

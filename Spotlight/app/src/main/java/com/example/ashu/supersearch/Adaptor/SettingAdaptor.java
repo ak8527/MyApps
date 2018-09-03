@@ -39,7 +39,7 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
     @NonNull
     @Override
     public StorageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.storage_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.media_list_item, parent, false);
         return (new StorageHolder(view));
     }
 
@@ -60,13 +60,7 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 //        holder.imageView.setImageResource(R.drawable.ic_action_setting);
-        Drawable drawable = null;
-        try {
-            drawable = context.getPackageManager().getApplicationIcon("com.android.settings");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        holder.imageView.setImageDrawable(drawable);
+
        // holder.imageView.setCircleBackgroundColor(R.color.colorPrimary);\
         holder.storageNameTv.setText(str);
         final String packageName = app.getMediaPath();
@@ -82,11 +76,11 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
 
     @Override
     public int getItemCount() {
-        if (myAppArrayList.size() <= 4){
+        if (myAppArrayList.size() <= 3){
             return myAppArrayList.size();
 
         } else {
-            return 5;
+            return 3;
         }
     }
 
@@ -96,8 +90,15 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
 
         StorageHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.storageImageView);
-            storageNameTv = itemView.findViewById(R.id.searchStorageTv);
+            imageView = itemView.findViewById(R.id.mediaImage);
+            storageNameTv = itemView.findViewById(R.id.mediaName);
+            Drawable drawable = null;
+            try {
+                drawable = context.getPackageManager().getApplicationIcon("com.android.settings");
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            imageView.setImageDrawable(drawable);
         }
     }
 
