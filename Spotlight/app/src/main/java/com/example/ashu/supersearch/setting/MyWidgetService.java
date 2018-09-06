@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Settings;
+package com.example.ashu.supersearch.setting;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;

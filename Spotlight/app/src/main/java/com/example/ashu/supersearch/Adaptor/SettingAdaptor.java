@@ -51,8 +51,8 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
         SpannableString str = new SpannableString(appName);
 
 
-        String testText = appName.toLowerCase(Locale.US);
-        String testTextToBold = spannableText.toLowerCase(Locale.US);
+        String testText = appName.toLowerCase(Locale.getDefault());
+        String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
         int startingIndex = testText.indexOf(testTextToBold);
         int endingIndex = startingIndex + testTextToBold.length();
 
@@ -105,7 +105,7 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
-        text = text.toLowerCase();
+        text = text.toLowerCase(Locale.getDefault());
         myAppArrayList.clear();
         if (!text.isEmpty()) {
             for (MediaInfo app : appArrayList) {

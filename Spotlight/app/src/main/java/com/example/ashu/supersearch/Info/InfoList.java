@@ -105,7 +105,6 @@ public class InfoList {
 
 
     public List<MediaInfo> GetAllInstalledApkInfo(){
-        Drawable drawable;
         String appName,packageName;
         List<MediaInfo> apps = new ArrayList<>();
 
@@ -122,9 +121,8 @@ public class InfoList {
             ActivityInfo activityInfo = resolveInfo.activityInfo;
 
                 packageName = activityInfo.applicationInfo.packageName;
-                drawable = getAppIconByPackageName(packageName);
                 appName = GetAppName(packageName);
-                media = new MediaInfo(appName,packageName,drawable);
+                media = new MediaInfo(appName,packageName);
                 apps.add(media);
         }
 
@@ -133,22 +131,6 @@ public class InfoList {
     }
 
 
-    private Drawable getAppIconByPackageName(String ApkTempPackageName){
-
-        Drawable drawable;
-
-        try{
-            drawable = context.getPackageManager().getApplicationIcon(ApkTempPackageName);
-
-        }
-        catch (PackageManager.NameNotFoundException e){
-
-            e.printStackTrace();
-
-            drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher);
-        }
-        return drawable;
-    }
 
     private String GetAppName(String ApkPackageName){
 

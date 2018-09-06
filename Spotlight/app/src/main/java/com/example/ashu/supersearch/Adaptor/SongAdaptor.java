@@ -49,8 +49,8 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
         SpannableString str = new SpannableString(songName);
 
 
-        String testText = songName.toLowerCase(Locale.US);
-        String testTextToBold = spannableText.toLowerCase(Locale.US);
+        String testText = songName.toLowerCase(Locale.getDefault());
+        String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
         int startingIndex = testText.indexOf(testTextToBold);
         int endingIndex = startingIndex + testTextToBold.length();
 
@@ -98,7 +98,7 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
     public boolean filter(String text) {
         boolean ans = false;
         spannableText = text;
-        text = text.toLowerCase();
+        text = text.toLowerCase(Locale.getDefault());
         mySongList.clear();
         if (!text.isEmpty()) {
             for (MediaInfo song : songArrayList) {

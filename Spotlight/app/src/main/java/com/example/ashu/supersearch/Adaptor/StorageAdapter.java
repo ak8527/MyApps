@@ -53,8 +53,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         SpannableString str = new SpannableString(fileName);
 
 
-        String testText = fileName.toLowerCase(Locale.US);
-        String testTextToBold = spannableText.toLowerCase(Locale.US);
+        String testText = fileName.toLowerCase(Locale.getDefault());
+        String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
         int startingIndex = testText.indexOf(testTextToBold);
         int endingIndex = startingIndex + testTextToBold.length();
 
@@ -139,7 +139,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
-        text = text.toLowerCase();
+        text = text.toLowerCase(Locale.getDefault());
         mySearchStorageList.clear();
         if (!text.isEmpty()) {
 
@@ -224,22 +224,22 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         String[] doc = new String[]{".txt",".doc",".pdf",".docx",".xls"};
 
         for (String extension : image){
-            if (text.toLowerCase().endsWith(extension))
+            if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
                 return "image";
         }
 
         for (String extension : video){
-            if (text.toLowerCase().endsWith(extension))
+            if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
                 return "video";
         }
 
         for (String extension : doc){
-            if (text.toLowerCase().endsWith(extension))
+            if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
                 return "text";
         }
 
         for (String extension : audio){
-            if (text.toLowerCase().endsWith(extension))
+            if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
                 return "audio";
         }
 

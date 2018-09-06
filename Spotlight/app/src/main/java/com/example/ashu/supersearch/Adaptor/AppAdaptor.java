@@ -2,8 +2,11 @@ package com.example.ashu.supersearch.Adaptor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -47,15 +50,15 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
             SpannableString str = new SpannableString(appName);
 
 
-            String testText = appName.toLowerCase(Locale.US);
-            String testTextToBold = spannableText.toLowerCase(Locale.US);
+            String testText = appName.toLowerCase(Locale.getDefault());
+            String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
             int startingIndex = testText.indexOf(testTextToBold);
             int endingIndex = startingIndex + testTextToBold.length();
 
 
             str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            holder.imageView.setImageDrawable(app.getDrawableIcon());
+            holder.imageView.setImageDrawable(getAppIconByPackageName(app.getMediaPath()));
             holder.textView.setText(str);
             final String packageName = app.getMediaPath();
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +72,24 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
 
     }
+
+    private Drawable getAppIconByPackageName(String ApkTempPackageName){
+
+        Drawable drawable;
+
+        try{
+            drawable = context.getPackageManager().getApplicationIcon(ApkTempPackageName);
+
+        }
+        catch (PackageManager.NameNotFoundException e){
+
+            e.printStackTrace();
+
+            drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher);
+        }
+        return drawable;
+    }
+
 
 
     @Override
@@ -96,7 +117,7 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
-        text = text.toLowerCase();
+        text = text.toLowerCase(Locale.getDefault());
         myAppArrayList.clear();
         if (!text.isEmpty()) {
             for (MediaInfo app : appArrayList) {

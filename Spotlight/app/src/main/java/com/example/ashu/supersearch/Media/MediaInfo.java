@@ -1,21 +1,12 @@
 package com.example.ashu.supersearch.Media;
 
-import android.graphics.drawable.Drawable;
-
 public class MediaInfo {
     private final String mediaName;
     private final String mediaPath;
-    private Drawable drawableIcon;
 
     public MediaInfo(String mediaName, String mediaPath) {
         this.mediaName = mediaName;
         this.mediaPath = mediaPath;
-    }
-
-    public MediaInfo(String mediaName, String mediaPath, Drawable drawableIcon) {
-        this.mediaName = mediaName;
-        this.mediaPath = mediaPath;
-        this.drawableIcon = drawableIcon;
     }
 
     public String getMediaName() {
@@ -26,7 +17,4 @@ public class MediaInfo {
         return mediaPath;
     }
 
-    public Drawable getDrawableIcon() {
-        return drawableIcon;
-    }
 }

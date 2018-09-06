@@ -61,8 +61,8 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
         SpannableString str = new SpannableString(contactName);
 
 
-        String testText = contactName.toLowerCase(Locale.US);
-        String testTextToBold = spannableText.toLowerCase(Locale.US);
+        String testText = contactName.toLowerCase(Locale.getDefault());
+        String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
         int startingIndex = testText.indexOf(testTextToBold);
         int endingIndex = startingIndex + testTextToBold.length();
 
@@ -135,7 +135,7 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
         Log.e("Filter", "filter: "+ text );
         boolean ans = false;
         spannableText = text;
-        text = text.toLowerCase();
+        text = text.toLowerCase(Locale.getDefault());
         myContactList.clear();
         if (!text.isEmpty()) {
             for (MediaInfo contact : contactLists) {

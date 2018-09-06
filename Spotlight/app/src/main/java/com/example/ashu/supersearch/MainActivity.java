@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -36,10 +36,11 @@ import com.example.ashu.supersearch.Adaptor.StorageAdapter;
 import com.example.ashu.supersearch.Adaptor.VideoAdaptor;
 import com.example.ashu.supersearch.Info.InfoList;
 import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.Settings.SettingActivity;
+import com.example.ashu.supersearch.setting.SettingActivity;
 
 import java.io.File;
 import java.util.ArrayList;
+
 
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private static final int MY_CONTACT_REQUEST_CODE = 333;
     private static final int MY_STORAGE_AND_CONTACT_REQUEST_CODE = 444;
     private StorageAdapter storageAdapter;
-    private RecyclerView recyclerView;
+    private RecyclerView filesRecyclerView;
     private RecyclerView appRecyclerView;
     private RecyclerView contactRecyclerView;
     private RecyclerView songRecyclerView;
@@ -79,14 +80,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private final VideoTask videoTask = new VideoTask();
     private final SongTask songTask = new SongTask();
     private final ContactTask contactTask = new ContactTask();
-    private LinearLayout permissionLayout;
+    private ConstraintLayout permissionLayout;
     private TextView contactView;
     private TextView appView;
     private TextView songView;
     private TextView fileView;
     private TextView videoView;
     private TextView settingView;
-    private TextView searchNameTv;
+    private TextView searchName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_main);
         infoList = new InfoList(this);
 
-        contactView = findViewById(R.id.contactHelper);
+        contactView = findViewById(R.id.contactName);
         appView = findViewById(R.id.appName);
         songView = findViewById(R.id.songName);
         fileView = findViewById(R.id.filesName);
@@ -102,8 +103,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         settingView = findViewById(R.id.settingName);
         Button permissionBtn = findViewById(R.id.permissionBtn);
         permissionLayout = findViewById(R.id.permissionLayout);
-        searchNameTv = findViewById(R.id.searchNameTv);
+        searchName = findViewById(R.id.searchName);
         ImageView settingMenu = findViewById(R.id.threeDotMenu);
+
+        setHelperText();
+
+
 
 
         moreTv = findViewById(R.id.moreFileView);
@@ -140,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
          * Calling findViewById on recyclerView and searchView.
          */
         SearchView searchView = findViewById(R.id.searchView);
-        recyclerView = findViewById(R.id.storageRecyclerView);
+        filesRecyclerView = findViewById(R.id.filesRecyclerView);
         appRecyclerView = findViewById(R.id.appRecyclerView);
         contactRecyclerView = findViewById(R.id.contactRecyclerView);
         songRecyclerView = findViewById(R.id.songRecyclerView);
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         settingRecyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setNestedScrollingEnabled(false);
+        filesRecyclerView.setNestedScrollingEnabled(false);
         contactRecyclerView.setNestedScrollingEnabled(false);
         songRecyclerView.setNestedScrollingEnabled(false);
         videoRecyclerView.setNestedScrollingEnabled(false);
@@ -164,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         songRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        filesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false) {
             @Override
             public boolean canScrollHorizontally() {
@@ -249,22 +254,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         if (!newText.isEmpty()){
             searchAppRecyclerView.setVisibility(View.VISIBLE);
-            searchNameTv.setVisibility(View.VISIBLE);
+            searchName.setVisibility(View.VISIBLE);
             searchAppAdaptor.filter(newText);
             setSearchApp(newText);
         } else {
             searchAppRecyclerView.setVisibility(View.GONE);
-            searchNameTv.setVisibility(View.GONE);
+            searchName.setVisibility(View.GONE);
         }
 
         boolean appAns,settingAns;
-        appAns = appAdaptor.filter(newText);
-        appAdaptor.notifyDataSetChanged();
-        if (appAns) {
-            appView.setVisibility(View.VISIBLE);
-        } else {
-            appView.setVisibility(View.GONE);
-        }
 
         settingAns = settingAdaptor.filter(newText);
         settingAdaptor.notifyDataSetChanged();
@@ -273,6 +271,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
             settingView.setVisibility(View.GONE);
         }
+        appAns = appAdaptor.filter(newText);
+        appAdaptor.notifyDataSetChanged();
+        if (appAns) {
+            appView.setVisibility(View.VISIBLE);
+        } else {
+            appView.setVisibility(View.GONE);
+        }
+
+
 
         if (isContactPermission()) {
             boolean contactAns = contactAdaptor.filter(newText);
@@ -335,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void setStorageAdapter() {
         storageAdapter = new StorageAdapter(this, myStorageList);
-        recyclerView.setAdapter(storageAdapter);
+        filesRecyclerView.setAdapter(storageAdapter);
 
         songAdaptor = new SongAdaptor(this, mySongArrayList);
         songRecyclerView.setAdapter(songAdaptor);
@@ -621,7 +628,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        searchNameTv.setText(str);
+        searchName.setText(str);
     }
 
 //    @Override
@@ -632,6 +639,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //        }
 //
 //    }
+
+    public void setHelperText(){
+        appView.setText(R.string.apps);
+        contactView.setText(R.string.contact);
+        fileView.setText(R.string.files);
+        songView.setText(R.string.song);
+        videoView.setText(R.string.videos);
+        settingView.setText(R.string.settings);
+    }
 
 
     @Override

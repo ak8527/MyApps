@@ -31,14 +31,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Settings.SettingActivity"
+            android:name=".setting.SettingActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light">
 
         </activity>
 
 
-        <service android:name=".Settings.MyWidgetService" />
+        <service android:name=".setting.MyWidgetService" />
 
     </application>
 

@@ -49,8 +49,8 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
         SpannableString str = new SpannableString(videoName);
 
 
-        String testText = videoName.toLowerCase(Locale.US);
-        String testTextToBold = spannableText.toLowerCase(Locale.US);
+        String testText = videoName.toLowerCase(Locale.getDefault());
+        String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
         int startingIndex = testText.indexOf(testTextToBold);
         int endingIndex = startingIndex + testTextToBold.length();
 
@@ -96,7 +96,7 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
-        text = text.toLowerCase();
+        text = text.toLowerCase(Locale.getDefault());
         myVideoList.clear();
         if (!text.isEmpty()) {
             for (MediaInfo video : videoArrayList) {

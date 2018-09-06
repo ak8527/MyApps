@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Settings;
+package com.example.ashu.supersearch.setting;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -58,7 +57,6 @@ public class SettingActivity extends AppCompatActivity {
 
 //                startService(myService);
 
-                    Log.e("Setting", "onClick: ");
                     ContextCompat.startForegroundService(getBaseContext(), myForegroundService);
 
 
