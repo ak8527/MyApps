@@ -48,13 +48,10 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
             String appName = app.getMediaName();
             SpannableString str = new SpannableString(appName);
-
-
             String testText = appName.toLowerCase(Locale.getDefault());
             String testTextToBold = spannableText.toLowerCase(Locale.getDefault());
             int startingIndex = testText.indexOf(testTextToBold);
             int endingIndex = startingIndex + testTextToBold.length();
-
 
             str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 

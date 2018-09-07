@@ -1,5 +1,6 @@
 package com.example.ashu.supersearch.Adaptor;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,7 +47,6 @@ public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppH
             e.printStackTrace();
         }
         final String appPackageName = app.getMediaPath();
-       // holder.imageView.getLayoutParams().height = 32;
         holder.imageView.setImageDrawable(drawable);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +60,11 @@ public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppH
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 
-                } else {
+                } else if (app.getMediaName().equals("Google")){
+                    intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                    intent.putExtra(SearchManager.QUERY, searchText);
+                }
+                else {
                     Uri uri = Uri.parse("http://www.google.com/#q=" + searchText);
                     intent = context.getPackageManager().getLaunchIntentForPackage(appPackageName);
                     if (intent != null) {
@@ -100,16 +104,16 @@ public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppH
             textView = itemView.findViewById(R.id.appNameTv);
 
             imageView = itemView.findViewById(R.id.appImageView);
-            imageView.getLayoutParams().height = dpToPixel(32);
-            imageView.getLayoutParams().width = dpToPixel(32);
+            imageView.getLayoutParams().height = dpToPixel();
+            imageView.getLayoutParams().width = dpToPixel();
         }
     }
 
-    private int dpToPixel(int dp) {
+    private int dpToPixel() {
         float density = context.getResources()
                 .getDisplayMetrics()
                 .density;
-        return Math.round((float) dp * density);
+        return Math.round((float) 32 * density);
     }
 
 

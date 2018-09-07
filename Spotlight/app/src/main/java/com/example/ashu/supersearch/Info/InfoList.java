@@ -7,14 +7,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -259,6 +256,7 @@ public class InfoList {
 
         browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
         browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
+        browserAppList.add(new MediaInfo("Google","com.google.android.googlequicksearchbox"));
 
 
         for (ResolveInfo resolveInfo : browserList){

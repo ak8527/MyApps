@@ -4,9 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -34,16 +32,21 @@ import com.example.ashu.supersearch.Adaptor.SettingAdaptor;
 import com.example.ashu.supersearch.Adaptor.SongAdaptor;
 import com.example.ashu.supersearch.Adaptor.StorageAdapter;
 import com.example.ashu.supersearch.Adaptor.VideoAdaptor;
+import com.example.ashu.supersearch.AsyncWork.AppTask;
+import com.example.ashu.supersearch.AsyncWork.ContactTask;
+import com.example.ashu.supersearch.AsyncWork.MediaTask;
+import com.example.ashu.supersearch.AsyncWork.StorageTask;
 import com.example.ashu.supersearch.Info.InfoList;
+import com.example.ashu.supersearch.Interface.MediaResponse;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.setting.SettingActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 
+//import com.example.ashu.supersearch.AsyncWork.AppTask;
 
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MediaResponse {
     private static final String TAG = "MainActivity";
     private static final int MY_STORAGE_REQUEST_CODE = 222;
     private static final int MY_CONTACT_REQUEST_CODE = 333;
@@ -64,22 +67,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private VideoAdaptor videoAdaptor;
     private final ArrayList<MediaInfo> mySongArrayList = new ArrayList<>();
     private final ArrayList<MediaInfo> myContactList = new ArrayList<>();
-    private final ArrayList<MediaInfo> appArrayList = new ArrayList<>();
-    private final ArrayList<MediaInfo> videoArrayList = new ArrayList<>();
+    private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
+    private final ArrayList<MediaInfo> myVideoArrayList = new ArrayList<>();
     private final ArrayList<MediaInfo> myStorageList = new ArrayList<>();
     private final ArrayList<MediaInfo> mySettingList = new ArrayList<>();
 
 
-
-    private InfoList infoList;
-
     private TextView moreTv;
-    private final AppTask appTask = new AppTask();
 
-    private final StorageTask storageTask = new StorageTask();
-    private final VideoTask videoTask = new VideoTask();
-    private final SongTask songTask = new SongTask();
-    private final ContactTask contactTask = new ContactTask();
     private ConstraintLayout permissionLayout;
     private TextView contactView;
     private TextView appView;
@@ -93,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        infoList = new InfoList(this);
+        InfoList infoList = new InfoList(this);
 
         contactView = findViewById(R.id.contactName);
         appView = findViewById(R.id.appName);
@@ -109,10 +104,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setHelperText();
 
 
-
-
         moreTv = findViewById(R.id.moreFileView);
-
 
 
         final PopupMenu popupMenu = new PopupMenu(getBaseContext(), settingMenu);
@@ -177,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         };
 
-        GridLayoutManager searchLayoutManager = new GridLayoutManager(this,infoList.getBrowserList().size());
+        GridLayoutManager searchLayoutManager = new GridLayoutManager(this, infoList.getBrowserList().size());
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
         appRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -226,13 +218,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContactAdaptor();
 
 
-
         searchAppAdaptor = new SearchAppAdaptor(this, (ArrayList<MediaInfo>) infoList.getBrowserList());
         searchAppRecyclerView.setAdapter(searchAppAdaptor);
         searchAppRecyclerView.setVisibility(View.GONE);
-
-
-
 
 
     }
@@ -244,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     /**
-     *
      * @param newText is text which is search on searchView widget.
      * @return false
      */
@@ -252,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextChange(String newText) {
 
-        if (!newText.isEmpty()){
+        if (!newText.isEmpty()) {
             searchAppRecyclerView.setVisibility(View.VISIBLE);
             searchName.setVisibility(View.VISIBLE);
             searchAppAdaptor.filter(newText);
@@ -262,11 +249,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             searchName.setVisibility(View.GONE);
         }
 
-        boolean appAns,settingAns;
+        boolean appAns, settingAns;
 
         settingAns = settingAdaptor.filter(newText);
         settingAdaptor.notifyDataSetChanged();
-        if (settingAns){
+        if (settingAns) {
             settingView.setVisibility(View.VISIBLE);
         } else {
             settingView.setVisibility(View.GONE);
@@ -278,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
             appView.setVisibility(View.GONE);
         }
-
 
 
         if (isContactPermission()) {
@@ -347,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         songAdaptor = new SongAdaptor(this, mySongArrayList);
         songRecyclerView.setAdapter(songAdaptor);
 
-        videoAdaptor = new VideoAdaptor(this, videoArrayList);
+        videoAdaptor = new VideoAdaptor(this, myVideoArrayList);
         videoRecyclerView.setAdapter(videoAdaptor);
 
     }
@@ -363,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         contactRecyclerView.setAdapter(contactAdaptor);
 
 
-
     }
 
 
@@ -372,14 +357,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
            Set recyclerView for App.
            (ArrayList<App>) infoList.GetAllInstalledApkInfo()
          */
-        appAdaptor = new AppAdaptor(this, appArrayList);
+        appAdaptor = new AppAdaptor(this, myAppArrayList);
         appRecyclerView.setNestedScrollingEnabled(false);
         appRecyclerView.setAdapter(appAdaptor);
 
-        settingAdaptor = new SettingAdaptor(this,mySettingList);
+        settingAdaptor = new SettingAdaptor(this, mySettingList);
         settingRecyclerView.setAdapter(settingAdaptor);
 
-        appTask.execute();
+        new AppTask(this, this).execute();
 
 
     }
@@ -412,9 +397,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     /**
-     *
-     * @param requestCode for checking which runtime permission is called.
-     * @param permissions for requesting the desired permission.
+     * @param requestCode  for checking which runtime permission is called.
+     * @param permissions  for requesting the desired permission.
      * @param grantResults for checking if the permission is granted.
      */
 
@@ -445,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             case MY_CONTACT_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    contactTask.execute();
+                    new ContactTask(this, this).execute();
                 isPermissionLayoutVisible();
                 return;
             }
@@ -481,9 +465,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      */
 
     private void isStorageTaskExecute() {
-        songTask.execute();
-        videoTask.execute();
-        storageTask.execute();
+        new MediaTask(this, this).execute();
+        new StorageTask(this, this).execute();
     }
 
     /**
@@ -491,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      */
 
     private void isContactTaskExecute() {
-        contactTask.execute();
+        new ContactTask(this, this).execute();
     }
 
     /**
@@ -504,119 +487,45 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    /**
-     * define storageTask for getting thee list of files and folders.
-     */
+    @Override
+    public void getAppResponse(ArrayList<MediaInfo> appArrayList, ArrayList<MediaInfo> settingArrayList) {
+        myAppArrayList.clear();
+        myAppArrayList.addAll(appArrayList);
+        appAdaptor.notifyDataSetChanged();
 
-    class StorageTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
-
-        @Override
-        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
-            final String state = Environment.getExternalStorageState();
-            ArrayList<MediaInfo> myStorageList1 = new ArrayList<>();
-            if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {  // we can read the External Storage...
-                myStorageList1 = infoList.getMyStorageList(new File("/storage/"));
-                Log.e("StorageTask", "onCreate: " + Environment.getExternalStorageDirectory().getPath());
-
-            }
-            return myStorageList1;
-
-        }
-        @Override
-        protected void onPostExecute(ArrayList<MediaInfo> storage) {
-            super.onPostExecute(storage);
-            myStorageList.clear();
-            myStorageList.addAll(storage);
-            storageAdapter.notifyDataSetChanged();
-        }
+        mySettingList.clear();
+        mySettingList.addAll(settingArrayList);
+        settingAdaptor.notifyDataSetChanged();
     }
 
-    /**
-     * define videoTask for getting list of videos.
-     */
-
-    class VideoTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
-        @Override
-        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
-            return (ArrayList<MediaInfo>) infoList.getAllVideoFromDevice();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<MediaInfo> videos) {
-            super.onPostExecute(videos);
-            videoArrayList.clear();
-            videoArrayList.addAll(videos);
-            videoAdaptor.notifyDataSetChanged();
-
-        }
+    @Override
+    public void getContactResponse(ArrayList<MediaInfo> contactArrayList) {
+        myContactList.clear();
+        myContactList.addAll(contactArrayList);
+        contactAdaptor.notifyDataSetChanged();
     }
 
-    /**
-     * define songTask for getting the list of songs.
-     */
+    @Override
+    public void getStorageResponse(ArrayList<MediaInfo> storageArrayList) {
+        myStorageList.clear();
+        myStorageList.addAll(storageArrayList);
+        storageAdapter.notifyDataSetChanged();
 
-    class SongTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
-        @Override
-        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
-            return (ArrayList<MediaInfo>) infoList.getAllAudioFromDevice();
-        }
-
-
-        @Override
-        protected void onPostExecute(ArrayList<MediaInfo> songs) {
-            super.onPostExecute(songs);
-            mySongArrayList.clear();
-            mySongArrayList.addAll(songs);
-            songAdaptor.notifyDataSetChanged();
-        }
     }
 
-    /**
-     * define contactTask for getting the list of contacts.
-     */
+    @Override
+    public void getMediaResponse(ArrayList<MediaInfo> songArrayList, ArrayList<MediaInfo> videoArrayList) {
+        mySongArrayList.clear();
+        mySongArrayList.addAll(songArrayList);
+        songAdaptor.notifyDataSetChanged();
 
-    class ContactTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
-
-        @Override
-        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
-            return infoList.getAllContact();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<MediaInfo> contactLists) {
-            super.onPostExecute(contactLists);
-            myContactList.clear();
-            myContactList.addAll(contactLists);
-            contactAdaptor.notifyDataSetChanged();
-
-        }
+        myVideoArrayList.clear();
+        myVideoArrayList.addAll(videoArrayList);
+        videoAdaptor.notifyDataSetChanged();
     }
 
-    /**
-     * define appTask for getting the list of installed apps.
-     */
 
-    class AppTask extends AsyncTask<Void, Void, ArrayList<MediaInfo>> {
-
-        @Override
-        protected ArrayList<MediaInfo> doInBackground(Void... voids) {
-            return (ArrayList<MediaInfo>) infoList.GetAllInstalledApkInfo();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<MediaInfo> apps) {
-            super.onPostExecute(apps);
-            appArrayList.clear();
-            appArrayList.addAll(apps);
-            appAdaptor.notifyDataSetChanged();
-
-            mySettingList.clear();
-            mySettingList.addAll(infoList.getAllSettingList());
-            settingAdaptor.notifyDataSetChanged();
-        }
-    }
-
-    private void setSearchApp(String text){
+    private void setSearchApp(String text) {
         String searchStart = "Search ";
         String newText = searchStart + text;
 
@@ -626,21 +535,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         int endingIndex = startingIndex + text.length();
 
 
-        str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new StyleSpan(Typeface.BOLD), startingIndex, endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         searchName.setText(str);
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        if (isStoragePermission() && isContactPermission()){
-//            finish();
-//        }
-//
-//    }
-
-    public void setHelperText(){
+    private void setHelperText() {
         appView.setText(R.string.apps);
         contactView.setText(R.string.contact);
         fileView.setText(R.string.files);

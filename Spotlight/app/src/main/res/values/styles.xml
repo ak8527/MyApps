@@ -8,10 +8,15 @@
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--<item name="colorAccent">@color/colorAccent</item>-->
     <!--</style>-->
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+    </style>
 
 
     <style name="SearchTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Transparent the theme here -->
+        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
+
 
         <!--
             android:windowIsTranslucent

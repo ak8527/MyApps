@@ -219,9 +219,9 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
 
      private String extensionFind(String text){
          String[] image = new String[]{".jpg",".jpeg",".png",".gif"};
-        String[] video = new String[]{".mkv",".mp4",".mpeg",".3gp",".avi",".mpeg4"};
+        String[] video = new String[]{".mkv",".mp4",".3gp",".avi"};
         String[] audio = new String[]{".mp3",".aac",".wav",".wma",".ogg"};
-        String[] doc = new String[]{".txt",".doc",".pdf",".docx",".xls"};
+        String[] doc = new String[]{".txt",".doc",".pdf",".docs",".xls"};
 
         for (String extension : image){
             if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
