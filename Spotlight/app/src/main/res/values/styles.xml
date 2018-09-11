@@ -12,6 +12,10 @@
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
 
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@android:anim/bounce_interpolator</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
 
     <style name="SearchTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Transparent the theme here -->

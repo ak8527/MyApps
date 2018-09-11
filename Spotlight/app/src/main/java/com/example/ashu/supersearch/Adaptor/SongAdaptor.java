@@ -9,15 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
+import com.example.ashu.supersearch.MyDialog.PopUpWindow;
 import com.example.ashu.supersearch.R;
 
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,7 +48,7 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SongHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SongHolder holder, int position) {
         final MediaInfo song = mySongList.get(position);
 
         String songName = song.getMediaName();
@@ -66,6 +72,17 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
                 context.startActivity(intent);
 
 
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopUpWindow popUpWindow = new PopUpWindow("Media",v,context,song);
+                File file = new File(song.getMediaPath());
+                Log.e("FileSize", "onLongClick: "+ getLastModifiedDate(file.lastModified()));
+                popUpWindow.showPopUpWindow();
+                return true;
             }
         });
 
@@ -112,4 +129,12 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
         }
         return ans;
     }
+
+    public String getLastModifiedDate(Long lastModified){
+        Date date = new Date(lastModified);
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+
 }

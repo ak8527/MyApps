@@ -43,6 +43,8 @@ import com.example.ashu.supersearch.setting.SettingActivity;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+
 //import com.example.ashu.supersearch.AsyncWork.AppTask;
 
 
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         InfoList infoList = new InfoList(this);
 
         contactView = findViewById(R.id.contactName);
@@ -109,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         final PopupMenu popupMenu = new PopupMenu(getBaseContext(), settingMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
+
 
         settingMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -555,4 +560,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onStop();
         finish();
     }
+
+
 }
