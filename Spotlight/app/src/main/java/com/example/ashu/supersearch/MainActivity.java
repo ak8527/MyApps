@@ -1,10 +1,12 @@
 package com.example.ashu.supersearch;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -41,32 +43,48 @@ import com.example.ashu.supersearch.Interface.MediaResponse;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.setting.SettingActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //import com.example.ashu.supersearch.AsyncWork.AppTask;
 
 
+@SuppressWarnings("WeakerAccess")
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MediaResponse {
     private static final String TAG = "MainActivity";
     private static final int MY_STORAGE_REQUEST_CODE = 222;
     private static final int MY_CONTACT_REQUEST_CODE = 333;
     private static final int MY_STORAGE_AND_CONTACT_REQUEST_CODE = 444;
+
+
+    @BindView(R.id.filesRecyclerView)
+    RecyclerView filesRecyclerView;
+    @BindView(R.id.appRecyclerView)
+    RecyclerView appRecyclerView;
+    @BindView(R.id.contactRecyclerView)
+    RecyclerView contactRecyclerView;
+    @BindView(R.id.songRecyclerView)
+    RecyclerView songRecyclerView;
+    @BindView(R.id.videoRecyclerView)
+    RecyclerView videoRecyclerView;
+    @BindView(R.id.settingRecyclerView)
+    RecyclerView settingRecyclerView;
+    @BindView(R.id.searchAppRecyclerView)
+    RecyclerView searchAppRecyclerView;
+
+
     private StorageAdapter storageAdapter;
-    private RecyclerView filesRecyclerView;
-    private RecyclerView appRecyclerView;
-    private RecyclerView contactRecyclerView;
-    private RecyclerView songRecyclerView;
-    private RecyclerView videoRecyclerView;
-    private RecyclerView settingRecyclerView;
-    private RecyclerView searchAppRecyclerView;
     private AppAdaptor appAdaptor;
     private SearchAppAdaptor searchAppAdaptor;
     private SettingAdaptor settingAdaptor;
     private ContactAdaptor contactAdaptor;
     private SongAdaptor songAdaptor;
     private VideoAdaptor videoAdaptor;
+
+
     private final ArrayList<MediaInfo> mySongArrayList = new ArrayList<>();
     private final ArrayList<MediaInfo> myContactList = new ArrayList<>();
     private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
@@ -75,16 +93,31 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private final ArrayList<MediaInfo> mySettingList = new ArrayList<>();
 
 
-    private TextView moreTv;
+    @BindView(R.id.moreFileView)
+    TextView moreTv;
+    @BindView(R.id.permissionLayout)
+    ConstraintLayout permissionLayout;
+    @BindView(R.id.contactName)
+    TextView contactView;
+    @BindView(R.id.appName)
+    TextView appView;
+    @BindView(R.id.songName)
+    TextView songView;
+    @BindView(R.id.filesName)
+    TextView fileView;
+    @BindView(R.id.videoName)
+    TextView videoView;
+    @BindView(R.id.settingName)
+    TextView settingView;
+    @BindView(R.id.searchName)
+    TextView searchName;
+    @BindView(R.id.permissionBtn)
+    Button permissionBtn;
+    @BindView(R.id.threeDotMenu)
+    ImageView settingMenu;
+    @BindView(R.id.searchView)
+    SearchView searchView;
 
-    private ConstraintLayout permissionLayout;
-    private TextView contactView;
-    private TextView appView;
-    private TextView songView;
-    private TextView fileView;
-    private TextView videoView;
-    private TextView settingView;
-    private TextView searchName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,26 +126,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ButterKnife.bind(this);
         InfoList infoList = new InfoList(this);
 
-        contactView = findViewById(R.id.contactName);
-        appView = findViewById(R.id.appName);
-        songView = findViewById(R.id.songName);
-        fileView = findViewById(R.id.filesName);
-        videoView = findViewById(R.id.videoName);
-        settingView = findViewById(R.id.settingName);
-        Button permissionBtn = findViewById(R.id.permissionBtn);
-        permissionLayout = findViewById(R.id.permissionLayout);
-        searchName = findViewById(R.id.searchName);
-        ImageView settingMenu = findViewById(R.id.threeDotMenu);
-
         setHelperText();
-
-
-        moreTv = findViewById(R.id.moreFileView);
 
 
         final PopupMenu popupMenu = new PopupMenu(getBaseContext(), settingMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-
 
 
         settingMenu.setOnClickListener(new View.OnClickListener() {
@@ -138,19 +156,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
 
 
-        /*
-         * Calling findViewById on recyclerView and searchView.
-         */
-        SearchView searchView = findViewById(R.id.searchView);
-        filesRecyclerView = findViewById(R.id.filesRecyclerView);
-        appRecyclerView = findViewById(R.id.appRecyclerView);
-        contactRecyclerView = findViewById(R.id.contactRecyclerView);
-        songRecyclerView = findViewById(R.id.songRecyclerView);
-        videoRecyclerView = findViewById(R.id.videoRecyclerView);
-        settingRecyclerView = findViewById(R.id.settingRecyclerView);
-        searchAppRecyclerView = findViewById(R.id.searchAppRecyclerView);
-
-
         settingRecyclerView.setNestedScrollingEnabled(false);
         filesRecyclerView.setNestedScrollingEnabled(false);
         contactRecyclerView.setNestedScrollingEnabled(false);
@@ -174,7 +179,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         };
 
-        GridLayoutManager searchLayoutManager = new GridLayoutManager(this, infoList.getBrowserList().size());
+        int browserListSize = infoList.getBrowserList().size();
+        if (browserListSize > 6) {
+            browserListSize = 6;
+        }
+        GridLayoutManager searchLayoutManager = new GridLayoutManager(this, browserListSize);
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
         appRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -533,15 +542,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private void setSearchApp(String text) {
         String searchStart = "Search ";
         String newText = searchStart + text;
-
         SpannableString str = new SpannableString(newText);
-
         int startingIndex = searchStart.length();
         int endingIndex = startingIndex + text.length();
-
-
         str.setSpan(new StyleSpan(Typeface.BOLD), startingIndex, endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
         searchName.setText(str);
     }
 

@@ -130,7 +130,7 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
         return ans;
     }
 
-    public String getLastModifiedDate(Long lastModified){
+    private String getLastModifiedDate(Long lastModified){
         Date date = new Date(lastModified);
         DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault());
         return dateFormat.format(date);

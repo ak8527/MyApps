@@ -52,26 +52,34 @@ public class SearchAppAdaptor extends RecyclerView.Adapter<SearchAppAdaptor.AppH
             @Override
             public void onClick(View v) {
                 Intent intent;
-                if (app.getMediaName().equals("Google Play Store") || app.getMediaName().equals("YouTube")){
+                switch (app.getMediaName()) {
+                    case "Google Play Store":
+                    case "YouTube":
 
-                    intent = new Intent(Intent.ACTION_SEARCH);
-                    intent.setPackage(appPackageName);
-                    intent.putExtra("query", searchText);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-                } else if (app.getMediaName().equals("Google")){
-                    intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                    intent.putExtra(SearchManager.QUERY, searchText);
-                }
-                else {
-                    Uri uri = Uri.parse("http://www.google.com/#q=" + searchText);
-                    intent = context.getPackageManager().getLaunchIntentForPackage(appPackageName);
-                    if (intent != null) {
-                        intent.setData(uri);
-                    }
+                        intent = new Intent(Intent.ACTION_SEARCH);
+                        intent.setPackage(appPackageName);
+                        intent.putExtra("query", searchText);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 
+                        break;
+                    case "Google":
+                        intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                        intent.putExtra(SearchManager.QUERY, searchText);
+                        break;
+                    default:
+//                        Uri uri = Uri.parse("http://www.google.com/#q=" + searchText);
+                        Uri uri = Uri.parse("http://www.google.com/search?q=" + searchText);
+                        intent = context.getPackageManager().getLaunchIntentForPackage(appPackageName);
+                        if (intent != null) {
+                            intent.setData(uri);
+                        }
+
+
+
+
+
+                        break;
                 }
                 context.startActivity(intent);
             }

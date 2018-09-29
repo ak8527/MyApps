@@ -97,8 +97,10 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
                 } else {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = Uri.parse(storage.getMediaPath());
-                    intent.setDataAndType(uri,"*/*");
-                    context.startActivity(intent);
+                    intent.setDataAndType(uri,"resource/folder");
+                    if (intent.resolveActivityInfo(context.getPackageManager(),0) != null){
+                        context.startActivity(intent);
+                    }
 
                 }
 

@@ -265,7 +265,6 @@ public class InfoList {
                 browserAppList.add(new MediaInfo(appName,packageName));
         }
 
-
         return browserAppList;
     }
 // --Commented out by Inspection STOP (15/8/18 9:45 PM)

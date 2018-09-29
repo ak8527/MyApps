@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    tools:keep="@layout/prop_dialog">
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/display_name"
@@ -24,16 +26,14 @@
         android:id="@+id/displayNameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="255dp"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
+        android:maxLines="2"
+        android:textAlignment="viewStart"
         android:textColor="@color/secondaryTextColor"
         android:textIsSelectable="false"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Display" />
@@ -42,16 +42,13 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="247dp"
-        android:layout_marginStart="54dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/location"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/locationNameTV"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/displayNameTv" />
 
 
@@ -59,13 +56,13 @@
         android:id="@+id/locationNameTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:textColor="@color/secondaryTextColor"
         android:textIsSelectable="false"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/displayNameTv"
         tools:text="location" />
 
@@ -73,7 +70,6 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/last_modified"
@@ -81,41 +77,34 @@
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/locationNameTV" />
 
 
     <TextView
         android:id="@+id/lastModifiedTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="247dp"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:textColor="@color/secondaryTextColor"
         android:textIsSelectable="false"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/locationNameTV"
         tools:text="modified" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="271dp"
-        android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/size"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sizeNameTv"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastModifiedTv" />
 
 
@@ -123,13 +112,13 @@
         android:id="@+id/sizeNameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:textColor="@color/secondaryTextColor"
         android:textIsSelectable="false"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/lastModifiedTv"
         tools:text="sizeName" />
 
