@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
+import com.example.ashu.supersearch.MyDialog.PopUpWindow;
 import com.example.ashu.supersearch.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -44,7 +47,7 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AppHolder holder, int position) {
-            MediaInfo app = myAppArrayList.get(position);
+            final MediaInfo app = myAppArrayList.get(position);
 
             String appName = app.getMediaName();
             SpannableString str = new SpannableString(appName);
@@ -66,9 +69,25 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
                 }
             });
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopUpWindow popUpWindow = new PopUpWindow("App",v,context,app);
+
+                popUpWindow.showPopUpWindow();
+                return true;
+            }
+        });
+
+
 
 
     }
+
+    public void notifyData(){
+        notifyDataSetChanged();
+    }
+
 
     private Drawable getAppIconByPackageName(String ApkTempPackageName){
 

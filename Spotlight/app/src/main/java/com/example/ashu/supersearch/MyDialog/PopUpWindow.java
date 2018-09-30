@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 
 import android.support.v4.content.FileProvider;
@@ -79,6 +80,15 @@ public class PopUpWindow {
 
             openFolderTv.setText(R.string.open_folder);
             openFolderIv.setImageResource(R.drawable.ic_folder_black_24dp);
+        } else if (mediaName.equals("App")){
+            openFolderIv.setImageResource(R.drawable.ic_info_black_24dp);
+            openFolderTv.setText(R.string.app_info);
+
+            shareIv.setImageResource(R.drawable.ic_icon_google_play);
+            shareTv.setText(R.string.play_store_page);
+
+            propIv.setImageResource(R.drawable.ic_delete_black_24dp);
+            propTv.setText(R.string.uninstall);
         }
 
         int[] location = new int[2];
@@ -86,7 +96,13 @@ public class PopUpWindow {
         popupWindow = new PopupWindow(popUpView, width, height, true);
         popupWindow.setElevation(10);
         popupWindow.setAnimationStyle(R.style.Animation);
-        popupWindow.showAtLocation(popUpView, Gravity.NO_GRAVITY, marginStart, location[1]);
+        if (mediaName.equals("Media")){
+            popupWindow.showAtLocation(popUpView, Gravity.NO_GRAVITY, marginStart, location[1]);
+
+        } else if (mediaName.equals("App")){
+            popupWindow.showAtLocation(popUpView, Gravity.NO_GRAVITY, location[0], location[1]);
+
+        }
 
 
     }
@@ -94,34 +110,54 @@ public class PopUpWindow {
     @OnClick(R.id.propLayout)
     public void submit() {
         popupWindow.dismiss();
-        MyPopDialog newFragment = MyPopDialog.newInstance(mediaInfo);
-        Activity activity = (Activity) context;
-        newFragment.show(((FragmentActivity)activity).getSupportFragmentManager(), "dialog");
+        if (mediaName.equals("Media")){
+            MyPopDialog newFragment = MyPopDialog.newInstance(mediaInfo);
+            Activity activity = (Activity) context;
+            newFragment.show(((FragmentActivity)activity).getSupportFragmentManager(), "dialog");
+
+        } else if (mediaName.equals("App")){
+            Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+            intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
+            context.startActivity(intent);
+        }
 
     }
 
     @OnClick(R.id.folderLayout)
     public void openFolder() {
         popupWindow.dismiss();
-        File file = new File(mediaInfo.getMediaPath());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri.parse(file.getParent());
-        intent.setDataAndType(uri,"resource/folder");
-        if (intent.resolveActivityInfo(context.getPackageManager(),0) != null){
+        if (mediaName.equals("Media")){
+            File file = new File(mediaInfo.getMediaPath());
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(file.getParent());
+            intent.setDataAndType(uri,"resource/folder");
+            if (intent.resolveActivityInfo(context.getPackageManager(),0) != null){
+                context.startActivity(intent);
+            }
+        } else if (mediaName.equals("App")){
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
             context.startActivity(intent);
         }
+
     }
 
     @OnClick(R.id.shareLayout)
     public void shareFile() {
-
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        File file = new File(mediaInfo.getMediaPath());
-        Uri uri = FileProvider.getUriForFile(context,"com.example.ashu.supersearch.fileprovider",file);
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        sharingIntent.setType("*/*");
-        context.startActivity(sharingIntent);
         popupWindow.dismiss();
+        if (mediaName.equals("Media")){
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            File file = new File(mediaInfo.getMediaPath());
+            Uri uri = FileProvider.getUriForFile(context,"com.example.ashu.supersearch.fileprovider",file);
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            sharingIntent.setType("*/*");
+            context.startActivity(sharingIntent);
+        } else if (mediaName.equals("App")){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + mediaInfo.getMediaPath());
+            intent.setData(uri);
+            context.startActivity(intent);
+        }
 
         }
 

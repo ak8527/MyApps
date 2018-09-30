@@ -9,12 +9,12 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/folderLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/shareLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +24,11 @@
             android:id="@+id/folderImage"
             android:layout_width="24dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/folderimage"
             android:scaleType="centerInside"
             android:src="@drawable/ic_folder_black_24dp"
-            app:layout_constraintEnd_toStartOf="@+id/folderText"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,21 +37,19 @@
             style="@style/TextTheme"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:gravity="center_vertical"
             android:text="@string/open_folder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/folderImage"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/folderImage" />
     </android.support.constraint.ConstraintLayout>
 
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/shareLayout"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,6 +63,7 @@
             android:contentDescription="@string/shareImage"
             android:scaleType="centerInside"
             android:src="@drawable/ic_share_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,24 +72,20 @@
             style="@style/TextTheme"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginEnd="62dp"
             android:layout_marginStart="16dp"
             android:gravity="center_vertical"
-            android:text="@string/share"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/shareImage"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/play_store_page"
+            app:layout_constraintStart_toEndOf="@+id/shareImage" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/propLayout"
-        android:layout_width="167dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,13 +95,11 @@
             android:id="@+id/propImage"
             android:layout_width="24dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/propImage"
             android:scaleType="centerInside"
             android:src="@drawable/ic_info_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/propText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,12 +108,10 @@
             style="@style/TextTheme"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="16dp"
             android:gravity="center_vertical"
             android:text="@string/properties"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/propImage" />
 
     </android.support.constraint.ConstraintLayout>
 

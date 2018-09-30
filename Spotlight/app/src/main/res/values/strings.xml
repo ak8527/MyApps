@@ -40,4 +40,7 @@
     <string name="location">Location</string>
     <string name="last_modified">Last Modified</string>
     <string name="size">Size</string>
+    <string name="app_info">App info</string>
+    <string name="play_store_page">Play Store page</string>
+    <string name="uninstall">Uninstall</string>
 </resources>
