@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -43,7 +45,7 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
 
     @Override
     public void onBindViewHolder(@NonNull VideoHolder holder, int position) {
-        MediaInfo video = myVideoList.get(position);
+        final MediaInfo video = myVideoList.get(position);
 
         String videoName = video.getMediaName();
         SpannableString str = new SpannableString(videoName);
@@ -63,6 +65,20 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
                 .load(video.getMediaPath())
                 .into(holder.imageView);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+                File file = new File(video.getMediaPath());
+                Uri uri = FileProvider.getUriForFile(context,"com.example.ashu.supersearch.fileprovider",file);
+                sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                sharingIntent.setDataAndType(uri,"video/*");
+                context.startActivity(sharingIntent);
+
+            }
+        });
+
+
         }
 
     @Override
@@ -81,15 +97,7 @@ public class VideoAdaptor extends RecyclerView.Adapter<VideoAdaptor.VideoHolder>
             super(itemView);
             nameTv = itemView.findViewById(R.id.mediaName);
             imageView = itemView.findViewById(R.id.mediaImage);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MediaInfo video = myVideoList.get(getAdapterPosition());
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(video.getMediaPath()),"video/*");
-                    context.startActivity(intent);
-                }
-            });
+
         }
     }
 

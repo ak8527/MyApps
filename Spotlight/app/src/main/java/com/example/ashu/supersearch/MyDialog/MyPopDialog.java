@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -28,8 +27,11 @@ public class MyPopDialog extends DialogFragment {
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.displayNameTv) TextView displayTv;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.locationNameTV) TextView locationTv;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.sizeNameTv) TextView sizeTv;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.lastModifiedTv) TextView modifiedTv;
 
     public static MyPopDialog newInstance(MediaInfo mediaInfo) {
@@ -37,7 +39,6 @@ public class MyPopDialog extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("mediaName", mediaInfo.getMediaName());
         args.putString("mediaPath",mediaInfo.getMediaPath());
-        Log.e("Test123", "newInstance: " + mediaInfo.getMediaName());
         frag.setArguments(args);
         return frag;
     }
@@ -48,9 +49,7 @@ public class MyPopDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String mediaName = getArguments() != null ? getArguments().getString("mediaName") : null;
-        Log.e("Test1234", "onCreateDialog: "+ mediaName);
         String mediaPath = getArguments() != null ? getArguments().getString("mediaPath") : null;
-        Log.e("Test1234", "onCreateDialog: "+ mediaPath);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.prop_dialog, null);
         ButterKnife.bind(this,view);
@@ -91,7 +90,7 @@ public class MyPopDialog extends DialogFragment {
         return String.valueOf(file.length()/(1024*1024)) + " MB";
     }
 
-    public String getMediaFolder(File file) {
+    private String getMediaFolder(File file) {
         return file.getParent();
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -66,7 +67,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         String extension = extensionFind(storage.getMediaName());
         switch (extension) {
             case "image":
-                holder.imageView.setImageResource(R.drawable.ic_image_action);
+                holder.imageView.setImageResource(R.drawable.ic_action_image);
                 holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
                 break;
             case "text":
@@ -79,10 +80,10 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
                 break;
             case "audio":
                 holder.imageView.setImageResource(R.drawable.ic_action_song);
-                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.songColor));
+                holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
                 break;
             default:
-                holder.imageView.setImageResource(R.drawable.ic_folder_action);
+                holder.imageView.setImageResource(R.drawable.ic_action_folder);
                 holder.imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.folderColor));
 
                 break;
@@ -157,9 +158,9 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         return ans;
     }
 
-    private void resultDialog(final String file){
+    private void resultDialog(final String path){
 
-        @SuppressLint("InflateParams") View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view, null,true);
+        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view, null,true);
         new AlertDialog.Builder(context)
                 .setTitle("Open As")
                 .setView(dialogView)
@@ -170,8 +171,11 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         videoView = dialogView.findViewById(R.id.dialogVideoView);
         textView = dialogView.findViewById(R.id.dialogTextView);
 
+
         final Intent intent = new Intent(Intent.ACTION_VIEW);
-        final Uri uri = Uri.parse(file);
+        File file = new File(path);
+        final Uri uri = FileProvider.getUriForFile(context,"com.example.ashu.supersearch.fileprovider",file);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +204,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
         audioView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.setDataAndType(uri,"audio/mp3");
+                intent.setDataAndType(uri,"audio/*");
                 context.startActivity(intent);
 
 
@@ -216,6 +220,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.StorageH
                 super(itemView);
                 imageView = itemView.findViewById(R.id.mediaImage);
                 storageNameTv = itemView.findViewById(R.id.mediaName);
+
             }
         }
 

@@ -47,7 +47,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_image_action"
+            android:src="@drawable/ic_action_image"
             app:civ_circle_background_color="@color/imageColor"/>
 
 

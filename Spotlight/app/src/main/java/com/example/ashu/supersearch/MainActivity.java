@@ -1,12 +1,10 @@
 package com.example.ashu.supersearch;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +20,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -43,7 +42,6 @@ import com.example.ashu.supersearch.Interface.MediaResponse;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.setting.SettingActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -558,12 +556,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         settingView.setText(R.string.settings);
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
-    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        finish();
+//    }
 
 
 }

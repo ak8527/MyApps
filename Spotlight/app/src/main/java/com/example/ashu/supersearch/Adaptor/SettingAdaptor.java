@@ -3,9 +3,7 @@ package com.example.ashu.supersearch.Adaptor;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -59,9 +57,6 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
 
         str.setSpan(new StyleSpan(Typeface.BOLD),startingIndex,endingIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-//        holder.imageView.setImageResource(R.drawable.ic_action_setting);
-
-       // holder.imageView.setCircleBackgroundColor(R.color.colorPrimary);\
         holder.storageNameTv.setText(str);
         final String packageName = app.getMediaPath();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -92,13 +87,9 @@ public class SettingAdaptor extends RecyclerView.Adapter<SettingAdaptor.StorageH
             super(itemView);
             imageView = itemView.findViewById(R.id.mediaImage);
             storageNameTv = itemView.findViewById(R.id.mediaName);
-            Drawable drawable = null;
-            try {
-                drawable = context.getPackageManager().getApplicationIcon("com.android.settings");
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            imageView.setImageDrawable(drawable);
+            imageView.setImageResource(R.drawable.ic_action_setting);
+            imageView.setCircleBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+
         }
     }
 

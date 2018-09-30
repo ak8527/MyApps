@@ -91,13 +91,9 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:" + phoneNumber));
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
-                        Log.e("If", "onClick: " );
-//                        Intent intent = new Intent(Intent.ACTION_CALL);
-//                        intent.setData(Uri.parse("tel:" + phoneNumber));
                         context.startActivity(intent);
 
                     } else {
-                        Log.e("Else", "onClick: " );
                         requestPermissions(
                                 (Activity) context, new String[]{Manifest.permission.CALL_PHONE},MY_TELEPHONE_REQUEST_CODE);
 
@@ -132,7 +128,6 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
     }
 
     public boolean filter(String text) {
-        Log.e("Filter", "filter: "+ text );
         boolean ans = false;
         spannableText = text;
         text = text.toLowerCase(Locale.getDefault());
@@ -162,8 +157,10 @@ public class ContactAdaptor extends RecyclerView.Adapter<ContactAdaptor.ContactH
             super(itemView);
             contactImageView = itemView.findViewById(R.id.mediaImage);
             contactImageView.setCircleBackgroundColor(context.getResources().getColor(R.color.phoneColor));
-            contactImageView.setImageResource(R.drawable.ic_account_action);
+            contactImageView.setImageResource(R.drawable.ic_action_contact);
             nameTv = itemView.findViewById(R.id.mediaName);
+
+
             callImageView = itemView.findViewById(R.id.callIcon);
             callImageView.setVisibility(View.VISIBLE);
             chatImageView = itemView.findViewById(R.id.chatIcon);

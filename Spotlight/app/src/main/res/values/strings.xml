@@ -35,7 +35,6 @@
     <string name="open_folder">Open Folder</string>
     <string name="share">Share</string>
     <string name="properties">Properties</string>
-    <string name="display">Display</string>
     <string name="display_name">Display Name</string>
     <string name="location">Location</string>
     <string name="last_modified">Last Modified</string>
@@ -43,4 +42,6 @@
     <string name="app_info">App info</string>
     <string name="play_store_page">Play Store page</string>
     <string name="uninstall">Uninstall</string>
+    <string name="backgound">Background</string>
+    <string name="access">Access</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -67,9 +68,12 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(song.getMediaPath()), "audio/*");
-                context.startActivity(intent);
+                Intent sharingIntent = new Intent(Intent.ACTION_VIEW);
+                File file = new File(song.getMediaPath());
+                Uri uri = FileProvider.getUriForFile(context,"com.example.ashu.supersearch.fileprovider",file);
+                sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                sharingIntent.setDataAndType(uri,"audio/*");
+                context.startActivity(sharingIntent);
 
 
             }
@@ -80,7 +84,6 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
             public boolean onLongClick(View v) {
                 PopUpWindow popUpWindow = new PopUpWindow("Media",v,context,song);
                 File file = new File(song.getMediaPath());
-                Log.e("FileSize", "onLongClick: "+ getLastModifiedDate(file.lastModified()));
                 popUpWindow.showPopUpWindow();
                 return true;
             }
@@ -107,7 +110,7 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
             songTv = itemView.findViewById(R.id.mediaName);
             songImageView = itemView.findViewById(R.id.mediaImage);
             songImageView.setImageResource(R.drawable.ic_action_song);
-            songImageView.setCircleBackgroundColor(context.getResources().getColor(R.color.songColor));
+            songImageView.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
 
         }
     }

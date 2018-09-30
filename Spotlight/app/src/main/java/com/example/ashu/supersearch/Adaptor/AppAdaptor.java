@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.PopUpWindow;
 import com.example.ashu.supersearch.R;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -82,10 +80,6 @@ public class AppAdaptor extends RecyclerView.Adapter<AppAdaptor.AppHolder> {
 
 
 
-    }
-
-    public void notifyData(){
-        notifyDataSetChanged();
     }
 
 
