@@ -2,15 +2,21 @@ package com.example.ashu.supersearch.setting;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,12 +24,13 @@ import android.widget.ImageView;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
 
-public class MyWidgetService extends Service {
-    private WindowManager mWindowManager;
+import static com.example.ashu.supersearch.setting.SettingActivity.CHANNEL_ID;
 
+public class MyWidgetService extends Service implements View.OnTouchListener {
 
-    private View floatingWidgetView;
-
+    View myWidgetView;
+    WindowManager.LayoutParams params;
+    WindowManager myWidgetWindow;
 
     public MyWidgetService() {
     }
@@ -53,7 +60,9 @@ public class MyWidgetService extends Service {
             startActivity(intent);
         }
 
-        Notification notification = new NotificationCompat.Builder(this, SettingActivity.CHANNEL_ID)
+        createNotificationChannel();
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Spotlight")
                 .setContentText("Spotlight is running.")
@@ -67,6 +76,22 @@ public class MyWidgetService extends Service {
 
     }
 
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+    }
 
 
 
@@ -74,56 +99,69 @@ public class MyWidgetService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Inflate the chat head layout we created
-        floatingWidgetView = LayoutInflater.from(this).inflate(R.layout.floating_box, null);
 
-        //Add the view to the window.
-        WindowManager.LayoutParams params ;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        myWidgetView = LayoutInflater.from(this).inflate(R.layout.floating_box,null);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             params = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
-        } else {
-            params = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT);
         }
+
 
         //Specify the chat head position
         params.gravity = Gravity.CENTER_VERTICAL | Gravity.END;        //Initially view will be added to top-left corner
-//        params.x = 0;
-//        params.y = 100;
+        params.x = 0;
+        params.y = 0;
+
 
         //Add the view to the window
-        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        if (mWindowManager != null) {
-            mWindowManager.addView(floatingWidgetView, params);
+        myWidgetWindow = (WindowManager) getSystemService(WINDOW_SERVICE);
+        if (myWidgetWindow != null) {
+            myWidgetWindow.addView(myWidgetView, params);
         }
 
+        myWidgetView.findViewById(R.id.floatingBox).setOnTouchListener(this);
 
-        //Drag and move chat head using user's touch action.
-        final ImageView chatHeadImage = floatingWidgetView.findViewById(R.id.floatingBox);
-        chatHeadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyWidgetService.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
+
+
 
     }
+
+    private int lastAction;
+    private int initialX;
+    private int initialY;
+    private float initialTouchX;
+    private float initialTouchY;
+
+    float dX,dY;
+    int startX,startY,endX,endY;
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (floatingWidgetView != null) mWindowManager.removeView(floatingWidgetView);
-    }
+    public boolean onTouch(View view, MotionEvent event) {
 
+        switch (event.getActionMasked()){
+            case MotionEvent.ACTION_DOWN :
+                startX =  params.x;
+                startY = params.y;
+                dX = event.getRawX();
+                dY = event.getRawY();
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+//                view.animate().x(dX + event.getRawX()).y(dY + event.getRawY()).setDuration(0).start();
+                params.x = startX + (int) (event.getRawX() - dX );
+                params.y = startY + (int) (event.getRawY() - dY);
+                myWidgetWindow.updateViewLayout(myWidgetView,params);
+                break;
+            default:
+                return false;
+
+        }
+        return true;
+    }
 }

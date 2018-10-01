@@ -44,4 +44,6 @@
     <string name="uninstall">Uninstall</string>
     <string name="backgound">Background</string>
     <string name="access">Access</string>
+    <string name="channel_name">My Background Service</string>
+    <string name="channel_description">Foreground Service</string>
 </resources>

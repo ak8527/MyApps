@@ -1,5 +1,6 @@
 package com.example.ashu.supersearch.setting;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -25,10 +27,12 @@ import butterknife.OnClick;
 
 public class SettingActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+    Intent intent;
+
 
     public static final String CHANNEL_ID = "420";
 
-    private static final String MY_SETTING_PREF = "setting_pref";
+    public static final String MY_SETTING_PREF = "setting_pref";
 
     @BindView(R.id.searchAnyWhereSwitch) Switch searchAnyWhereSwitch;
 
@@ -37,7 +41,12 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
-        Boolean switchState = searchAnyWhereSwitch.isChecked();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE);
+        String switchValue = sharedPreferences.getString("background_switch",null);
+        if (switchValue != null && switchValue.equals("true")) {
+            searchAnyWhereSwitch.setChecked(true);
+        }
 //        SharedPreferences.Editor
 //        LinearLayout assistTv = findViewById(R.id.settingAssistView);
 //        LinearLayout widgetSv = findViewById(R.id.settingWidgetServiceView);
@@ -94,21 +103,24 @@ public class SettingActivity extends AppCompatActivity {
 
     @OnClick(R.id.searchAnyWhereSwitch)
     public void switchCheck(){
-        if (searchAnyWhereSwitch.isChecked()){
-            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
-            editor.putString("background_switch", String.valueOf(searchAnyWhereSwitch.isChecked()));
+        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
+            if (searchAnyWhereSwitch.isChecked() ){
+                editor.putString("background_switch", String.valueOf(searchAnyWhereSwitch.isChecked()));
+                drawOverAppPermission();
+            } else {
+                editor.putString("background_switch", String.valueOf(searchAnyWhereSwitch.isChecked()));
+                Log.e("SettingActivity", "switchCheck: " +  String.valueOf(searchAnyWhereSwitch.isChecked()));
+                stopService(new Intent(SettingActivity.this,MyWidgetService.class));
+            }
             editor.apply();
-            drawOverAppPermission();
-        } else {
-            stopService(new Intent(SettingActivity.this,MyWidgetService.class));
-        }
+
     }
 
     public void drawOverAppPermission(){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getBaseContext())) {
 
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
@@ -126,12 +138,18 @@ public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
 
             //Check if the permission is granted or not.
-            if (resultCode == RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.e("SettingActivity", "onActivityResult: " + "Success");
                 initializeView();
             } else { //Permission is not available
+
+                Log.e("SettingActivity", "onActivityResult: " + "Failure " + resultCode );
+
                 Toast.makeText(this,
                         "Draw over other app permission not available. Closing the application",
                         Toast.LENGTH_SHORT).show();
@@ -139,7 +157,7 @@ public class SettingActivity extends AppCompatActivity {
                 finish();
             }
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
+
         }
     }
 
@@ -147,6 +165,8 @@ public class SettingActivity extends AppCompatActivity {
      public void setAssistApp(){
         startActivityForResult(new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS), 0);
     }
+
+
 
 }
 

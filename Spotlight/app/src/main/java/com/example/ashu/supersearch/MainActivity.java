@@ -2,9 +2,11 @@ package com.example.ashu.supersearch;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +26,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.ashu.supersearch.Adaptor.AppAdaptor;
@@ -115,15 +118,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     ImageView settingMenu;
     @BindView(R.id.searchView)
     SearchView searchView;
-
+    @BindView(R.id.view) View view;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.reverse_activity_main);
         ButterKnife.bind(this);
         InfoList infoList = new InfoList(this);
 
+        scrollView = findViewById(R.id.scrollView2);
+
+
+
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         setHelperText();
 
 
@@ -250,6 +259,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
+
+//            focusOnView();
 
         if (!newText.isEmpty()) {
             searchAppRecyclerView.setVisibility(View.VISIBLE);
@@ -563,5 +574,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //        finish();
 //    }
 
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(SettingActivity.MY_SETTING_PREF, MODE_PRIVATE).edit();
+//        editor.putString("background_switch", "false");
+//        editor.apply();
+//    }
 
+    private void focusOnView(){
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0, searchView.getTop());
+            }
+        });
+    }
 }
