@@ -22,7 +22,6 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -169,14 +168,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 });
             }
         });
-
-
-        settingRecyclerView.setNestedScrollingEnabled(false);
-        filesRecyclerView.setNestedScrollingEnabled(false);
-        contactRecyclerView.setNestedScrollingEnabled(false);
-        songRecyclerView.setNestedScrollingEnabled(false);
-        videoRecyclerView.setNestedScrollingEnabled(false);
-
 
         /*
          * Setting Layout Manager for recyclerView.
@@ -591,14 +582,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //        editor.apply();
 //    }
 
-    private void focusOnView(){
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.scrollTo(0, searchView.getTop());
-            }
-        });
-    }
+// --Commented out by Inspection START (3/10/18 12:41 PM):
+//    private void focusOnView(){
+//        new Handler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                scrollView.scrollTo(0, searchView.getTop());
+//            }
+//        });
+//    }
+// --Commented out by Inspection STOP (3/10/18 12:41 PM)
     public void getBarPosition(){
         sharedPreferences = getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE);
         int radioId = sharedPreferences.getInt("radio_id",0);

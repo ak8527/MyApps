@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +82,6 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
             @Override
             public boolean onLongClick(View v) {
                 PopUpWindow popUpWindow = new PopUpWindow("Media",v,context,song);
-                File file = new File(song.getMediaPath());
                 popUpWindow.showPopUpWindow();
                 return true;
             }
@@ -131,12 +129,6 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.SongHolder> {
             notifyDataSetChanged();
         }
         return ans;
-    }
-
-    private String getLastModifiedDate(Long lastModified){
-        Date date = new Date(lastModified);
-        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault());
-        return dateFormat.format(date);
     }
 
 

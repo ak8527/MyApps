@@ -22,6 +22,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:ellipsize="end"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="12sp"

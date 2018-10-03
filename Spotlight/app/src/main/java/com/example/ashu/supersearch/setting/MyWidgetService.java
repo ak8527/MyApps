@@ -7,36 +7,30 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnTouch;
 
 import static com.example.ashu.supersearch.setting.SettingActivity.CHANNEL_ID;
 
 public class MyWidgetService extends Service implements View.OnTouchListener {
 
-    View myWidgetView;
-    WindowManager.LayoutParams params;
-    WindowManager myWidgetWindow;
+    private View myWidgetView;
+    private WindowManager.LayoutParams params;
+    private WindowManager myWidgetWindow;
     private GestureDetector gestureDetector;
 
 
@@ -162,7 +156,6 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
 
 
 
-    private int lastAction;
     private int initialX;
     private int initialY;
     private float initialTouchX;
@@ -185,13 +178,11 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
                     initialTouchX = event.getRawX();
                     initialTouchY = event.getRawY();
 
-                    lastAction = event.getAction();
                     return true;
 
                 case MotionEvent.ACTION_UP:
 
                     view.performClick();
-                    lastAction = event.getAction();
                     return true;
 
                 case MotionEvent.ACTION_MOVE:
@@ -199,7 +190,6 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
                     params.y = initialY + (int) (event.getRawY() - initialTouchY);
 
                     myWidgetWindow.updateViewLayout(myWidgetView, params);
-                    lastAction = event.getAction();
                     return true;
 
 

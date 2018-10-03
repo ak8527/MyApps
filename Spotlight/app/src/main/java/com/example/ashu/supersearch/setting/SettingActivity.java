@@ -1,7 +1,6 @@
 package com.example.ashu.supersearch.setting;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,20 +26,15 @@ import butterknife.OnClick;
 
 public class SettingActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
-    private static final String TOP_BAR = "top_bar" ;
-    private static final String BOTTOM_BAR = "bottom_bar" ;
-
-    Intent intent;
-
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
 
 
     public static final String CHANNEL_ID = "420";
 
     public static final String MY_SETTING_PREF = "setting_pref";
 
-    @BindView(R.id.searchAnyWhereSwitch) Switch searchAnyWhereSwitch;
+    @BindView(R.id.searchAnyWhereSwitch)
+     Switch searchAnyWhereSwitch;
     @BindView(R.id.searchBarPositionTv)
     TextView searchBarPositionTv;
 
@@ -80,11 +74,11 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    public void drawOverAppPermission(){
+    private void drawOverAppPermission(){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getBaseContext())) {
 
-            intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
@@ -110,6 +104,9 @@ public class SettingActivity extends AppCompatActivity {
                 if (Settings.canDrawOverlays(this)) {
                     initializeView();
                 } else { //Permission is not available
+                    SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
+                    editor.putString("background_switch", "false");
+                    editor.apply();
 
                     Toast.makeText(this,
                             "Draw over other app permission not available. Closing the application",
@@ -178,8 +175,8 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
-        public void setRadioButton(int id){
-            editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
+        private void setRadioButton(int id){
+            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF, MODE_PRIVATE).edit();
             editor.putInt("radio_id",id);
             editor.apply();
         }

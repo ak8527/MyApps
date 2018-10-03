@@ -44,7 +44,7 @@ public class MyPopDialog extends DialogFragment {
     }
 
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "SetTextI18n"})
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
