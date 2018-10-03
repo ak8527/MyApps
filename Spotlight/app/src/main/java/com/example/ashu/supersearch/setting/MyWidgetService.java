@@ -14,6 +14,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +26,10 @@ import android.widget.ImageView;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTouch;
+
 import static com.example.ashu.supersearch.setting.SettingActivity.CHANNEL_ID;
 
 public class MyWidgetService extends Service implements View.OnTouchListener {
@@ -31,6 +37,9 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
     View myWidgetView;
     WindowManager.LayoutParams params;
     WindowManager myWidgetWindow;
+    private GestureDetector gestureDetector;
+
+
 
     public MyWidgetService() {
     }
@@ -63,11 +72,12 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
         createNotificationChannel();
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentTitle("Spotlight")
                 .setContentText("Spotlight is running.")
                 .setAutoCancel(true)
                 .setContentIntent(pi)
+                .setColor(getResources().getColor(R.color.colorPrimary))
                 .build();
 
         startForeground(420, notification);
@@ -101,7 +111,7 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
         super.onCreate();
 
         myWidgetView = LayoutInflater.from(this).inflate(R.layout.floating_box,null);
-
+        ButterKnife.bind(this,myWidgetView);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             params = new WindowManager.LayoutParams(
@@ -110,13 +120,21 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
+        } else {
+            params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
         }
 
 
         //Specify the chat head position
-        params.gravity = Gravity.CENTER_VERTICAL | Gravity.END;        //Initially view will be added to top-left corner
+        params.gravity = Gravity.TOP | Gravity.START;        //Initially view will be added to top-left corner
         params.x = 0;
         params.y = 0;
+
 
 
         //Add the view to the window
@@ -125,12 +143,24 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
             myWidgetWindow.addView(myWidgetView, params);
         }
 
+
+
         myWidgetView.findViewById(R.id.floatingBox).setOnTouchListener(this);
+        gestureDetector = new GestureDetector(this, new SingleTapConfirm());
 
 
 
 
     }
+
+//    @OnClick(R.id.floatingBox)
+//    public void submit(){
+//        Intent intent = new Intent(this,MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//    }
+
+
 
     private int lastAction;
     private int initialX;
@@ -138,30 +168,63 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
     private float initialTouchX;
     private float initialTouchY;
 
-    float dX,dY;
-    int startX,startY,endX,endY;
+
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) {
+            Intent intent = new Intent(this,MainActivity.class);
 
-        switch (event.getActionMasked()){
-            case MotionEvent.ACTION_DOWN :
-                startX =  params.x;
-                startY = params.y;
-                dX = event.getRawX();
-                dY = event.getRawY();
-                break;
+            startActivity(intent);
+        } else {
 
-            case MotionEvent.ACTION_MOVE:
-//                view.animate().x(dX + event.getRawX()).y(dY + event.getRawY()).setDuration(0).start();
-                params.x = startX + (int) (event.getRawX() - dX );
-                params.y = startY + (int) (event.getRawY() - dY);
-                myWidgetWindow.updateViewLayout(myWidgetView,params);
-                break;
-            default:
-                return false;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    initialX = params.x;
+                    initialY = params.y;
+                    initialTouchX = event.getRawX();
+                    initialTouchY = event.getRawY();
 
+                    lastAction = event.getAction();
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+
+                    view.performClick();
+                    lastAction = event.getAction();
+                    return true;
+
+                case MotionEvent.ACTION_MOVE:
+                    params.x = initialX + (int) (event.getRawX() - initialTouchX);
+                    params.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                    myWidgetWindow.updateViewLayout(myWidgetView, params);
+                    lastAction = event.getAction();
+                    return true;
+
+
+            }
         }
-        return true;
+
+
+        return false;
+    }
+
+
+
+
+    private class SingleTapConfirm extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent event) {
+            return true;
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (myWidgetView != null){
+            myWidgetWindow.removeView(myWidgetView);
+        }
     }
 }

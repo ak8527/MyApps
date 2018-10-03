@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
+
 //import com.example.ashu.supersearch.AsyncWork.AppTask;
 
 
@@ -120,19 +122,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SearchView searchView;
     @BindView(R.id.view) View view;
     ScrollView scrollView;
+    public static int i = 0;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reverse_activity_main);
+        getBarPosition();
         ButterKnife.bind(this);
         InfoList infoList = new InfoList(this);
+        Log.e("IntentStack", "onCreate: ");
+        if (i == 0){
+            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
+                editor.putString("background_switch", "false");
+                editor.apply();
+                i++;
+        }
 
-        scrollView = findViewById(R.id.scrollView2);
-
-
-
-        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         setHelperText();
 
 
@@ -151,7 +157,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             case R.id.settingOption:
                                 Log.e(TAG, "onMenuItemClick: ");
                                 Intent intent = new Intent(getBaseContext(), SettingActivity.class);
-                                getBaseContext().startActivity(intent);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+
                                 return true;
                             default:
                                 return MainActivity.super.onOptionsItemSelected(item);
@@ -590,5 +598,55 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 scrollView.scrollTo(0, searchView.getTop());
             }
         });
+    }
+    public void getBarPosition(){
+        sharedPreferences = getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE);
+        int radioId = sharedPreferences.getInt("radio_id",0);
+        if (R.id.topBar == radioId){
+            setContentView(R.layout.activity_main);
+            Log.e("ContentView", "getBarPosition: " + "Normal View");
+        } else {
+            setContentView(R.layout.reverse_activity_main);
+            Log.e("ContentView", "getBarPosition: " + "Reverse View");
+
+        }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        getBarPosition();
+//    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("IntentStack", "onResume: ");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("IntentStack", "onRestart: ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.e("IntentStack", "onPause: " );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("IntentStack", "onStart: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("IntentStack", "onStop: ");
     }
 }

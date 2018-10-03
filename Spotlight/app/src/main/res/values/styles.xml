@@ -12,6 +12,15 @@
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
 
+
+    <style name="SettingTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
     <style name="Animation">
         <item name="android:windowEnterAnimation">@android:anim/bounce_interpolator</item>
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>

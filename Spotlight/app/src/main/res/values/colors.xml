@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary" tools:keep="@color/colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark" tools:keep="@color/colorPrimaryDark">#1976D2</color>
-    <color name="colorAccent">#03A9F4</color>
+    <color name="colorAccent">#1976D2</color>
     <color name="primaryTextColor">#212121</color>
     <color name="secondaryTextColor">#757575</color>
     <color name="dividerColor">#BDBDBD</color>
@@ -16,4 +16,5 @@
     <color name="audioColor">#FB8C00</color>
     <color name="fileColor">#6D4C41</color>
     <color name="settingTextColor">#757575</color>
+    <color name="floatingBoxColor">#29b6f6</color>
 </resources>

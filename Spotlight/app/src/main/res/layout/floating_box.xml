@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="#AB47BC"
+            android:background="@color/floatingBoxColor"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_crop_square_black_24dp" />
 

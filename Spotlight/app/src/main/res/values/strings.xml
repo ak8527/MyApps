@@ -46,4 +46,10 @@
     <string name="access">Access</string>
     <string name="channel_name">My Background Service</string>
     <string name="channel_description">Foreground Service</string>
+    <string name="normal_layout">Normal Layout</string>
+    <string name="reverse_layout">Reverse Layout</string>
+    <string name="top">Top</string>
+    <string name="bottom">Bottom</string>
+    <string name="customization">Customization</string>
+    <string name="search_bar_position">Search Bar Position</string>
 </resources>

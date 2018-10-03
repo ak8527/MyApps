@@ -24,7 +24,6 @@
 
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
-            android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait">
@@ -42,10 +41,13 @@
         </activity>
         <activity
             android:name=".setting.SettingActivity"
+            android:label="Settings"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/SettingTheme">
 
         </activity>
+
+
 
 
         <service android:name=".setting.MyWidgetService" />

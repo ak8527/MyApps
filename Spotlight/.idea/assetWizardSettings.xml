@@ -82,7 +82,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/opt/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_settings_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/opt/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_find_in_page_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -93,7 +93,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_action_setting" />
+                            <entry key="outputName" value="ic_notification_icon" />
                             <entry key="sourceFile" value="$USER_HOME$/Downloads/icons8-settings.svg" />
                           </map>
                         </option>
