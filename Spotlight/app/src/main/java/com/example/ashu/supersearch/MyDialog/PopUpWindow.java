@@ -12,7 +12,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -49,24 +51,39 @@ public class PopUpWindow {
     TextView openFolderTv;
 
 
-    PopupWindow popupWindow;
+    final PopupWindow popupWindow;
 
+    protected final WindowManager mWindowManager;
 
     public PopUpWindow(String mediaName, View view, Context context, MediaInfo mediaInfo) {
         this.mediaName = mediaName;
         this.view = view;
         this.context = context;
         this.mediaInfo = mediaInfo;
+        popupWindow =new PopupWindow(context);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE){
+                    popupWindow.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
     }
 
     public void showPopUpWindow() {
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View popUpView = Objects.requireNonNull(inflater).inflate(R.layout.popup_window, null);
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int marginStart = Math.round(context.getResources()
-                .getDisplayMetrics()
-                .density * 16);
+
+
 
         ButterKnife.bind(this, popUpView);
 
@@ -93,16 +110,28 @@ public class PopUpWindow {
 
         int[] location = new int[2];
         view.getLocationInWindow(location);
-        popupWindow = new PopupWindow(popUpView, width, height, true);
+//        popupWindow = new PopupWindow(popUpView, width, height, true);
         popupWindow.setElevation(10);
-        popupWindow.setAnimationStyle(R.style.Animation);
-        if (mediaName.equals("Media")){
-            popupWindow.showAtLocation(popUpView, Gravity.NO_GRAVITY, marginStart, location[1]);
+        popupWindow.setContentView(popUpView);
+        popupWindow.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+//        popupWindow.setAnimationStyle(R.style.Animation);
+        popupWindow.showAtLocation(popUpView, Gravity.NO_GRAVITY, location[0], location[1]);
+        popupWindow.setTouchable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(false);
 
-        } else if (mediaName.equals("App")){
-            popupWindow.showAtLocation(popUpView, Gravity.NO_GRAVITY, location[0], location[1]);
-
-        }
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    popupWindow.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
     }

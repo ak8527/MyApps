@@ -6,7 +6,7 @@
         android:id="@+id/settingOption"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/setting" />
 
 </menu>

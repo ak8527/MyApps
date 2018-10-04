@@ -21,12 +21,21 @@
     </style>
 
 
-    <style name="Animation">
-        <item name="android:windowEnterAnimation">@android:anim/bounce_interpolator</item>
-        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    <!--<style name="Animation">-->
+        <!--<item name="android:windowEnterAnimation">@anim/popupmenu_anim</item>-->
+        <!--<item name="android:windowExitAnimation">@android:anim/slide_out_right</item>-->
+    <!--</style>-->
+
+    <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupAnimationStyle">@anim/popupmenu_anim</item>
     </style>
 
+    <!--<style name="PopUpWindow" parent="ThemeOverlay.AppCompat.Dark">-->
+        <!--<item name="android:popupAnimationStyle">@anim/popupmenu_anim</item>-->
+    <!--</style>-->
+
     <style name="SearchTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
         <!-- Transparent the theme here -->
         <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
 

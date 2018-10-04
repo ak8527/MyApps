@@ -33,6 +33,7 @@ public class MyPopDialog extends DialogFragment {
     @BindView(R.id.sizeNameTv) TextView sizeTv;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.lastModifiedTv) TextView modifiedTv;
+    @BindView(R.id.sizeHelpTv) TextView sizeHelpTv;
 
     public static MyPopDialog newInstance(MediaInfo mediaInfo) {
         MyPopDialog frag = new MyPopDialog();
@@ -70,7 +71,12 @@ public class MyPopDialog extends DialogFragment {
             displayTv.setText(mediaName);
             locationTv.setText(getMediaFolder(file));
             modifiedTv.setText(getLastModifiedDate(file.lastModified()));
-            sizeTv.setText(getMediaSize(file));
+            if (file.isFile()){
+                sizeTv.setText(getMediaSize(file));
+            } else {
+                sizeTv.setVisibility(View.GONE);
+                sizeHelpTv.setVisibility(View.GONE);
+            }
 
         }
 
