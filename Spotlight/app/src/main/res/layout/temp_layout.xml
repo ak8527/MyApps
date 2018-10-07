@@ -1,154 +1,245 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_margin="4dp"
+android:orientation="vertical"
+tools:context=".MainActivity">
+
+<android.support.v7.widget.SearchView
+    android:id="@+id/searchView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    app:iconifiedByDefault="false"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/threeDotMenu"
+    app:layout_constraintStart_toStartOf="parent">
+
+
+</android.support.v7.widget.SearchView>
+
+
+<ImageView
+    android:id="@+id/threeDotMenu"
+    android:layout_width="40dp"
+    android:layout_height="48dp"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:contentDescription="@string/menu_3_setting"
+    android:focusable="true"
+    android:scaleType="centerInside"
+    android:src="@drawable/ic_more_vertical_black_24dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/searchView" />
+
+
+
+
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="4dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollV"
+    app:layout_constraintBottom_toTopOf="@+id/searchView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="0dp"
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/threeDotMenu"
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
 
-    </android.support.v7.widget.SearchView>
-
-
-    <ImageView
-        android:id="@+id/threeDotMenu"
-        android:layout_width="40dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:clickable="true"
-        android:contentDescription="@string/menu_3_setting"
-        android:focusable="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_more_vertical_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchView" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@color/dividerColor"
-        app:layout_constraintBottom_toTopOf="@+id/searchView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
+        <include
+            android:id="@+id/permissionLayout"
+            layout="@layout/permission_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:layout_constraintBottom_toTopOf="@+id/searchAppRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <include
+            android:id="@+id/searchAppRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/searchName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/permissionLayout"
-                layout="@layout/permission_layout" />
-
-            <include
-                android:id="@+id/searchAppRecyclerView"
-                layout="@layout/media_recycler_view" />
-
-
-            <include
-                android:id="@+id/searchName"
-                layout="@layout/media_text_name" />
-
-            <TextView
-                android:id="@+id/moreFileView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/more"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:visibility="gone" />
+        <include
+            android:id="@+id/searchName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/settingRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/filesRecyclerView"
-                layout="@layout/media_recycler_view" />
+        <include
+            android:id="@+id/settingRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/settingName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/filesName"
-                layout="@layout/media_text_name" />
+        <include
+            android:id="@+id/settingName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/filesRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/videoRecyclerView"
-                layout="@layout/media_recycler_view" />
+        <TextView
+            android:id="@+id/moreFileView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/more"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/filesRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/videoName"
-                layout="@layout/media_text_name" />
-
-            <include
-                android:id="@+id/songRecyclerView"
-                layout="@layout/media_recycler_view" />
-
-
-            <include
-                android:id="@+id/songName"
-                layout="@layout/media_text_name" />
-
-            <include
-                android:id="@+id/settingRecyclerView"
-                layout="@layout/media_recycler_view" />
+        <include
+            android:id="@+id/filesRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/filesName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/settingName"
-                layout="@layout/media_text_name" />
+        <include
+            android:id="@+id/filesName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/videoRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/contactRecyclerView"
-                layout="@layout/media_recycler_view" />
+        <include
+            android:id="@+id/videoRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/videoName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/contactName"
-                layout="@layout/media_text_name" />
+        <include
+            android:id="@+id/videoName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/songRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <include
-                android:id="@+id/appRecyclerView"
-                layout="@layout/media_recycler_view" />
+        <include
+            android:id="@+id/songRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/songName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-            <include
-                android:id="@+id/appName"
-                layout="@layout/media_text_name" />
+        <include
+            android:id="@+id/songName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/contactRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-        </LinearLayout>
+        <include
+            android:id="@+id/contactRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-    </ScrollView>
+            app:layout_constraintBottom_toTopOf="@+id/contactName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <include
+            android:id="@+id/contactName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/appRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <include
+            android:id="@+id/appRecyclerView"
+            layout="@layout/media_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/appName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <include
+            android:id="@+id/appName"
+            layout="@layout/media_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

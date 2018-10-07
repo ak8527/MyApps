@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,8 +24,11 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -79,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @BindView(R.id.searchAppRecyclerView)
     RecyclerView searchAppRecyclerView;
 
+    @BindView(R.id.scrollV)
+    ScrollView scrollV;
+    @BindView(R.id.reverseLayout)
+    LinearLayout linearLayout;
+
+
 
     private MediaAdaptor storageAdapter;
     private MediaAdaptor appAdaptor;
@@ -121,8 +132,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     ImageView settingMenu;
     @BindView(R.id.searchView)
     SearchView searchView;
-    @BindView(R.id.view) View view;
-    ScrollView scrollView;
+    @BindView(R.id.lineView) View view;
     public static int i = 0;
     SharedPreferences sharedPreferences;
     public static final int MY_TELEPHONE_REQUEST_CODE = 111;
@@ -141,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         setHelperText();
+
 
         Log.e(TAG, "onCreate: ");
 
@@ -168,11 +179,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
         appRecyclerView.setLayoutManager(linearLayoutManager);
 
-        /*
-         * Calling SearchView widget.
-         */
 
-        searchView.setOnQueryTextListener(this);
 
         /*
          * Checking contact and storage permission and executing task according to them.
@@ -192,6 +199,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchAppAdaptor = new MediaAdaptor(this, (ArrayList<MediaInfo>) infoList.getBrowserList(),SEARCH_APP_ID);
         searchAppRecyclerView.setAdapter(searchAppAdaptor);
         searchAppRecyclerView.setVisibility(View.GONE);
+
+
+        /*
+         * Calling SearchView widget.
+         */
+
+        searchView.setOnQueryTextListener(this);
+
+        /*
+         * Calling methods for setting contact, storage and app adaptor.
+         */
+        setAppAdaptor();
+        setStorageAdapter();
+        setContactAdaptor();
+
+        popupMenu = new PopupMenu(this,settingMenu);
+        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
+
+
 
 
     }
@@ -291,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         }
+        scrollV.requestChildFocus(view,view);
         return false;
     }
 
@@ -539,13 +567,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onStart();
         Log.e(TAG, "onStart: " );
 
-        /*
-         * Calling methods for setting contact, storage and app adaptor.
-         */
-        setAppAdaptor();
-        setStorageAdapter();
-        setContactAdaptor();
-
 
     }
 
@@ -572,9 +593,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     protected void onResume() {
         super.onResume();
-        popupMenu = new PopupMenu(this,settingMenu);
-        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-
 
         Log.e(TAG, "onResume: " );
 
@@ -614,4 +632,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
     }
+
+
 }

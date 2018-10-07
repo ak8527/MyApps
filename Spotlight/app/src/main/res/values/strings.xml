@@ -47,4 +47,5 @@
     <string name="bottom">Bottom</string>
     <string name="customization">Customization</string>
     <string name="search_bar_position">Search Bar Position</string>
+    <string name="hello">Hello</string>
 </resources>
