@@ -107,7 +107,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         final MediaInfo mediaInfo;
         int itemId = getItemViewType(position);
         if (itemId == SEARCH_APP_ID) {
@@ -144,7 +144,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 appHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        showMenu(v,mediaInfo,APP_ID);
+                        showMenu(((AppHolder) holder).imageView,mediaInfo,APP_ID);
                         return false;
                     }
                 });
@@ -240,7 +240,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        showMenu(v,mediaInfo,AUDIO_ID);
+                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,AUDIO_ID);
                         return false;
                     }
                 });
@@ -267,14 +267,14 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        showMenu(v,mediaInfo,VIDEO_ID);
+                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,VIDEO_ID);
                         return false;
                     }
                 });
                 break;
             }
             case FILE_ID: {
-                MediaHolder mediaHolder = (MediaHolder) holder;
+                final MediaHolder mediaHolder = (MediaHolder) holder;
                 mediaHolder.mediaNameTv.setText(str);
                 final File file = new File(mediaInfo.getMediaPath());
 
@@ -319,7 +319,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public boolean onLongClick(View v) {
                         if (file.isFile()) {
-                            showMenu(v,mediaInfo,FILE_ID);
+                            showMenu(mediaHolder.mediaIv,mediaInfo,FILE_ID);
                         } else {
                             showPropDialog(mediaInfo);
                         }
@@ -626,21 +626,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @SuppressWarnings("WeakerAccess")
     private void showMenu(View v, final MediaInfo mediaInfo, final int id) {
-        Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
-
-        final PopupMenu popupMenu = new PopupMenu(wrapper, v ,Gravity.START);
-        if (id == APP_ID){
-            popupMenu.getMenuInflater().inflate(R.menu.app_menu, popupMenu.getMenu());
-
-
-        } else {
-            popupMenu.inflate(R.menu.media_popup_menu);
-
-//            popupMenu.getMenuInflater().inflate(R.menu.media_popup_menu, popupMenu.getMenu());
-
-        }
-
-//        popupMenu.inflate(R.menu.media_popup_menu);
+        final PopupMenu popupMenu = new PopupMenu(context,v);
+        popupMenu.getMenuInflater().inflate(R.menu.app_menu, popupMenu.getMenu());
         popupMenu.show();
 
         try {
