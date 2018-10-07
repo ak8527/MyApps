@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int VIDEO_ID = 4;
     public static final int FILE_ID = 5;
     public static final int SEARCH_APP_ID = 6;
+    public static final int APP_UNINSTALL_REQUEST_CODE = 200;
     private String spannableText;
     private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
     private static final int MY_TELEPHONE_REQUEST_CODE = 111;
@@ -412,7 +414,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     public boolean isMoreFiles() {
-        return myAppArrayList.size() > 4;
+        return myAppArrayList.size() > 4 && myAppArrayList.size() < 15;
     }
 
 
@@ -605,10 +607,13 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     private void shareMedia(File file) {
+        String type = extensionFind(file.getPath());
+        String intentType = type + "/*";
+
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        sharingIntent.setType("*/*");
+        sharingIntent.setType(intentType);
         context.startActivity(sharingIntent);
     }
 
@@ -623,7 +628,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void showMenu(View v, final MediaInfo mediaInfo, final int id) {
         Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
 
-        final PopupMenu popupMenu = new PopupMenu(context, v);
+        final PopupMenu popupMenu = new PopupMenu(wrapper, v ,Gravity.START);
         if (id == APP_ID){
             popupMenu.getMenuInflater().inflate(R.menu.app_menu, popupMenu.getMenu());
 
@@ -709,6 +714,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void uninstallApp(MediaInfo mediaInfo){
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
+        intent.putExtra("package_uninstall",APP_UNINSTALL_REQUEST_CODE);
         context.startActivity(intent);
     }
 }

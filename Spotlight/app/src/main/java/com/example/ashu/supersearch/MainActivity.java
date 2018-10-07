@@ -41,8 +41,10 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_ID;
+import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_UNINSTALL_REQUEST_CODE;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.AUDIO_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.CONTACT_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.FILE_ID;
@@ -131,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         getBarPosition();
         ButterKnife.bind(this);
         InfoList infoList = new InfoList(this);
-        Log.e("IntentStack", "onCreate: ");
         if (i == 0){
             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
                 editor.putString("background_switch", "false");
@@ -141,38 +142,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         setHelperText();
 
-        registerForContextMenu(videoRecyclerView);
-
-
-        final PopupMenu popupMenu = new PopupMenu(this,settingMenu);
-        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-
-
-        settingMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMenu.show();
-
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.settingOption:
-                                Log.e(TAG, "onMenuItemClick: ");
-                                Intent intent = new Intent(getBaseContext(), SettingActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-
-                                return true;
-                            default:
-                                return MainActivity.super.onOptionsItemSelected(item);
-
-                        }
-                    }
-                });
-            }
-        });
+        Log.e(TAG, "onCreate: ");
 
         /*
          * Setting Layout Manager for recyclerView.
@@ -204,13 +174,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         searchView.setOnQueryTextListener(this);
 
-        permissionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isPermissionGranted();
-            }
-        });
-
         /*
          * Checking contact and storage permission and executing task according to them.
          */
@@ -224,23 +187,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             isStorageTaskExecute();
         }
 
-
-        moreTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                storageAdapter.moreFiles(true);
-                storageAdapter.notifyDataSetChanged();
-                moreTv.setVisibility(View.GONE);
-            }
-        });
-
-
-        /*
-         * Calling methods for setting contact, storage and app adaptor.
-         */
-        setAppAdaptor();
-        setStorageAdapter();
-        setContactAdaptor();
 
 
         searchAppAdaptor = new MediaAdaptor(this, (ArrayList<MediaInfo>) infoList.getBrowserList(),SEARCH_APP_ID);
@@ -467,6 +413,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 isPermissionLayoutVisible();
 
             }
+
+
+            case APP_UNINSTALL_REQUEST_CODE:{
+                Log.e("App Uninstall", "onRequestPermissionsResult: ");
+            }
         }
     }
 
@@ -571,80 +522,96 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         settingView.setText(R.string.settings);
     }
 
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        finish();
-//    }
 
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(SettingActivity.MY_SETTING_PREF, MODE_PRIVATE).edit();
-//        editor.putString("background_switch", "false");
-//        editor.apply();
-//    }
-
-// --Commented out by Inspection START (3/10/18 12:41 PM):
-//    private void focusOnView(){
-//        new Handler().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                scrollView.scrollTo(0, searchView.getTop());
-//            }
-//        });
-//    }
-// --Commented out by Inspection STOP (3/10/18 12:41 PM)
     public void getBarPosition(){
         sharedPreferences = getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE);
         int radioId = sharedPreferences.getInt("radio_id",0);
         if (R.id.topBar == radioId){
             setContentView(R.layout.activity_main);
-            Log.e("ContentView", "getBarPosition: " + "Normal View");
         } else {
             setContentView(R.layout.reverse_activity_main);
-            Log.e("ContentView", "getBarPosition: " + "Reverse View");
-
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        getBarPosition();
-//    }
-
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("IntentStack", "onResume: ");
+    protected void onStart() {
+        super.onStart();
+        Log.e(TAG, "onStart: " );
+
+        /*
+         * Calling methods for setting contact, storage and app adaptor.
+         */
+        setAppAdaptor();
+        setStorageAdapter();
+        setContactAdaptor();
+
+
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.e("IntentStack", "onRestart: ");
+    @OnClick(R.id.moreFileView)
+    public void moreFileView(){
+        storageAdapter.moreFiles(true);
+        storageAdapter.notifyDataSetChanged();
+        moreTv.setVisibility(View.GONE);
+    }
+
+
+    @OnClick(R.id.permissionBtn)
+    public void permissionReq(){
+        isPermissionGranted();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.e(TAG, "onPause: " );
 
-        Log.e("IntentStack", "onPause: " );
+    }
+    PopupMenu popupMenu;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        popupMenu = new PopupMenu(this,settingMenu);
+        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
+
+        Log.e(TAG, "onResume: " );
+
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e("IntentStack", "onStart: ");
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart: ");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("IntentStack", "onStop: ");
+        Log.e(TAG, "onStop: " );
+    }
+
+    @OnClick(R.id.threeDotMenu)
+    public void setSettingMenu(){
+        popupMenu.show();
+
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.settingOption:
+                        Intent intent = new Intent(getBaseContext(), SettingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+
+                        return true;
+                    default:
+                        return MainActivity.super.onOptionsItemSelected(item);
+
+                }
+            }
+        });
     }
 }

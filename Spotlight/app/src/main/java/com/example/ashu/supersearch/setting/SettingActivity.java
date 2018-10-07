@@ -18,6 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
 
 import butterknife.BindView;
@@ -193,6 +194,14 @@ public class SettingActivity extends AppCompatActivity {
 
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        Intent intent = new Intent(this,MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//    }
 }
 
 
