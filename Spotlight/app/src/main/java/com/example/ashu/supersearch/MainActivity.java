@@ -1,12 +1,16 @@
 package com.example.ashu.supersearch;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -22,6 +26,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -443,9 +448,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
 
 
-            case APP_UNINSTALL_REQUEST_CODE:{
-                Log.e("App Uninstall", "onRequestPermissionsResult: ");
-            }
         }
     }
 
@@ -625,6 +627,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         startActivity(intent);
 
                         return true;
+
+                    case R.id.helpFeedbackMenu:
+                        helpDialog();
+                        return true;
+
+
                     default:
                         return MainActivity.super.onOptionsItemSelected(item);
 
@@ -634,4 +642,46 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == APP_UNINSTALL_REQUEST_CODE)
+            Log.e("Uninstall", "onActivityResult: " + resultCode);
+
+    }
+
+
+    public void helpDialog(){
+        View view = LayoutInflater.from(this).inflate(R.layout.help_setting_dialog,null);
+
+       final AlertDialog builder = new AlertDialog.Builder(this)
+                .setTitle("Help & Feedback")
+                .setView(view)
+                .show();
+
+        ConstraintLayout helpSettingDialog = view.findViewById(R.id.helpSettingDialog);
+        helpSettingDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+                String subject = "Feedback for Super Search";
+                String bodyText = "Android Version : " + Build.VERSION.SDK_INT
+                        + "\nDevice : " + Build.BRAND + " " +Build.MODEL;
+                String mailto = "mailto:ashutoshkumar1320@gmail.com" +
+                        "?subject=" + Uri.encode(subject) +
+                        "&body=" + Uri.encode(bodyText);
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+
+                try {
+                    startActivity(emailIntent);
+                } catch (Exception e){
+                    Log.e(TAG, "onClick: ");
+                }
+
+            }
+        });
+
+
+    }
 }

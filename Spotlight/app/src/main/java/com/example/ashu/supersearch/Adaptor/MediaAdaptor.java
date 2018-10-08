@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.MyPopDialog;
 import com.example.ashu.supersearch.R;
@@ -453,7 +454,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     class AppHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.appNameTv) TextView textView;
-        @BindView(R.id.appImageView) ImageView imageView;
+        @BindView(R.id.appImageView) CircleImageView imageView;
 
         AppHolder(View itemView) {
             super(itemView);
@@ -701,7 +702,12 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void uninstallApp(MediaInfo mediaInfo){
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
-        intent.putExtra("package_uninstall",APP_UNINSTALL_REQUEST_CODE);
-        context.startActivity(intent);
+        intent.putExtra("name",20);
+
+//        intent.putExtra("package_uninstall",APP_UNINSTALL_REQUEST_CODE);
+//        context.startActivity(intent);
+        ((MainActivity)context).startActivityForResult(intent,APP_UNINSTALL_REQUEST_CODE);
     }
+
+
 }

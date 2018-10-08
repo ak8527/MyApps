@@ -48,4 +48,8 @@
     <string name="customization">Customization</string>
     <string name="search_bar_position">Search Bar Position</string>
     <string name="hello">Hello</string>
+    <string name="help_feedback"><![CDATA[Help & Feedback]]></string>
+    <string name="email">Email</string>
+    <string name="send_email">Send email</string>
+    <string name="email_message">The dev is busy man. He will probably reply within three or four days.</string>
 </resources>
