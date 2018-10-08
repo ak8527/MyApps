@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -134,6 +135,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 final String packageName = mediaInfo.getMediaPath();
                 appHolder.imageView.setImageDrawable(getAppIconByPackageName(packageName));
                 appHolder.textView.setText(str);
+                Log.e("SettingApp", "onBindViewHolder: "+ packageName);
                 appHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -454,7 +456,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     class AppHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.appNameTv) TextView textView;
-        @BindView(R.id.appImageView) CircleImageView imageView;
+        @BindView(R.id.appImageView) ImageView imageView;
 
         AppHolder(View itemView) {
             super(itemView);
@@ -628,7 +630,11 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @SuppressWarnings("WeakerAccess")
     private void showMenu(View v, final MediaInfo mediaInfo, final int id) {
         final PopupMenu popupMenu = new PopupMenu(context,v);
-        popupMenu.getMenuInflater().inflate(R.menu.app_menu, popupMenu.getMenu());
+        if (mediaId == APP_ID){
+            popupMenu.getMenuInflater().inflate(R.menu.app_menu, popupMenu.getMenu());
+        } else {
+            popupMenu.getMenuInflater().inflate(R.menu.media_popup_menu, popupMenu.getMenu());
+        }
         popupMenu.show();
 
         try {

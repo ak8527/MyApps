@@ -3,12 +3,14 @@ package com.example.ashu.supersearch;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,12 +92,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @BindView(R.id.searchAppRecyclerView)
     RecyclerView searchAppRecyclerView;
 
-    @BindView(R.id.scrollV)
-    ScrollView scrollV;
-    @BindView(R.id.reverseLayout)
-    LinearLayout linearLayout;
-
-
 
     private MediaAdaptor storageAdapter;
     private MediaAdaptor appAdaptor;
@@ -139,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SearchView searchView;
     @BindView(R.id.lineView) View view;
     public static int i = 0;
+    @BindView(R.id.scrollV)
+    ScrollView scrollV;
+
+
     SharedPreferences sharedPreferences;
     public static final int MY_TELEPHONE_REQUEST_CODE = 111;
 
@@ -651,17 +652,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
     public void helpDialog(){
-        View view = LayoutInflater.from(this).inflate(R.layout.help_setting_dialog,null);
+        final View view = LayoutInflater.from(this).inflate(R.layout.help_setting_dialog,null);
 
        final AlertDialog builder = new AlertDialog.Builder(this)
                 .setTitle("Help & Feedback")
                 .setView(view)
                 .show();
-
         ConstraintLayout helpSettingDialog = view.findViewById(R.id.helpSettingDialog);
         helpSettingDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 builder.dismiss();
                 String subject = "Feedback for Super Search";
                 String bodyText = "Android Version : " + Build.VERSION.SDK_INT

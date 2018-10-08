@@ -41,7 +41,7 @@
 
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/lineView"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/dividerColor"
@@ -53,10 +53,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/scrollV"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view">
+        app:layout_constraintTop_toBottomOf="@+id/lineView">
 
         <LinearLayout
             android:layout_width="match_parent"

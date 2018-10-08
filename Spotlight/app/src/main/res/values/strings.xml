@@ -52,4 +52,20 @@
     <string name="email">Email</string>
     <string name="send_email">Send email</string>
     <string name="email_message">The dev is busy man. He will probably reply within three or four days.</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="version_code">Version_Code</string>
+    <string name="faq">FAQ</string>
+
+    <string name="que1">Why Super Search notification is shown?</string>
+    <string name="ans1">This notification is shown when overlay is shown above all apps (eg. search anywhere) or a service is running in background.</string>
+    <string name="que2">How to hide Super Search notification?</string>
+    <string name="ans2">Long click on notification and click on toggle.</string>
+    <string name="que3">Cannot open folders.</string>
+    <string name="ans3">Opening folder is supported by only few file managers. Solid Explorer and ES File Explorer are most popular file manager which support opening folder.</string>
+    <string name="esExplorer">com.estrongs.android.pop</string>
+    <string name="solidExplorer">pl.solidexplorer2</string>
+
+
+
 </resources>

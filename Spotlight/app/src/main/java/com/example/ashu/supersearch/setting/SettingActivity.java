@@ -5,11 +5,24 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
@@ -18,8 +31,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ashu.supersearch.BuildConfig;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
+
+import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,12 +56,24 @@ public class SettingActivity extends AppCompatActivity {
     @BindView(R.id.searchBarPositionTv)
     TextView searchBarPositionTv;
 
+//    @BindView(R.id.faq)
+//    TextView faqTv;
+
+    @BindView(R.id.versionCode)
+    TextView versionCode;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
+        versionCode.setText(BuildConfig.VERSION_NAME);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         sharedPreferences = getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE);
         String switchValue = sharedPreferences.getString("background_switch",null);
@@ -202,6 +231,66 @@ public class SettingActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+
+    @OnClick(R.id.faq)
+    public void showFaqDialog(){
+        TextView textView;
+        View view = LayoutInflater.from(this).inflate(R.layout.faq_dialog_layout,null);
+        AlertDialog builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.faq)
+                .setView(view)
+                .show();
+        textView = view.findViewById(R.id.spanClickText);
+
+        String solidExplorer = "Solid Explorer";
+        String esExplorer = "ES File Explorer";
+
+        String fullText = getResources().getString(R.string.ans3);
+
+
+        int startingIndex = fullText.indexOf(solidExplorer);
+        int endingIndex = startingIndex + solidExplorer.length();
+
+        int eStartingIndex = fullText.indexOf(esExplorer);
+        int eEndingIndex = eStartingIndex + esExplorer.length();
+        Log.e("Setting", "showFaqDialog: " + eStartingIndex + " " + eEndingIndex);
+
+        SpannableStringBuilder  str = new SpannableStringBuilder(fullText);
+
+        textView.setHighlightColor(Color.TRANSPARENT);
+        str.setSpan(new MyClickableSpan(0),startingIndex,endingIndex,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new MyClickableSpan(1),eStartingIndex,eEndingIndex,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setText(str,TextView.BufferType.SPANNABLE);
+
+    }
+
+    class MyClickableSpan extends ClickableSpan{
+        int position;
+        public MyClickableSpan(int position){
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(@NonNull View widget) {
+                if (position == 0){
+                    openPlayStorePage(getResources().getString(R.string.solidExplorer));
+                } else {
+                    openPlayStorePage(getResources().getString(R.string.esExplorer));
+                }
+        }
+    }
+
+    public void openPlayStorePage(String packageName){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + packageName );
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+
 }
 
 

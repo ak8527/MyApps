@@ -7,6 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:title="@string/setting" />
+
+
      <item
         android:id="@+id/helpFeedbackMenu"
         android:layout_width="match_parent"
