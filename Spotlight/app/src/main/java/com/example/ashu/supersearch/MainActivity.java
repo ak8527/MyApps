@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -151,7 +152,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         setHelperText();
 
-
+        ImageView imageView = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+        imageView.setColorFilter(Color.BLACK);
         Log.e(TAG, "onCreate: ");
 
         /*
