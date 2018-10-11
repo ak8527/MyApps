@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -47,6 +48,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.support.v4.app.ActivityCompat.requestPermissions;
+import static com.example.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
 
 public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -63,6 +65,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int MY_TELEPHONE_REQUEST_CODE = 111;
     private String searchText = "";
     private boolean moreFiles = false;
+    SharedPreferences.Editor editor;
 
 
     private final Context context;
@@ -146,6 +149,9 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public boolean onLongClick(View v) {
                         showMenu(((AppHolder) holder).imageView,mediaInfo,APP_ID);
+                        editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
+                        editor.putInt("app_position",holder.getAdapterPosition());
+                        editor.apply();
                         return false;
                     }
                 });
@@ -354,7 +360,11 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         context.startActivity(intent);
     }
 
+  public void notifyChange(int position){
+        myAppArrayList.remove(position);
+        notifyItemRemoved(position);
 
+  }
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
@@ -707,6 +717,9 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
         intent.putExtra("name",20);
+        editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
+        editor.putString("app_package_name",mediaInfo.getMediaPath());
+        editor.apply();
 
 //        intent.putExtra("package_uninstall",APP_UNINSTALL_REQUEST_CODE);
 //        context.startActivity(intent);

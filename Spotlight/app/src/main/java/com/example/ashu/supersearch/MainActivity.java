@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -42,6 +43,7 @@ import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.setting.SettingActivity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -637,8 +639,35 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == APP_UNINSTALL_REQUEST_CODE)
-            Log.e("Uninstall", "onActivityResult: " + resultCode);
+            {
+                String packageName = sharedPreferences.getString("app_package_name",null);
+                if (!isAppPersist(packageName)){
+                    int position = sharedPreferences.getInt("app_position",0);
+                    Log.e("Uninstall", "onActivityResult: " + position );
+                    Iterator<MediaInfo> appIterator = myAppArrayList.iterator();
+                    while (appIterator.hasNext())
+                    {
+                        if (appIterator.next().getMediaPath().equals(packageName)){
+                            appIterator.remove();
+                            appAdaptor.notifyChange(position);
+                        }
+                    }
+                }
 
+            }
+    }
+
+    private boolean isAppPersist(String packageName){
+        ApplicationInfo applicationInfo;
+
+        try {
+            applicationInfo = this.getPackageManager().getApplicationInfo(packageName,0);
+            if (applicationInfo == null)
+                return false;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
