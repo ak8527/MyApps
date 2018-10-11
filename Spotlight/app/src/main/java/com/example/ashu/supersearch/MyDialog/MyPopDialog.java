@@ -33,6 +33,7 @@ public class MyPopDialog extends DialogFragment {
     @BindView(R.id.sizeNameTv) TextView sizeTv;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.lastModifiedTv) TextView modifiedTv;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.sizeHelpTv) TextView sizeHelpTv;
 
     public static MyPopDialog newInstance(MediaInfo mediaInfo) {

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,14 +13,10 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +30,6 @@ import com.example.ashu.supersearch.BuildConfig;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.R;
 
-import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -161,8 +155,8 @@ public class SettingActivity extends AppCompatActivity {
         final RadioButton bottomBar;
         final RadioGroup radioGroup;
 
-        @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_selection,null);
+//        View view = LayoutInflater.from(this).inflate(R.layout.layout_selection,null);
+        View view = View.inflate(this,R.layout.layout_selection,null);
        final AlertDialog builder =  new AlertDialog.Builder(this)
                 .setTitle(R.string.search_bar_position)
                 .setView(view)
@@ -228,16 +222,18 @@ public class SettingActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this,MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
+    AlertDialog builder;
 
     @OnClick(R.id.faq)
     public void showFaqDialog(){
         TextView textView;
-        View view = LayoutInflater.from(this).inflate(R.layout.faq_dialog_layout,null);
-        AlertDialog builder = new AlertDialog.Builder(this)
+//        View view = LayoutInflater.from(this).inflate(R.layout.faq_dialog_layout,null);
+        View view = View.inflate(this,R.layout.faq_dialog_layout,null);
+        builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.faq)
                 .setView(view)
                 .show();
@@ -267,14 +263,16 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
+    @SuppressWarnings("WeakerAccess")
     class MyClickableSpan extends ClickableSpan{
-        int position;
+        final int position;
         public MyClickableSpan(int position){
             this.position = position;
         }
 
         @Override
         public void onClick(@NonNull View widget) {
+            builder.dismiss();
                 if (position == 0){
                     openPlayStorePage(getResources().getString(R.string.solidExplorer));
                 } else {
@@ -283,7 +281,7 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    public void openPlayStorePage(String packageName){
+    private void openPlayStorePage(String packageName){
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + packageName );
         intent.setData(uri);

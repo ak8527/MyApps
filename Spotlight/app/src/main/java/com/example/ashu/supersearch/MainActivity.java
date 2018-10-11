@@ -1,16 +1,11 @@
 package com.example.ashu.supersearch;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,12 +26,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -652,7 +643,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
     public void helpDialog(){
-        final View view = LayoutInflater.from(this).inflate(R.layout.help_setting_dialog,null);
+//        final View view = LayoutInflater.from(this).inflate(R.layout.help_setting_dialog,null);
+        View view = View.inflate(this,R.layout.help_setting_dialog,null);
 
        final AlertDialog builder = new AlertDialog.Builder(this)
                 .setTitle("Help & Feedback")
@@ -665,7 +657,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                 builder.dismiss();
                 String subject = "Feedback for Super Search";
-                String bodyText = "Android Version : " + Build.VERSION.SDK_INT
+                String bodyText = "App Version : " + BuildConfig.VERSION_NAME
+                        + "\nAndroid Version : " + Build.VERSION.SDK_INT
                         + "\nDevice : " + Build.BRAND + " " +Build.MODEL;
                 String mailto = "mailto:ashutoshkumar1320@gmail.com" +
                         "?subject=" + Uri.encode(subject) +
