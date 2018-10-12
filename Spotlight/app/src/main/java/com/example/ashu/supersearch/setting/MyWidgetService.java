@@ -62,8 +62,9 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
         if (intent.hasExtra("KEY")) {
             startActivity(intent);
         }
-
-        createNotificationChannel();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            createNotificationChannel();
+        }
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
@@ -167,7 +168,7 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
     public boolean onTouch(View view, MotionEvent event) {
         if (gestureDetector.onTouchEvent(event)) {
             Intent intent = new Intent(this,MainActivity.class);
-
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         } else {
 

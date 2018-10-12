@@ -254,9 +254,9 @@ public class InfoList {
             browserList = pm.queryIntentActivities(intent, 0);
         }
 
-        browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
-        browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
-        browserAppList.add(new MediaInfo("Google","com.google.android.googlequicksearchbox"));
+//        browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
+//        browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
+//        browserAppList.add(new MediaInfo("Google","com.google.android.googlequicksearchbox"));
 
 
         for (ResolveInfo resolveInfo : browserList){

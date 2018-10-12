@@ -2,20 +2,23 @@ package com.example.ashu.supersearch;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -25,7 +28,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -134,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     ScrollView scrollV;
 
 
+
+
     SharedPreferences sharedPreferences;
     public static final int MY_TELEPHONE_REQUEST_CODE = 111;
 
@@ -152,8 +156,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         setHelperText();
 
-        ImageView imageView = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
-        imageView.setColorFilter(Color.BLACK);
+
+
         Log.e(TAG, "onCreate: ");
 
         /*
@@ -178,8 +182,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         GridLayoutManager searchLayoutManager = new GridLayoutManager(this, browserListSize);
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
-        appRecyclerView.setLayoutManager(linearLayoutManager);
+        GridLayoutManager appLayout = new GridLayoutManager(this, 5);
 
+//        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.spacing);
+//        appRecyclerView.addItemDecoration(itemDecoration);
+        int spanCount = 5; // 3 columns
+        int spacing = dpToPixel(8); // 50px
+        boolean includeEdge = false;
+//        appRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
+        appRecyclerView.addItemDecoration(new ItemOffsetDecoration(this,R.dimen.spacing));
+        appRecyclerView.setLayoutManager(appLayout);
 
 
         /*
@@ -217,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         popupMenu = new PopupMenu(this,settingMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
+
+
 
 
 
@@ -709,4 +724,92 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
     }
+
+
+    public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
+
+        private int mItemOffset;
+
+        public ItemOffsetDecoration(int itemOffset) {
+            mItemOffset = itemOffset;
+        }
+
+        public ItemOffsetDecoration(@NonNull Context context, @DimenRes int itemOffsetId) {
+            this(context.getResources().getDimensionPixelSize(itemOffsetId));
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset);
+        }
+    }
+
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+            outRect.left = space;
+            outRect.right = space;
+            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) == 0) {
+                outRect.top = space;
+            } else {
+                outRect.top = 0;
+            }
+        }
+    }
+
+
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+    private int dpToPixel(int dp) {
+        float density = getResources()
+                .getDisplayMetrics()
+                .density;
+        return Math.round((float) dp * density);
+    }
+
 }

@@ -17,7 +17,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="40dp"
-            android:src="@drawable/ic_action_file"
+            android:src="@drawable/ic_action_file_48dp"
             app:civ_circle_background_color="@color/phoneColor"
             android:layout_height="40dp" />
 
@@ -47,7 +47,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_action_image"
+            android:src="@drawable/ic_action_image_48dp"
             app:civ_circle_background_color="@color/imageColor"/>
 
 
@@ -78,7 +78,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_action_song"
+            android:src="@drawable/ic_action_song_48dp"
             app:civ_circle_background_color="@color/audioColor"/>
 
         <TextView
@@ -108,7 +108,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_action_movie"
+            android:src="@drawable/ic_action_movie_48dp"
             app:civ_circle_background_color="@color/movieColor"/>
 
         <TextView

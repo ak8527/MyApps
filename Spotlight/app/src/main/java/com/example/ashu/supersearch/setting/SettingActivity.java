@@ -1,6 +1,5 @@
 package com.example.ashu.supersearch.setting;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -226,7 +224,7 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    AlertDialog builder;
+    private AlertDialog builder;
 
     @OnClick(R.id.faq)
     public void showFaqDialog(){

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -24,11 +25,14 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -65,7 +69,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int MY_TELEPHONE_REQUEST_CODE = 111;
     private String searchText = "";
     private boolean moreFiles = false;
-    SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
 
 
     private final Context context;
@@ -89,6 +93,15 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case APP_ID:
             case SEARCH_APP_ID:
                 view = layoutInflater.inflate(R.layout.app_list_item, parent, false);
+//                int width = parent.getMeasuredWidth() / 5;
+//
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT);
+//                params.setMargins(0, 16,0, 16);
+//
+//                view.setLayoutParams(params);
+
+
                 return new AppHolder(view);
             case SETTING_ID:
             case AUDIO_ID:
@@ -287,24 +300,32 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 String extension = extensionFind(mediaInfo.getMediaName());
                 switch (extension) {
+                    case "pdf":
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_pdf_48dp);
+                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+                        break;
+                    case "compress":
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_zip_48dp);
+                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+                        break;
                     case "image":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image);
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
                         break;
                     case "text":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file);
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
                         break;
                     case "video":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie);
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
                         break;
                     case "audio":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song);
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
                         break;
                     default:
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_folder);
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_folder_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.folderColor));
 
                         break;
@@ -408,7 +429,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemCount() {
         if (mediaId == APP_ID) {
-            return myAppArrayList.size() <= 4 ? myAppArrayList.size() : 5;
+            return myAppArrayList.size() < 5 ? myAppArrayList.size() : 5;
         } else if (mediaId == SEARCH_APP_ID) {
             return mediaInfoArrayList.size() <= 6 ? mediaInfoArrayList.size() : 6;
         } else if (mediaId == FILE_ID) {
@@ -444,16 +465,16 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ButterKnife.bind(this, itemView);
             if (mediaId == CONTACT_ID) {
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.phoneColor));
-                mediaIv.setImageResource(R.drawable.ic_action_contact);
+                mediaIv.setImageResource(R.drawable.ic_action_contact_48dp);
                 callImageView = itemView.findViewById(R.id.callIcon);
                 callImageView.setVisibility(View.VISIBLE);
                 chatImageView = itemView.findViewById(R.id.chatIcon);
                 chatImageView.setVisibility(View.VISIBLE);
             } else if (mediaId == SETTING_ID) {
-                mediaIv.setImageResource(R.drawable.ic_action_setting);
+                mediaIv.setImageResource(R.drawable.ic_action_setting_48dp);
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             } else if (mediaId == AUDIO_ID) {
-                mediaIv.setImageResource(R.drawable.ic_action_song);
+                mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
 
             }
@@ -471,18 +492,34 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ButterKnife.bind(this,itemView);
             if (mediaId == SEARCH_APP_ID) {
                 textView.setVisibility(View.GONE);
-                imageView.getLayoutParams().height = dpToPixel();
-                imageView.getLayoutParams().width = dpToPixel();
-            }
+//                imageView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+//                imageView.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
 
+                imageView.getLayoutParams().height = dpToPixel(32);
+                imageView.getLayoutParams().width = dpToPixel(32);
+            }
+//            else {
+//                imageView.getLayoutParams().width = getScreenWidth()/getItemCount();
+//                imageView.getLayoutParams().height = getScreenWidth()/getItemCount();
+//            }
         }
     }
 
-    private int dpToPixel() {
+    public int getScreenWidth() {
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size.x;
+    }
+
+    private int dpToPixel(int dp) {
         float density = context.getResources()
                 .getDisplayMetrics()
                 .density;
-        return Math.round((float) 32 * density);
+        return Math.round((float) dp * density);
     }
 
 
@@ -490,7 +527,16 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         String[] image = new String[]{".jpg", ".jpeg", ".png", ".gif"};
         String[] video = new String[]{".mkv", ".mp4", ".3gp", ".avi"};
         String[] audio = new String[]{".mp3", ".aac", ".wav", ".wma", ".ogg"};
-        String[] doc = new String[]{".txt", ".doc", ".pdf", ".docs", ".xls"};
+        String[] doc = new String[]{".txt", ".doc", ".docs", ".xls"};
+        String[] compress = new String[]{".zip", ".7z", ".rar", ".tar"};
+
+        if (text.toLowerCase(Locale.getDefault()).endsWith(".pdf"))
+            return "pdf";
+
+        for (String extension : compress) {
+            if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
+                return "compress";
+        }
 
         for (String extension : image) {
             if (text.toLowerCase(Locale.getDefault()).endsWith(extension))
