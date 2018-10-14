@@ -13,6 +13,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.ashu.supersearch.BuildConfig;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.MyPopDialog;
@@ -64,6 +66,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int FILE_ID = 5;
     public static final int SEARCH_APP_ID = 6;
     public static final int APP_UNINSTALL_REQUEST_CODE = 200;
+    public static final int REQUEST_WRITE_PERMISSION = 786;
     private String spannableText;
     private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
     private static final int MY_TELEPHONE_REQUEST_CODE = 111;
@@ -300,13 +303,17 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 String extension = extensionFind(mediaInfo.getMediaName());
                 switch (extension) {
+                    case "app" :
+                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_android_48dp);
+                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.appColor));
+                        break;
                     case "pdf":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_pdf_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.pdfColor));
                         break;
                     case "compress":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_zip_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.compressColor));
                         break;
                     case "image":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image_48dp);
@@ -335,7 +342,14 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public void onClick(View v) {
                         if (file.isFile()) {
-                            resultDialog(filePath);
+                            if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".pdf"))
+                                openFile("application/pdf",file);
+                            else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".zip"))
+                                openFile("application/zip",file);
+                            else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".apk"))
+                                installAppCheckPermission(new File(filePath));
+                            else
+                                resultDialog(filePath);
                            } else {
                             openFolder(filePath);
                         }
@@ -369,6 +383,41 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 });
             }
+        }
+    }
+
+    public void installAppCheckPermission(File file){
+        if ( ContextCompat.checkSelfPermission(context, Manifest.permission.REQUEST_INSTALL_PACKAGES) == PackageManager.PERMISSION_GRANTED){
+            installApp(file);
+            Log.e("Uninstall", "installApp: " + file.getName());
+
+        } else {
+            editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
+            editor.putString("install_app",file.getName());
+            editor.apply();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Log.e("Uninstall", "installApp1: " + file.getName());
+
+                requestPermissions((Activity) context,new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES},REQUEST_WRITE_PERMISSION);
+            }
+        }
+    }
+
+    public void installApp(File file){
+        Log.e("Uninstall", "installApp: " + file.getName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            Uri uri = Uri.fromFile(file);
+//            Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
+            intent.setDataAndType(uri,"application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            context.startActivity(intent);
+        } else {
+            Uri apkUri = Uri.fromFile(file);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 
@@ -472,7 +521,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 chatImageView.setVisibility(View.VISIBLE);
             } else if (mediaId == SETTING_ID) {
                 mediaIv.setImageResource(R.drawable.ic_action_setting_48dp);
-                mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.settingColor));
             } else if (mediaId == AUDIO_ID) {
                 mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
@@ -530,6 +579,9 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         String[] doc = new String[]{".txt", ".doc", ".docs", ".xls"};
         String[] compress = new String[]{".zip", ".7z", ".rar", ".tar"};
 
+        if (text.toLowerCase(Locale.getDefault()).endsWith(".apk"))
+            return "app";
+
         if (text.toLowerCase(Locale.getDefault()).endsWith(".pdf"))
             return "pdf";
 
@@ -568,7 +620,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 .setTitle("Open As")
                 .setView(dialogView)
                 .show();
-        TextView imageView, audioView, videoView, textView;
+        LinearLayout imageView, audioView, videoView, textView;
         imageView = dialogView.findViewById(R.id.dialogImageView);
         audioView = dialogView.findViewById(R.id.dialogAudioView);
         videoView = dialogView.findViewById(R.id.dialogVideoView);
@@ -770,6 +822,15 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //        intent.putExtra("package_uninstall",APP_UNINSTALL_REQUEST_CODE);
 //        context.startActivity(intent);
         ((MainActivity)context).startActivityForResult(intent,APP_UNINSTALL_REQUEST_CODE);
+    }
+
+
+    private void openFile(String type, File file){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
+        intent.setDataAndType(uri,type);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(intent);
     }
 
 

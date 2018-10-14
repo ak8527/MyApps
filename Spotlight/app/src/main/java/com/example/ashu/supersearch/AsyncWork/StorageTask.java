@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class StorageTask extends AsyncTask<Void, Void, Void> {
     private ArrayList<MediaInfo> filesList;
+    private ArrayList<MediaInfo> filesList1;
     private final InfoList infoList;
     private final MediaResponse delegate ;
 
@@ -27,7 +28,9 @@ public class StorageTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         final String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            filesList = infoList.getMyStorageList(new File("/storage/"));
+            filesList = infoList.getMyStorageList(new File("/storage"));
+            filesList1 = infoList.getMyStorageList(Environment.getExternalStorageDirectory());
+            filesList.addAll(filesList1);
         }
         return null;
     }

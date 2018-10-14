@@ -40,10 +40,8 @@
         android:id="@+id/searchBarPosition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
+        android:padding="16dp"
+        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customization">
@@ -67,9 +65,8 @@
             android:fontFamily="sans-serif"
             android:text="@string/bottom"
             android:textAlignment="viewStart"
-            android:textColor="@color/settingTextColor"
+            android:textColor="@color/secondaryTextColor"
             android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -81,9 +78,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:paddingStart="16dp"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
         android:text="@string/access"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
@@ -96,10 +92,8 @@
         android:id="@+id/settingAssistView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
+        android:padding="16dp"
+        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13">
@@ -124,9 +118,8 @@
             android:fontFamily="sans-serif"
             android:text="@string/launch_app"
             android:textAlignment="viewStart"
-            android:textColor="@color/settingTextColor"
+            android:textColor="@color/secondaryTextColor"
             android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -147,10 +140,10 @@
         android:id="@+id/tapAnySetting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2">
@@ -175,9 +168,8 @@
             android:fontFamily="sans-serif"
             android:text="@string/tap_to_launch"
             android:textAlignment="viewStart"
-            android:textColor="@color/settingTextColor"
+            android:textColor="@color/secondaryTextColor"
             android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -200,9 +192,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:paddingStart="16dp"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
         android:text="@string/about"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
@@ -211,20 +202,33 @@
         app:layout_constraintTop_toBottomOf="@+id/tapAnySetting" />
 
 
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/versionCodeSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about">
+
+
+
+
+
     <TextView
         android:id="@+id/version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
         android:text="@string/version"
         android:textColor="@color/primaryTextColor"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 
@@ -233,16 +237,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:textStyle="bold"
         android:text="@string/version_code"
         android:textColor="@color/secondaryTextColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/version" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <View
         android:id="@+id/view3"
@@ -251,7 +253,7 @@
         android:background="@color/dividerColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/versionCode" />
+        app:layout_constraintTop_toBottomOf="@+id/versionCodeSetting" />
 
 
 
@@ -260,16 +262,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
+        android:padding="16dp"
         android:text="@string/faq"
         android:textColor="@color/primaryTextColor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        android:background="?android:attr/selectableItemBackground"/>
 
 
 

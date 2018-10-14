@@ -45,6 +45,7 @@ import com.example.ashu.supersearch.Interface.MediaResponse;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.setting.SettingActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -57,6 +58,7 @@ import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_UNINSTALL_RE
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.AUDIO_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.CONTACT_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.FILE_ID;
+import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.REQUEST_WRITE_PERMISSION;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.SEARCH_APP_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.SETTING_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.VIDEO_ID;
@@ -455,6 +457,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     isStorageTaskExecute();
                 isPermissionLayoutVisible();
+                return;
+            }
+
+            case REQUEST_WRITE_PERMISSION :{
+                Log.e("Uninstall", "onRequestPermissionsResult: " );
+
+                String packageName = sharedPreferences.getString("install_app",null);
+                appAdaptor.installApp(new File(packageName));
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Log.e("Uninstall", "onRequestPermissionsResult: " );
+
+                }
 
             }
 

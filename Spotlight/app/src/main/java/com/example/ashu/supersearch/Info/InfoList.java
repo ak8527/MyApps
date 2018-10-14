@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.example.ashu.supersearch.Media.MediaInfo;
 
@@ -161,6 +162,11 @@ public class InfoList {
     private final ArrayList<MediaInfo> myStorageList = new ArrayList<>();
 
     public ArrayList<MediaInfo> getMyStorageList(File directory) {
+        File[] list = directory.listFiles();
+        for (File file : list)
+        Log.e("Storage", "getAllFilesOfDir: " + file.getName());
+
+
         getAllFilesOfDir(directory);
         return myStorageList;
     }
