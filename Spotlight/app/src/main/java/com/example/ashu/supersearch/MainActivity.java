@@ -457,24 +457,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     isStorageTaskExecute();
                 isPermissionLayoutVisible();
-                return;
             }
-
-            case REQUEST_WRITE_PERMISSION :{
-                Log.e("Uninstall", "onRequestPermissionsResult: " );
-
-                String packageName = sharedPreferences.getString("install_app",null);
-                appAdaptor.installApp(new File(packageName));
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Log.e("Uninstall", "onRequestPermissionsResult: " );
-
-                }
-
-            }
-
 
         }
     }
+
+
 
     /**
      * @return storagePermission status.

@@ -347,7 +347,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".zip"))
                                 openFile("application/zip",file);
                             else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".apk"))
-                                installAppCheckPermission(new File(filePath));
+                                installApp(new File(filePath));
                             else
                                 resultDialog(filePath);
                            } else {
@@ -386,40 +386,22 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public void installAppCheckPermission(File file){
-        if ( ContextCompat.checkSelfPermission(context, Manifest.permission.REQUEST_INSTALL_PACKAGES) == PackageManager.PERMISSION_GRANTED){
-            installApp(file);
-            Log.e("Uninstall", "installApp: " + file.getName());
-
-        } else {
-            editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
-            editor.putString("install_app",file.getName());
-            editor.apply();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Log.e("Uninstall", "installApp1: " + file.getName());
-
-                requestPermissions((Activity) context,new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES},REQUEST_WRITE_PERMISSION);
-            }
-        }
-    }
-
-    public void installApp(File file){
-        Log.e("Uninstall", "installApp: " + file.getName());
+    private void installApp(File file){
+        Intent intent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-            Uri uri = Uri.fromFile(file);
-//            Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
-            intent.setDataAndType(uri,"application/vnd.android.package-archive");
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            context.startActivity(intent);
+            Uri apkUri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
+            intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            intent.setData(apkUri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             Uri apkUri = Uri.fromFile(file);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
         }
+        context.startActivity(intent);
     }
+
 
     public void calling() {
         Intent intent = new Intent(Intent.ACTION_CALL);
