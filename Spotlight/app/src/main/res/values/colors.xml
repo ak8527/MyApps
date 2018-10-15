@@ -5,21 +5,23 @@
     <color name="colorAccent">#1976D2</color>
     <color name="primaryTextColor">#212121</color>
     <color name="secondaryTextColor">#757575</color>
+    <color name="appSecondaryTextColor">#9E9E9E</color>
     <color name="dividerColor">#E0E0E0</color>
     <color name="lightPrimaryColor" tools:keep="@color/lightPrimaryColor">#BBDEFB</color>
     <color name="textIconColor" tools:keep="@color/textIconColor">#FFFFFF</color>
     <color name="folderColor">#607D8B</color>
-    <color name="phoneColor">#00BCD4</color>
+    <color name="phoneColor">#2196F3</color>
     <color name="movieColor">#F44336</color>
     <color name="imageColor">#009688</color>
     <color name="audioColor">#FF9800</color>
     <color name="fileColor">#3F51B5</color>
     <color name="settingColor">#03A9F4</color>
-    <color name="compressColor">#6D4C41</color>
+    <color name="compressColor">#673AB7</color>
     <color name="pdfColor">#FF5722</color>
     <color name="settingTextColor">#9E9E9E</color>
     <color name="floatingBoxColor">#29b6f6</color>
     <color name="dialogPrimaryTextColor">#424242</color>
     <color name="appColor">#4CAF50</color>
+    <color name="propDialogColor">#616161</color>
 
 </resources>

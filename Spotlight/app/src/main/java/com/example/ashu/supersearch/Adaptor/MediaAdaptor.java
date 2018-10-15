@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -37,12 +39,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.ashu.supersearch.BuildConfig;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.MyPopDialog;
 import com.example.ashu.supersearch.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -66,7 +73,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int FILE_ID = 5;
     public static final int SEARCH_APP_ID = 6;
     public static final int APP_UNINSTALL_REQUEST_CODE = 200;
-    public static final int REQUEST_WRITE_PERMISSION = 786;
     private String spannableText;
     private final ArrayList<MediaInfo> myAppArrayList = new ArrayList<>();
     private static final int MY_TELEPHONE_REQUEST_CODE = 111;
@@ -250,12 +256,15 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             case AUDIO_ID: {
                 final MediaHolder mediaHolder = (MediaHolder) holder;
+                final File file = new File(mediaInfo.getMediaPath());
 
                 mediaHolder.mediaNameTv.setText(str);
+
+
+
                 mediaHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        File file = new File(mediaInfo.getMediaPath());
                         mediaOpen("audio/*", file);
                     }
                 });
@@ -274,7 +283,9 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 final MediaHolder mediaHolder = (MediaHolder) holder;
 
                 mediaHolder.mediaNameTv.setText(str);
+                mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
                 Glide.with(context)
+                        .setDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_action_movie_48dp))
                         .asBitmap()
                         .load(mediaInfo.getMediaPath())
                         .into(mediaHolder.mediaIv);
@@ -343,9 +354,9 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     public void onClick(View v) {
                         if (file.isFile()) {
                             if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".pdf"))
-                                openFile("application/pdf",file);
+                                mediaOpen("application/pdf",file);
                             else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".zip"))
-                                openFile("application/zip",file);
+                                mediaOpen("application/zip",file);
                             else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".apk"))
                                 installApp(new File(filePath));
                             else
@@ -800,19 +811,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
         editor.putString("app_package_name",mediaInfo.getMediaPath());
         editor.apply();
-
-//        intent.putExtra("package_uninstall",APP_UNINSTALL_REQUEST_CODE);
-//        context.startActivity(intent);
         ((MainActivity)context).startActivityForResult(intent,APP_UNINSTALL_REQUEST_CODE);
-    }
-
-
-    private void openFile(String type, File file){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
-        intent.setDataAndType(uri,type);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(intent);
     }
 
 

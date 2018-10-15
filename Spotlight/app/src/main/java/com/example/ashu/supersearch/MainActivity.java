@@ -18,7 +18,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -45,7 +44,6 @@ import com.example.ashu.supersearch.Interface.MediaResponse;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.setting.SettingActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -58,7 +56,6 @@ import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_UNINSTALL_RE
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.AUDIO_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.CONTACT_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.FILE_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.REQUEST_WRITE_PERMISSION;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.SEARCH_APP_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.SETTING_ID;
 import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.VIDEO_ID;
@@ -108,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private final ArrayList<MediaInfo> mySettingList = new ArrayList<>();
 
 
+    private PopupMenu popupMenu;
+
+
     @BindView(R.id.moreFileView)
     TextView moreTv;
     @BindView(R.id.permissionLayout)
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @BindView(R.id.searchView)
     SearchView searchView;
     @BindView(R.id.lineView) View view;
-    public static int i = 0;
+    public static boolean layout = true;
     @BindView(R.id.scrollV)
     ScrollView scrollV;
 
@@ -149,18 +149,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         getBarPosition();
         ButterKnife.bind(this);
         InfoList infoList = new InfoList(this);
-        if (i == 0){
+        if (layout){
             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MY_SETTING_PREF,MODE_PRIVATE).edit();
                 editor.putString("background_switch", "false");
                 editor.apply();
-                i++;
+                layout = false;
         }
 
         setHelperText();
 
 
-
-        Log.e(TAG, "onCreate: ");
 
         /*
          * Setting Layout Manager for recyclerView.
@@ -171,12 +169,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         songRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         filesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false) {
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            }
-        };
 
         int browserListSize = infoList.getBrowserList().size();
         if (browserListSize > 6) {
@@ -184,15 +176,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         GridLayoutManager searchLayoutManager = new GridLayoutManager(this, browserListSize);
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
+        int pixel = dpToPixel(16);
+        searchAppRecyclerView.addItemDecoration(new EqualSpacingItemDecoration(pixel));
         GridLayoutManager appLayout = new GridLayoutManager(this, 5);
-
-//        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.spacing);
-//        appRecyclerView.addItemDecoration(itemDecoration);
-        int spanCount = 5; // 3 columns
-        int spacing = dpToPixel(8); // 50px
-        boolean includeEdge = false;
-//        appRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
-        appRecyclerView.addItemDecoration(new ItemOffsetDecoration(this,R.dimen.spacing));
+        appRecyclerView.addItemDecoration(new EqualSpacingItemDecoration(pixel));
         appRecyclerView.setLayoutManager(appLayout);
 
 
@@ -598,32 +585,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         isPermissionGranted();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e(TAG, "onPause: " );
 
-    }
-    PopupMenu popupMenu;
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Log.e(TAG, "onResume: " );
-
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.e(TAG, "onRestart: ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(TAG, "onStop: " );
-    }
 
     @OnClick(R.id.threeDotMenu)
     public void setSettingMenu(){
@@ -662,7 +624,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 String packageName = sharedPreferences.getString("app_package_name",null);
                 if (!isAppPersist(packageName)){
                     int position = sharedPreferences.getInt("app_position",0);
-                    Log.e("Uninstall", "onActivityResult: " + position );
                     Iterator<MediaInfo> appIterator = myAppArrayList.iterator();
                     while (appIterator.hasNext())
                     {
@@ -727,91 +688,81 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-
-    public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
-
-        private int mItemOffset;
-
-        public ItemOffsetDecoration(int itemOffset) {
-            mItemOffset = itemOffset;
-        }
-
-        public ItemOffsetDecoration(@NonNull Context context, @DimenRes int itemOffsetId) {
-            this(context.getResources().getDimensionPixelSize(itemOffsetId));
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                                   RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset);
-        }
-    }
-
-
-    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
-        private int space;
-
-        public SpacesItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view,
-                                   RecyclerView parent, RecyclerView.State state) {
-            outRect.left = space;
-            outRect.right = space;
-            outRect.bottom = space;
-
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) == 0) {
-                outRect.top = space;
-            } else {
-                outRect.top = 0;
-            }
-        }
-    }
-
-
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
     private int dpToPixel(int dp) {
         float density = getResources()
                 .getDisplayMetrics()
                 .density;
         return Math.round((float) dp * density);
+    }
+
+    public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
+        private final int spacing;
+        private int displayMode;
+
+        public static final int HORIZONTAL = 0;
+        public static final int VERTICAL = 1;
+        public static final int GRID = 2;
+
+        public EqualSpacingItemDecoration(int spacing) {
+            this(spacing, -1);
+        }
+
+        public EqualSpacingItemDecoration(int spacing, int displayMode) {
+            this.spacing = spacing;
+            this.displayMode = displayMode;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildViewHolder(view).getAdapterPosition();
+            int itemCount = state.getItemCount();
+            RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+            setSpacingForDirection(outRect, layoutManager, position, itemCount);
+        }
+
+        private void setSpacingForDirection(Rect outRect,
+                                            RecyclerView.LayoutManager layoutManager,
+                                            int position,
+                                            int itemCount) {
+
+            // Resolve display mode automatically
+            if (displayMode == -1) {
+                displayMode = resolveDisplayMode(layoutManager);
+            }
+
+            switch (displayMode) {
+                case HORIZONTAL:
+                    outRect.left = spacing;
+                    outRect.right = position == itemCount - 1 ? spacing : 0;
+                    outRect.top = spacing;
+                    outRect.bottom = spacing;
+                    break;
+                case VERTICAL:
+                    outRect.left = spacing;
+                    outRect.right = spacing;
+                    outRect.top = spacing;
+                    outRect.bottom = position == itemCount - 1 ? spacing : 0;
+                    break;
+                case GRID:
+                    if (layoutManager instanceof GridLayoutManager) {
+                        GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+                        int cols = gridLayoutManager.getSpanCount();
+                        int rows = itemCount / cols;
+
+                        outRect.left = spacing;
+                        outRect.right = position % cols == cols - 1 ? spacing : 0;
+                        outRect.top = spacing/2;
+                        outRect.bottom = position / cols == rows - 1 ? spacing/2 : 0;
+                    }
+                    break;
+            }
+        }
+
+        private int resolveDisplayMode(RecyclerView.LayoutManager layoutManager) {
+            if (layoutManager instanceof GridLayoutManager) return GRID;
+            if (layoutManager.canScrollHorizontally()) return HORIZONTAL;
+            return VERTICAL;
+        }
     }
 
 }

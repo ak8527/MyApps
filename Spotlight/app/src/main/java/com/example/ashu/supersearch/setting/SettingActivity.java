@@ -42,10 +42,13 @@ public class SettingActivity extends AppCompatActivity {
     private AlertDialog builder;
 
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.searchAnyWhereSwitch)
     Switch searchAnyWhereSwitch;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.searchBarPositionTv)
     TextView searchBarPositionTv;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.versionCode)
     TextView versionCode;
     @BindView(R.id.toolbar)

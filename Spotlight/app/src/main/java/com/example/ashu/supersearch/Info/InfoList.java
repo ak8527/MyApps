@@ -162,17 +162,11 @@ public class InfoList {
     private final ArrayList<MediaInfo> myStorageList = new ArrayList<>();
 
     public ArrayList<MediaInfo> getMyStorageList(File directory) {
-        File[] list = directory.listFiles();
-        for (File file : list)
-        Log.e("Storage", "getAllFilesOfDir: " + file.getName());
-
-
         getAllFilesOfDir(directory);
         return myStorageList;
     }
 
     private void getAllFilesOfDir(File directory) {
-        // Log.d(TAG, "Directory: " + directory.getAbsolutePath() + "\n");
         myStorageList.add(new MediaInfo(directory.getName(),directory.getAbsolutePath()));
 
         final File[] files = directory.listFiles();
@@ -260,9 +254,15 @@ public class InfoList {
             browserList = pm.queryIntentActivities(intent, 0);
         }
 
-//        browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
-//        browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
-//        browserAppList.add(new MediaInfo("Google","com.google.android.googlequicksearchbox"));
+        if (isAppPersist("com.android.vending"))
+            browserAppList.add(new MediaInfo("Google Play Store","com.android.vending"));
+
+        if (isAppPersist("com.google.android.youtube"))
+            browserAppList.add(new MediaInfo("YouTube","com.google.android.youtube"));
+
+        if (isAppPersist("com.google.android.googlequicksearchbox"))
+            browserAppList.add(new MediaInfo("Google","com.google.android.googlequicksearchbox"));
+
 
 
         for (ResolveInfo resolveInfo : browserList){
@@ -273,6 +273,20 @@ public class InfoList {
 
         return browserAppList;
     }
+
+    private boolean isAppPersist(String packageName){
+        ApplicationInfo applicationInfo;
+
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo(packageName,0);
+            return applicationInfo != null;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 // --Commented out by Inspection STOP (15/8/18 9:45 PM)
 
 

@@ -1,12 +1,12 @@
 package com.example.ashu.supersearch.MyDialog;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -16,9 +16,11 @@ import com.example.ashu.supersearch.R;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +54,7 @@ public class MyPopDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String mediaName = getArguments() != null ? getArguments().getString("mediaName") : null;
         String mediaPath = getArguments() != null ? getArguments().getString("mediaPath") : null;
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()),  R.style.MyAlertDialog);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.prop_dialog, null);
         ButterKnife.bind(this,view);
 
@@ -65,6 +67,8 @@ public class MyPopDialog extends DialogFragment {
                         dialog.dismiss();
                     }
                 });
+
+
 
         File file;
         if (mediaPath != null) {
@@ -94,7 +98,7 @@ public class MyPopDialog extends DialogFragment {
 
 
     private String getMediaSize(File file){
-        return String.valueOf(file.length()/(1024*1024)) + " MB";
+        return String.valueOf(new DecimalFormat("##.##").format((float) file.length()/(1024*1024)) + " MB");
     }
 
     private String getMediaFolder(File file) {
