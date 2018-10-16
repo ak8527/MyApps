@@ -164,6 +164,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 
+
+
             case CONTACT_ID: {
                 MediaHolder contactHolder = (MediaHolder) holder;
                 contactHolder.mediaNameTv.setText(str);
@@ -218,6 +220,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 
+
+
             case SETTING_ID: {
                 MediaHolder mediaHolder = (MediaHolder) holder;
                 mediaHolder.mediaNameTv.setText(str);
@@ -231,6 +235,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 });
                 break;
             }
+
+
 
 
 
@@ -260,6 +266,15 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 break;
             }
+
+
+
+
+
+
+
+
+
             case VIDEO_ID: {
                 final MediaHolder mediaHolder = (MediaHolder) holder;
 
@@ -288,6 +303,14 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 });
                 break;
             }
+
+
+
+
+
+
+
+
             case FILE_ID: {
                 final MediaHolder mediaHolder = (MediaHolder) holder;
                 mediaHolder.mediaNameTv.setText(str);
@@ -574,7 +597,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void resultDialog(final String path) {
 
-        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view, null, true);
+//        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view, null, true);
+        View dialogView = View.inflate(context,R.layout.dialog_view,null);
         final AlertDialog builder = new AlertDialog.Builder(context)
                 .setTitle("Open As")
                 .setView(dialogView)
