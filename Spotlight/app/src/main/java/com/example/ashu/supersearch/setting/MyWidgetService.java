@@ -68,8 +68,8 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setContentTitle("Spotlight")
-                .setContentText("Spotlight is running.")
+                .setContentTitle("Super Search")
+                .setContentText("Super Search is running.")
                 .setAutoCancel(true)
                 .setContentIntent(pi)
                 .setColor(getResources().getColor(R.color.colorPrimary))
@@ -146,14 +146,6 @@ public class MyWidgetService extends Service implements View.OnTouchListener {
 
 
     }
-
-//    @OnClick(R.id.floatingBox)
-//    public void submit(){
-//        Intent intent = new Intent(this,MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
-//    }
-
 
 
     private int initialX;

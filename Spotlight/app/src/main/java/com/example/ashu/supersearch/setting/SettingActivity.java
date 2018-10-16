@@ -16,7 +16,6 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -51,6 +50,7 @@ public class SettingActivity extends AppCompatActivity {
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.versionCode)
     TextView versionCode;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -240,7 +240,6 @@ public class SettingActivity extends AppCompatActivity {
 
         int eStartingIndex = fullText.indexOf(esExplorer);
         int eEndingIndex = eStartingIndex + esExplorer.length();
-        Log.e("Setting", "showFaqDialog: " + eStartingIndex + " " + eEndingIndex);
 
         SpannableStringBuilder str = new SpannableStringBuilder(fullText);
 

@@ -9,15 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -28,28 +25,21 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.MyPopDialog;
 import com.example.ashu.supersearch.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -102,15 +92,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case APP_ID:
             case SEARCH_APP_ID:
                 view = layoutInflater.inflate(R.layout.app_list_item, parent, false);
-//                int width = parent.getMeasuredWidth() / 5;
-//
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT);
-//                params.setMargins(0, 16,0, 16);
-//
-//                view.setLayoutParams(params);
-
-
                 return new AppHolder(view);
             case SETTING_ID:
             case AUDIO_ID:
@@ -534,34 +515,19 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ButterKnife.bind(this,itemView);
             if (mediaId == SEARCH_APP_ID) {
                 textView.setVisibility(View.GONE);
-//                imageView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-//                imageView.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-                imageView.getLayoutParams().height = dpToPixel(32);
-                imageView.getLayoutParams().width = dpToPixel(32);
+                imageView.getLayoutParams().height = dpToPixel();
+                imageView.getLayoutParams().width = dpToPixel();
             }
-//            else {
-//                imageView.getLayoutParams().width = getScreenWidth()/getItemCount();
-//                imageView.getLayoutParams().height = getScreenWidth()/getItemCount();
-//            }
+
         }
     }
 
-    public int getScreenWidth() {
 
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        return size.x;
-    }
-
-    private int dpToPixel(int dp) {
+    private int dpToPixel() {
         float density = context.getResources()
                 .getDisplayMetrics()
                 .density;
-        return Math.round((float) dp * density);
+        return Math.round((float) 32 * density);
     }
 
 

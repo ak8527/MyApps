@@ -1,11 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name">Spotlight</string>
+    <string name="app_name">Super Search</string>
     <string name="appwidget_text" tools:keep="@string/appwidget_text">EXAMPLE</string>
     <string name="add_widget" tools:keep="@string/add_widget">Add widget</string>
     <string name="search_hint" tools:keep="@string/search_hint">Text</string>
     <string name="app_label" tools:keep="@string/app_label">Super</string>
-    <string name="permission_desc">Spotlight need access to storage and contacts to search songs, video, files, and contacts.</string>
+    <string name="permission_desc">Super Search need access to storage and contacts to search songs, video, files, and contacts.</string>
     <string name="allow_permission">Allow Permission</string>
     <string name="permission_required">Permission Required</string>
     <string name="more">MORE</string>

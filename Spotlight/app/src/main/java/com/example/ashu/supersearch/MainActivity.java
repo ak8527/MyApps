@@ -2,7 +2,6 @@ package com.example.ashu.supersearch;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -12,7 +11,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -26,13 +24,13 @@ import android.support.v7.widget.SearchView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ashu.supersearch.Adaptor.MediaAdaptor;
 import com.example.ashu.supersearch.AsyncWork.AppTask;
@@ -66,7 +64,6 @@ import static com.example.ashu.supersearch.setting.SettingActivity.MY_SETTING_PR
 
 @SuppressWarnings("WeakerAccess")
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MediaResponse {
-    private static final String TAG = "MainActivity";
     private static final int MY_STORAGE_REQUEST_CODE = 222;
     private static final int MY_CONTACT_REQUEST_CODE = 333;
     private static final int MY_STORAGE_AND_CONTACT_REQUEST_CODE = 444;
@@ -176,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         GridLayoutManager searchLayoutManager = new GridLayoutManager(this, browserListSize);
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
-        int pixel = dpToPixel(16);
+        int pixel = dpToPixel();
         searchAppRecyclerView.addItemDecoration(new EqualSpacingItemDecoration(pixel));
         GridLayoutManager appLayout = new GridLayoutManager(this, 5);
         appRecyclerView.addItemDecoration(new EqualSpacingItemDecoration(pixel));
@@ -241,9 +238,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-//            focusOnView();
-
         if (!newText.isEmpty()) {
             searchAppRecyclerView.setVisibility(View.VISIBLE);
             searchName.setVisibility(View.VISIBLE);
@@ -564,14 +558,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e(TAG, "onStart: " );
-
-
-    }
-
     @OnClick(R.id.moreFileView)
     public void moreFileView(){
         storageAdapter.moreFiles(true);
@@ -642,8 +628,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         try {
             applicationInfo = this.getPackageManager().getApplicationInfo(packageName,0);
-            if (applicationInfo == null)
-                return false;
+            return applicationInfo != null;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -679,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 try {
                     startActivity(emailIntent);
                 } catch (Exception e){
-                    Log.e(TAG, "onClick: ");
+                    Toast.makeText(getBaseContext(),"Sorry, Something went wrong!!!",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -688,11 +673,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    private int dpToPixel(int dp) {
+    private int dpToPixel() {
         float density = getResources()
                 .getDisplayMetrics()
                 .density;
-        return Math.round((float) dp * density);
+        return Math.round((float) 16 * density);
     }
 
     public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
@@ -713,7 +698,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             int position = parent.getChildViewHolder(view).getAdapterPosition();
             int itemCount = state.getItemCount();
             RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();

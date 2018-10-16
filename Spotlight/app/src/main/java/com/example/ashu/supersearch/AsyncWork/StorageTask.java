@@ -27,10 +27,9 @@ public class StorageTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         final String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            filesList = infoList.getMyStorageList(Environment.getExternalStorageDirectory());
-//            filesList = infoList.getMyStorageList(new File("/storage"));
-//            ArrayList<MediaInfo> filesList1 = infoList.getMyStorageList(Environment.getExternalStorageDirectory());
-//            filesList.addAll(filesList1);
+            filesList = infoList.getMyStorageList(new File("/storage"));
+            ArrayList<MediaInfo> filesList1 = infoList.getMyStorageList(Environment.getExternalStorageDirectory());
+            filesList.addAll(filesList1);
         }
         return null;
     }
