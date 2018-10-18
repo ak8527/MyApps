@@ -37,6 +37,11 @@
     <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
     </style>
 
+    <style name="MyPopUpWindowStyle">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <!-- Gets rid of the search icon -->
@@ -50,6 +55,7 @@
         <!-- The hint text that appears when the user has not typed anything -->
     </style>
     <style name="SearchTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
 
         <item name="searchViewStyle">@style/SearchViewStyle</item>
         <item name="popupMenuStyle">@style/MyPopupMenu</item>

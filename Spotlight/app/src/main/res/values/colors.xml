@@ -5,7 +5,6 @@
     <color name="colorAccent">#1976D2</color>
     <color name="primaryTextColor">#212121</color>
     <color name="secondaryTextColor">#757575</color>
-    <color name="appSecondaryTextColor">#9E9E9E</color>
     <color name="dividerColor">#E0E0E0</color>
     <color name="lightPrimaryColor" tools:keep="@color/lightPrimaryColor">#BBDEFB</color>
     <color name="textIconColor" tools:keep="@color/textIconColor">#FFFFFF</color>

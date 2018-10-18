@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    tools:layout_editor_absoluteY="25dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/folderLayout"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/shareLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/folderImage"
+            android:layout_width="24dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_folder_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/popup" />
+
+        <TextView
+            android:id="@+id/folderText"
+            style="@style/TextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="@string/open_folder"
+            app:layout_constraintStart_toEndOf="@+id/folderImage" />
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/shareLayout"
+        android:background="?android:selectableItemBackground"
+        android:layout_width="220dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/shareImage"
+            android:layout_width="24dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_share_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/popup"/>
+
+        <TextView
+            android:id="@+id/shareText"
+            style="@style/TextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="@string/share"
+            app:layout_constraintStart_toEndOf="@+id/shareImage" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/propLayout"
+        android:layout_width="220dp"
+        android:background="?android:selectableItemBackground"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shareLayout">
+
+        <ImageView
+            android:id="@+id/propImage"
+            android:layout_width="24dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_info_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/popup"/>
+
+        <TextView
+            android:id="@+id/propText"
+            style="@style/TextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="@string/properties"
+            app:layout_constraintStart_toEndOf="@+id/propImage" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

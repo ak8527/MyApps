@@ -61,5 +61,6 @@
     <string name="ans3">Opening folder is supported by only few file managers. Solid Explorer and ES File Explorer are most popular file manager which support opening folder.</string>
     <string name="esExplorer">com.estrongs.android.pop</string>
     <string name="solidExplorer">pl.solidexplorer2</string>
+    <string name="popup">PopUp</string>
 
 </resources>

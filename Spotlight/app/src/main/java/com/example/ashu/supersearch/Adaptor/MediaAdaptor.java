@@ -16,19 +16,16 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,14 +33,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.MyPopDialog;
+import com.example.ashu.supersearch.MyDialog.MyPopUpWindow;
 import com.example.ashu.supersearch.R;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -115,7 +110,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
-//        int drawable,drawableColor;
         final MediaInfo mediaInfo;
         int itemId = getItemViewType(position);
         if (itemId == SEARCH_APP_ID) {
@@ -135,9 +129,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (itemId) {
 
 
-
             case APP_ID: {
-                AppHolder appHolder = (AppHolder) holder;
+                final AppHolder appHolder = (AppHolder) holder;
                 final String packageName = mediaInfo.getMediaPath();
                 appHolder.imageView.setImageDrawable(getAppIconByPackageName(packageName));
                 appHolder.textView.setText(str);
@@ -152,19 +145,15 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 appHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        showMenu(((AppHolder) holder).imageView,mediaInfo,APP_ID);
-                        editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
-                        editor.putInt("app_position",holder.getAdapterPosition());
+                        showMyPopUpWindow("App", appHolder.imageView, mediaInfo);
+                        editor = context.getSharedPreferences(MY_SETTING_PREF, Context.MODE_PRIVATE).edit();
+                        editor.putInt("app_position", holder.getAdapterPosition());
                         editor.apply();
                         return false;
                     }
                 });
                 break;
             }
-
-
-
-
 
 
             case CONTACT_ID: {
@@ -201,12 +190,12 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     public void onClick(View v) {
                         Intent intent = new Intent(Intent.ACTION_CALL);
                         intent.setData(Uri.parse("tel:" + phoneNumber));
-                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                             context.startActivity(intent);
 
                         } else {
                             requestPermissions(
-                                    (Activity) context, new String[]{Manifest.permission.CALL_PHONE},MY_TELEPHONE_REQUEST_CODE);
+                                    (Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_TELEPHONE_REQUEST_CODE);
 
 
                         }
@@ -215,9 +204,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 break;
             }
-
-
-
 
 
             case SETTING_ID: {
@@ -235,10 +221,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
 
 
-
-
-
-
             case AUDIO_ID: {
                 final MediaHolder mediaHolder = (MediaHolder) holder;
                 final File file = new File(mediaInfo.getMediaPath());
@@ -251,17 +233,15 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     byte[] art = albumArt.getEmbeddedPicture();
                     BitmapFactory.Options opt = new BitmapFactory.Options();
                     opt.inSampleSize = 2;
-                    Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length,opt);
+                    Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length, opt);
                     Drawable drawable = new BitmapDrawable(context.getResources(), songImage);
                     Glide.with(context)
                             .load(drawable)
                             .into(mediaHolder.mediaIv);
+                } catch (Exception e) {
+                    mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
+                    mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
                 }
-                catch (Exception e)
-                { mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
-                 mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
-                }
-
 
 
                 mediaHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -274,20 +254,14 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,AUDIO_ID);
+//                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,AUDIO_ID);
+                        showMyPopUpWindow("Media", mediaHolder.mediaIv, mediaInfo);
                         return false;
                     }
                 });
 
                 break;
             }
-
-
-
-
-
-
-
 
 
             case VIDEO_ID: {
@@ -300,7 +274,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             .asBitmap()
                             .load(mediaInfo.getMediaPath())
                             .into(mediaHolder.mediaIv);
-                } catch (Exception e){
+                } catch (Exception e) {
                     mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
                     mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie_48dp);
                 }
@@ -317,18 +291,13 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,VIDEO_ID);
+//                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,VIDEO_ID);
+                        showMyPopUpWindow("Media", mediaHolder.mediaIv, mediaInfo);
                         return false;
                     }
                 });
                 break;
             }
-
-
-
-
-
-
 
 
             case FILE_ID: {
@@ -338,7 +307,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 String extension = extensionFind(mediaInfo.getMediaName());
                 switch (extension) {
-                    case "app" :
+                    case "app":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_android_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.appColor));
                         break;
@@ -360,7 +329,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
                         }
                     }
-                        break;
+                    break;
 
                     case "text":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file_48dp);
@@ -386,14 +355,14 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     public void onClick(View v) {
                         if (file.isFile()) {
                             if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".pdf"))
-                                mediaOpen("application/pdf",file);
+                                mediaOpen("application/pdf", file);
                             else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".zip"))
-                                mediaOpen("application/zip",file);
+                                mediaOpen("application/zip", file);
                             else if (mediaInfo.getMediaName().toLowerCase(Locale.getDefault()).endsWith(".apk"))
                                 installApp(new File(filePath));
                             else
                                 resultDialog(filePath);
-                           } else {
+                        } else {
                             openFolder(filePath);
                         }
                     }
@@ -404,7 +373,8 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public boolean onLongClick(View v) {
                         if (file.isFile()) {
-                            showMenu(mediaHolder.mediaIv,mediaInfo,FILE_ID);
+//                            showMenu(mediaHolder.mediaIv,mediaInfo,FILE_ID);
+                            showMyPopUpWindow("Media", mediaHolder.mediaIv, mediaInfo);
                         } else {
                             showPropDialog(mediaInfo);
                         }
@@ -429,7 +399,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private void installApp(File file){
+    private void installApp(File file) {
         Intent intent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri apkUri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
@@ -455,11 +425,12 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         context.startActivity(intent);
     }
 
-  public void notifyChange(int position){
+    public void notifyChange(int position) {
         myAppArrayList.remove(position);
         notifyItemRemoved(position);
 
-  }
+    }
+
     public boolean filter(String text) {
         spannableText = text;
         boolean ans = false;
@@ -546,23 +517,21 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaIv.setImageResource(R.drawable.ic_action_setting_48dp);
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.settingColor));
             }
-//            else if (mediaId == AUDIO_ID) {
-//                mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
-//                mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
-//
-//            }
+
         }
     }
 
 
     class AppHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.appNameTv) TextView textView;
-        @BindView(R.id.appImageView) ImageView imageView;
+        @BindView(R.id.appNameTv)
+        TextView textView;
+        @BindView(R.id.appImageView)
+        ImageView imageView;
 
         AppHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             if (mediaId == SEARCH_APP_ID) {
                 textView.setVisibility(View.GONE);
                 imageView.getLayoutParams().height = dpToPixel();
@@ -624,7 +593,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void resultDialog(final String path) {
 
-        View dialogView = View.inflate(context,R.layout.dialog_view,null);
+        View dialogView = View.inflate(context, R.layout.dialog_view, null);
         final AlertDialog builder = new AlertDialog.Builder(context)
                 .setTitle("Open As")
                 .setView(dialogView)
@@ -675,8 +644,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-
-
     private void mediaOpen(String type, File file) {
         Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
         Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
@@ -685,8 +652,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         context.startActivity(mediaIntent);
 
     }
-
-
 
 
     private void searchAppOpen(MediaInfo mediaInfo) {
@@ -724,17 +689,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private void shareMedia(File file) {
-        String type = extensionFind(file.getPath());
-        String intentType = type + "/*";
-
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        sharingIntent.setType(intentType);
-        context.startActivity(sharingIntent);
-    }
-
     private void showPropDialog(MediaInfo mediaInfo) {
         MyPopDialog newFragment = MyPopDialog.newInstance(mediaInfo);
         Activity activity = (Activity) context;
@@ -742,93 +696,10 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    @SuppressWarnings("WeakerAccess")
-    private void showMenu(View v, final MediaInfo mediaInfo, final int id) {
-        final PopupMenu popupMenu = new PopupMenu(context,v);
-        if (mediaId == APP_ID){
-            popupMenu.getMenuInflater().inflate(R.menu.app_menu, popupMenu.getMenu());
-        } else {
-            popupMenu.getMenuInflater().inflate(R.menu.media_popup_menu, popupMenu.getMenu());
-        }
-        popupMenu.show();
-
-        try {
-            Field[] fields = popupMenu.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                if ("mPopup".equals(field.getName())) {
-                    field.setAccessible(true);
-                    Object menuPopupHelper = field.get(popupMenu);
-                    Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
-                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
-                    setForceIcons.invoke(menuPopupHelper, true);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                File file = new File(mediaInfo.getMediaPath());
-                switch (item.getItemId()) {
-                    case R.id.folderMenu:
-                        if (id == APP_ID){
-                        openAppInfoPage(mediaInfo);
-                    } else {
-                        openFolder(file.getParent());
-                    }
-                        return true;
-
-                    case R.id.shareMenu:
-                        if (id == APP_ID){
-                            openAppPlayStorePage(mediaInfo);
-                        } else {
-                            shareMedia(file);
-                        }
-                        return true;
-
-                    case R.id.propMenu:
-                        if (id == APP_ID){
-                            uninstallApp(mediaInfo);
-                        } else {
-                            showPropDialog(mediaInfo);
-                        }
-                        return true;
-
-                    default:
-                        return false;
-
-                }
-            }
-        });
-
-
+    private void showMyPopUpWindow(String mediaName, View view, MediaInfo mediaInfo) {
+        MyPopUpWindow myPopUpWindow = new MyPopUpWindow(mediaName, context, mediaInfo);
+        myPopUpWindow.showPopUpWindow(view);
     }
-
-    private void openAppInfoPage(MediaInfo mediaInfo){
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
-        context.startActivity(intent);
-    }
-
-    private void openAppPlayStorePage(MediaInfo mediaInfo){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + mediaInfo.getMediaPath());
-        intent.setData(uri);
-        context.startActivity(intent);
-    }
-
-    private void uninstallApp(MediaInfo mediaInfo){
-        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
-        intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
-        editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
-        editor.putString("app_package_name",mediaInfo.getMediaPath());
-        editor.apply();
-        ((MainActivity)context).startActivityForResult(intent,APP_UNINSTALL_REQUEST_CODE);
-    }
-
 
 
 }
