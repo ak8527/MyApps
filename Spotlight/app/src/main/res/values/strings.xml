@@ -10,10 +10,10 @@
     <string name="permission_required">Permission Required</string>
     <string name="more">MORE</string>
     <string name="files">Files</string>
-    <string name="song">Song</string>
-    <string name="contact">Contact</string>
+    <string name="song">Songs</string>
+    <string name="contact">Contacts</string>
     <string name="apps">Apps</string>
-    <string name="videos">Video</string>
+    <string name="videos">Videos</string>
     <string name="image_for_call">Image For Call</string>
     <string name="image_for_message">Image For Message</string>
     <string name="menu_3_setting">Three dot menu Setting</string>

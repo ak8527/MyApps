@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         GridLayoutManager searchLayoutManager = new GridLayoutManager(this, browserListSize);
         searchAppRecyclerView.setLayoutManager(searchLayoutManager);
-        int pixel = dpToPixel();
+        int pixel = dpToPixel(12);
         searchAppRecyclerView.addItemDecoration(new EqualSpacingItemDecoration(pixel));
         GridLayoutManager appLayout = new GridLayoutManager(this, 5);
         appRecyclerView.addItemDecoration(new EqualSpacingItemDecoration(pixel));
@@ -673,11 +673,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    private int dpToPixel() {
+    private int dpToPixel(int size) {
         float density = getResources()
                 .getDisplayMetrics()
                 .density;
-        return Math.round((float) 16 * density);
+        return Math.round((float) size * density);
     }
 
     public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
@@ -733,11 +733,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
                         int cols = gridLayoutManager.getSpanCount();
                         int rows = itemCount / cols;
-
+                        int space = (spacing + dpToPixel(4))/2;
                         outRect.left = spacing;
                         outRect.right = position % cols == cols - 1 ? spacing : 0;
-                        outRect.top = spacing/2;
-                        outRect.bottom = position / cols == rows - 1 ? spacing/2 : 0;
+                        outRect.top = space;
+                        outRect.bottom = position / cols == rows - 1 ? space : 0;
                     }
                     break;
             }
@@ -749,5 +749,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             return VERTICAL;
         }
     }
+
 
 }

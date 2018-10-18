@@ -1,7 +1,6 @@
 package com.example.ashu.supersearch.Adaptor;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -9,8 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -24,7 +27,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.ashu.supersearch.MainActivity;
 import com.example.ashu.supersearch.Media.MediaInfo;
 import com.example.ashu.supersearch.MyDialog.MyPopDialog;
@@ -114,6 +115,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+//        int drawable,drawableColor;
         final MediaInfo mediaInfo;
         int itemId = getItemViewType(position);
         if (itemId == SEARCH_APP_ID) {
@@ -139,7 +141,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 final String packageName = mediaInfo.getMediaPath();
                 appHolder.imageView.setImageDrawable(getAppIconByPackageName(packageName));
                 appHolder.textView.setText(str);
-                Log.e("SettingApp", "onBindViewHolder: "+ packageName);
                 appHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -177,12 +178,9 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         intent.setData(Uri.parse("tel:" + phoneNumber));
                         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                             context.startActivity(intent);
-
                         } else {
                             requestPermissions(
                                     (Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_TELEPHONE_REQUEST_CODE);
-
-
                         }
                     }
                 });
@@ -247,6 +245,23 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 mediaHolder.mediaNameTv.setText(str);
 
+                try {
+                    MediaMetadataRetriever albumArt = new MediaMetadataRetriever();
+                    albumArt.setDataSource(mediaInfo.getMediaPath());
+                    byte[] art = albumArt.getEmbeddedPicture();
+                    BitmapFactory.Options opt = new BitmapFactory.Options();
+                    opt.inSampleSize = 2;
+                    Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length,opt);
+                    Drawable drawable = new BitmapDrawable(context.getResources(), songImage);
+                    Glide.with(context)
+                            .load(drawable)
+                            .into(mediaHolder.mediaIv);
+                }
+                catch (Exception e)
+                { mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
+                 mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+                }
+
 
 
                 mediaHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -279,12 +294,17 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 final MediaHolder mediaHolder = (MediaHolder) holder;
 
                 mediaHolder.mediaNameTv.setText(str);
-                mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
-                Glide.with(context)
-                        .setDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_action_movie_48dp))
-                        .asBitmap()
-                        .load(mediaInfo.getMediaPath())
-                        .into(mediaHolder.mediaIv);
+
+                try {
+                    Glide.with(context)
+                            .asBitmap()
+                            .load(mediaInfo.getMediaPath())
+                            .into(mediaHolder.mediaIv);
+                } catch (Exception e){
+                    mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
+                    mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie_48dp);
+                }
+
 
                 mediaHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -330,10 +350,18 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_zip_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.compressColor));
                         break;
-                    case "image":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
+                    case "image": {
+                        try {
+                            Glide.with(context)
+                                    .load(mediaInfo.getMediaPath())
+                                    .into(mediaHolder.mediaIv);
+                        } catch (Exception e) {
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
+                        }
+                    }
                         break;
+
                     case "text":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
@@ -341,7 +369,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     case "video":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
-                        break;
                     case "audio":
                         mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
                         mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
@@ -352,6 +379,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                         break;
                 }
+
                 final String filePath = mediaInfo.getMediaPath();
                 mediaHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -512,18 +540,17 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (mediaId == CONTACT_ID) {
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.phoneColor));
                 mediaIv.setImageResource(R.drawable.ic_action_contact_48dp);
-                callImageView = itemView.findViewById(R.id.callIcon);
                 callImageView.setVisibility(View.VISIBLE);
-                chatImageView = itemView.findViewById(R.id.chatIcon);
                 chatImageView.setVisibility(View.VISIBLE);
             } else if (mediaId == SETTING_ID) {
                 mediaIv.setImageResource(R.drawable.ic_action_setting_48dp);
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.settingColor));
-            } else if (mediaId == AUDIO_ID) {
-                mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
-                mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
-
             }
+//            else if (mediaId == AUDIO_ID) {
+//                mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
+//                mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+//
+//            }
         }
     }
 
@@ -597,7 +624,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void resultDialog(final String path) {
 
-//        @SuppressLint("InflateParams") final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_view, null, true);
         View dialogView = View.inflate(context,R.layout.dialog_view,null);
         final AlertDialog builder = new AlertDialog.Builder(context)
                 .setTitle("Open As")
@@ -797,12 +823,12 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void uninstallApp(MediaInfo mediaInfo){
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + mediaInfo.getMediaPath()));
-        intent.putExtra("name",20);
         editor = context.getSharedPreferences(MY_SETTING_PREF,Context.MODE_PRIVATE).edit();
         editor.putString("app_package_name",mediaInfo.getMediaPath());
         editor.apply();
         ((MainActivity)context).startActivityForResult(intent,APP_UNINSTALL_REQUEST_CODE);
     }
+
 
 
 }

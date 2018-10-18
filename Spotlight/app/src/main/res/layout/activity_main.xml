@@ -137,6 +137,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="@string/more"
+                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:visibility="gone" />

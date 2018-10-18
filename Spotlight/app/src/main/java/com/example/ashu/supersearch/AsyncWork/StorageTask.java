@@ -8,7 +8,6 @@ import com.example.ashu.supersearch.Info.InfoList;
 import com.example.ashu.supersearch.Interface.MediaResponse;
 import com.example.ashu.supersearch.Media.MediaInfo;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class StorageTask extends AsyncTask<Void, Void, Void> {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,54 +8,60 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:paddingEnd="16dp"
-    android:paddingStart="16dp">
-
+    android:paddingStart="16dp"
+    android:id="@+id/relativeLayout">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/mediaImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
-       />
-
-
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/mediaName"
         style="@style/TextTheme"
-        android:layout_marginStart="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
+        android:maxLines="1"
         android:textAlignment="viewStart"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/mediaImage"
-        tools:text="contact"
-        tools:ignore="SelectableText" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/callIcon"
+        app:layout_constraintStart_toEndOf="@id/mediaImage"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SelectableText"
+        tools:text="contact" />
 
     <ImageView
         android:id="@+id/callIcon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:padding="4dp"
         android:layout_marginEnd="8dp"
+        android:contentDescription="@string/image_for_call"
+        android:padding="4dp"
         android:src="@drawable/ic_call_black_24dp"
-        android:layout_toStartOf="@id/chatIcon"
         android:visibility="gone"
-        android:contentDescription="@string/image_for_call" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/chatIcon"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
-        android:layout_alignParentEnd="true"
         android:id="@+id/chatIcon"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:contentDescription="@string/image_for_message"
         android:padding="4dp"
-        android:visibility="gone"
         android:src="@drawable/ic_chat_black_24dp"
-        android:contentDescription="@string/image_for_message" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

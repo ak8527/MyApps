@@ -98,7 +98,8 @@ public class MyPopDialog extends DialogFragment {
 
 
     private String getMediaSize(File file){
-        return String.valueOf(new DecimalFormat("##.##").format((float) file.length()/(1024*1024)) + " MB");
+        float size = (float) file.length()/(1024*1024);
+        return size < 1000 ? String.valueOf(new DecimalFormat("##.##").format(size) + " MB") : String.valueOf(new DecimalFormat("##.##").format(size / 1024) + " GB");
     }
 
     private String getMediaFolder(File file) {
