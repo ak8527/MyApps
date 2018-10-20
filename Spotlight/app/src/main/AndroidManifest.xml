@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ashu.supersearch">
+    package="my.ak8527.ashu.supersearch">
 
     <uses-feature
         android:name="android.hardware.telephony"
@@ -25,7 +25,7 @@
 
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
-            android:name=".MainActivity"
+            android:name="my.ak8527.ashu.supersearch.MainActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -41,9 +41,9 @@
 
         </activity>
         <activity
-            android:name=".setting.SettingActivity"
+            android:name="my.ak8527.ashu.supersearch.setting.SettingActivity"
             android:label="Settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="my.ak8527.ashu.supersearch.MainActivity"
             android:theme="@style/SettingTheme">
 
         </activity>
@@ -51,7 +51,7 @@
 
 
 
-        <service android:name=".setting.MyWidgetService" />
+        <service android:name="my.ak8527.ashu.supersearch.setting.MyWidgetService" />
 
 
         <provider

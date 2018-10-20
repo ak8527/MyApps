@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Adaptor;
+package my.ak8527.ashu.supersearch.Adaptor;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,10 +33,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.MyDialog.MyPopDialog;
-import com.example.ashu.supersearch.MyDialog.MyPopUpWindow;
-import com.example.ashu.supersearch.R;
+import my.ak8527.ashu.supersearch.Media.MediaInfo;
+import my.ak8527.ashu.supersearch.MyDialog.MyPopDialog;
+import my.ak8527.ashu.supersearch.MyDialog.MyPopUpWindow;
+import my.ak8527.ashu.supersearch.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.support.v4.app.ActivityCompat.requestPermissions;
-import static com.example.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
+import static my.ak8527.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
 
 public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -407,7 +407,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void installApp(File file) {
         Intent intent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri apkUri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
+            Uri apkUri = FileProvider.getUriForFile(context, "my.ak8527.ashu.supersearch.fileprovider", file);
             intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
             intent.setData(apkUri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -650,7 +650,7 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void mediaOpen(String type, File file) {
         Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
+        Uri uri = FileProvider.getUriForFile(context, "my.ak8527.ashu.supersearch.fileprovider", file);
         mediaIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         mediaIntent.setDataAndType(uri, type);
         context.startActivity(mediaIntent);

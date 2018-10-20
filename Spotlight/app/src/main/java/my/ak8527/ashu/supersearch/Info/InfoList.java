@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Info;
+package my.ak8527.ashu.supersearch.Info;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 
-import com.example.ashu.supersearch.Media.MediaInfo;
+import my.ak8527.ashu.supersearch.Media.MediaInfo;
 
 import java.io.File;
 import java.util.ArrayList;

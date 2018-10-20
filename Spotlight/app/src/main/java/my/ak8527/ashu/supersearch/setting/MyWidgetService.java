@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.setting;
+package my.ak8527.ashu.supersearch.setting;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -19,12 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.ashu.supersearch.MainActivity;
-import com.example.ashu.supersearch.R;
+import my.ak8527.ashu.supersearch.MainActivity;
+import my.ak8527.ashu.supersearch.R;
 
 import butterknife.ButterKnife;
 
-import static com.example.ashu.supersearch.setting.SettingActivity.CHANNEL_ID;
+import static my.ak8527.ashu.supersearch.setting.SettingActivity.CHANNEL_ID;
 
 public class MyWidgetService extends Service implements View.OnTouchListener {
 

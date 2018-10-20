@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.MyDialog;
+package my.ak8527.ashu.supersearch.MyDialog;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,9 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.ashu.supersearch.MainActivity;
-import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.R;
+import my.ak8527.ashu.supersearch.MainActivity;
+import my.ak8527.ashu.supersearch.Media.MediaInfo;
+import my.ak8527.ashu.supersearch.R;
 
 import java.io.File;
 import java.util.Locale;
@@ -26,9 +26,9 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import my.ak8527.ashu.supersearch.Adaptor.MediaAdaptor;
 
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_UNINSTALL_REQUEST_CODE;
-import static com.example.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
+import static my.ak8527.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
 
 public class MyPopUpWindow {
 
@@ -154,7 +154,7 @@ public class MyPopUpWindow {
         SharedPreferences.Editor editor = context.getSharedPreferences(MY_SETTING_PREF, Context.MODE_PRIVATE).edit();
         editor.putString("app_package_name", mediaInfo.getMediaPath());
         editor.apply();
-        ((MainActivity) context).startActivityForResult(intent, APP_UNINSTALL_REQUEST_CODE);
+        ((MainActivity) context).startActivityForResult(intent, MediaAdaptor.APP_UNINSTALL_REQUEST_CODE);
     }
 
 
@@ -214,7 +214,7 @@ public class MyPopUpWindow {
         String intentType = type + "/*";
 
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        Uri uri = FileProvider.getUriForFile(context, "com.example.ashu.supersearch.fileprovider", file);
+        Uri uri = FileProvider.getUriForFile(context, "my.ak8527.ashu.supersearch.fileprovider", file);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
         sharingIntent.setType(intentType);
         context.startActivity(sharingIntent);

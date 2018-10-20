@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.Media;
+package my.ak8527.ashu.supersearch.Media;
 
 public class MediaInfo {
     private final String mediaName;

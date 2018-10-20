@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch;
+package my.ak8527.ashu.supersearch;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -32,15 +32,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ashu.supersearch.Adaptor.MediaAdaptor;
-import com.example.ashu.supersearch.AsyncWork.AppTask;
-import com.example.ashu.supersearch.AsyncWork.ContactTask;
-import com.example.ashu.supersearch.AsyncWork.MediaTask;
-import com.example.ashu.supersearch.AsyncWork.StorageTask;
-import com.example.ashu.supersearch.Info.InfoList;
-import com.example.ashu.supersearch.Interface.MediaResponse;
-import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.setting.SettingActivity;
+import my.ak8527.ashu.supersearch.Adaptor.MediaAdaptor;
+import my.ak8527.ashu.supersearch.AsyncWork.AppTask;
+import my.ak8527.ashu.supersearch.AsyncWork.ContactTask;
+import my.ak8527.ashu.supersearch.AsyncWork.MediaTask;
+import my.ak8527.ashu.supersearch.AsyncWork.StorageTask;
+
+import my.ak8527.ashu.supersearch.BuildConfig;
+
+import my.ak8527.ashu.supersearch.Info.InfoList;
+import my.ak8527.ashu.supersearch.Interface.MediaResponse;
+import my.ak8527.ashu.supersearch.Media.MediaInfo;
+
+import my.ak8527.ashu.supersearch.R;
+
+import my.ak8527.ashu.supersearch.setting.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,17 +55,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.APP_UNINSTALL_REQUEST_CODE;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.AUDIO_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.CONTACT_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.FILE_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.SEARCH_APP_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.SETTING_ID;
-import static com.example.ashu.supersearch.Adaptor.MediaAdaptor.VIDEO_ID;
-import static com.example.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
+import static my.ak8527.ashu.supersearch.setting.SettingActivity.MY_SETTING_PREF;
 
-//import com.example.ashu.supersearch.AsyncWork.AppTask;
+//import AppTask;
 
 
 @SuppressWarnings("WeakerAccess")
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
 
-        searchAppAdaptor = new MediaAdaptor(this, (ArrayList<MediaInfo>) infoList.getBrowserList(),SEARCH_APP_ID);
+        searchAppAdaptor = new MediaAdaptor(this, (ArrayList<MediaInfo>) infoList.getBrowserList(), MediaAdaptor.SEARCH_APP_ID);
         searchAppRecyclerView.setAdapter(searchAppAdaptor);
         searchAppRecyclerView.setVisibility(View.GONE);
 
@@ -327,13 +325,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
      */
 
     private void setStorageAdapter() {
-        storageAdapter = new MediaAdaptor(this, myStorageList,FILE_ID);
+        storageAdapter = new MediaAdaptor(this, myStorageList, MediaAdaptor.FILE_ID);
         filesRecyclerView.setAdapter(storageAdapter);
 
-        songAdaptor = new MediaAdaptor(this, mySongArrayList,AUDIO_ID);
+        songAdaptor = new MediaAdaptor(this, mySongArrayList, MediaAdaptor.AUDIO_ID);
         songRecyclerView.setAdapter(songAdaptor);
 
-        videoAdaptor = new MediaAdaptor(this, myVideoArrayList,VIDEO_ID);
+        videoAdaptor = new MediaAdaptor(this, myVideoArrayList, MediaAdaptor.VIDEO_ID);
         videoRecyclerView.setAdapter(videoAdaptor);
 
     }
@@ -345,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void setContactAdaptor() {
 
-        contactAdaptor = new MediaAdaptor(this, myContactList,CONTACT_ID);
+        contactAdaptor = new MediaAdaptor(this, myContactList, MediaAdaptor.CONTACT_ID);
         contactRecyclerView.setAdapter(contactAdaptor);
 
 
@@ -357,11 +355,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
            Set recyclerView for App.
            (ArrayList<App>) infoList.GetAllInstalledApkInfo()
          */
-        appAdaptor = new MediaAdaptor(this, myAppArrayList,APP_ID);
+        appAdaptor = new MediaAdaptor(this, myAppArrayList, MediaAdaptor.APP_ID);
         appRecyclerView.setNestedScrollingEnabled(false);
         appRecyclerView.setAdapter(appAdaptor);
 
-        settingAdaptor = new MediaAdaptor(this, mySettingList,SETTING_ID);
+        settingAdaptor = new MediaAdaptor(this, mySettingList, MediaAdaptor.SETTING_ID);
         settingRecyclerView.setAdapter(settingAdaptor);
 
         new AppTask(this, this).execute();
@@ -605,7 +603,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == APP_UNINSTALL_REQUEST_CODE)
+            if (requestCode == MediaAdaptor.APP_UNINSTALL_REQUEST_CODE)
             {
                 String packageName = sharedPreferences.getString("app_package_name",null);
                 if (!isAppPersist(packageName)){

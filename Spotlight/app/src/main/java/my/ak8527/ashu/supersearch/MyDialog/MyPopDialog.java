@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.MyDialog;
+package my.ak8527.ashu.supersearch.MyDialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.ashu.supersearch.Media.MediaInfo;
-import com.example.ashu.supersearch.R;
+import my.ak8527.ashu.supersearch.Media.MediaInfo;
+import my.ak8527.ashu.supersearch.R;
 
 import java.io.File;
 import java.text.DateFormat;

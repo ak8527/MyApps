@@ -1,4 +1,4 @@
-package com.example.ashu.supersearch.setting;
+package my.ak8527.ashu.supersearch.setting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,9 +23,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ashu.supersearch.BuildConfig;
-import com.example.ashu.supersearch.MainActivity;
-import com.example.ashu.supersearch.R;
+import my.ak8527.ashu.supersearch.BuildConfig;
+import my.ak8527.ashu.supersearch.MainActivity;
+import my.ak8527.ashu.supersearch.R;
+
 
 import java.util.Objects;
 

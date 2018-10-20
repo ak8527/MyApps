@@ -7,7 +7,7 @@
     android:layout_margin="4dp"
     android:orientation="vertical"
     android:id="@+id/rootLayout"
-    tools:context=".MainActivity">
+    tools:context="my.ak8527.ashu.supersearch.MainActivity">
 
     <android.support.v7.widget.SearchView
         android:id="@+id/searchView"

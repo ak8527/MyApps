@@ -1,12 +1,12 @@
-package com.example.ashu.supersearch.AsyncWork;
+package my.ak8527.ashu.supersearch.AsyncWork;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
-import com.example.ashu.supersearch.Info.InfoList;
-import com.example.ashu.supersearch.Interface.MediaResponse;
-import com.example.ashu.supersearch.Media.MediaInfo;
+import my.ak8527.ashu.supersearch.Info.InfoList;
+import my.ak8527.ashu.supersearch.Interface.MediaResponse;
+import my.ak8527.ashu.supersearch.Media.MediaInfo;
 
 import java.util.ArrayList;
 
