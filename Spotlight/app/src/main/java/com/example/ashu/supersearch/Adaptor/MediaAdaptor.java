@@ -254,7 +254,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-//                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,AUDIO_ID);
                         showMyPopUpWindow("Media", mediaHolder.mediaIv, mediaInfo);
                         return false;
                     }
@@ -291,7 +290,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-//                        showMenu(((MediaHolder) holder).mediaIv,mediaInfo,VIDEO_ID);
                         showMyPopUpWindow("Media", mediaHolder.mediaIv, mediaInfo);
                         return false;
                     }
@@ -305,48 +303,56 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaHolder.mediaNameTv.setText(str);
                 final File file = new File(mediaInfo.getMediaPath());
 
-                String extension = extensionFind(mediaInfo.getMediaName());
-                switch (extension) {
-                    case "app":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_android_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.appColor));
-                        break;
-                    case "pdf":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_pdf_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.pdfColor));
-                        break;
-                    case "compress":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_zip_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.compressColor));
-                        break;
-                    case "image": {
-                        try {
-                            Glide.with(context)
-                                    .load(mediaInfo.getMediaPath())
-                                    .into(mediaHolder.mediaIv);
-                        } catch (Exception e) {
-                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image_48dp);
-                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
+                if (file.isDirectory()){
+                    mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_folder_48dp);
+                    mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.folderColor));
+
+                } else {
+
+                    String extension = extensionFind(mediaInfo.getMediaName());
+                    switch (extension) {
+                        case "app":
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_android_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.appColor));
+                            break;
+                        case "pdf":
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_pdf_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.pdfColor));
+                            break;
+                        case "compress":
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_zip_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.compressColor));
+                            break;
+                        case "image": {
+                            try {
+                                Glide.with(context)
+                                        .load(mediaInfo.getMediaPath())
+                                        .into(mediaHolder.mediaIv);
+                            } catch (Exception e) {
+                                mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_image_48dp);
+                                mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.imageColor));
+                            }
                         }
+                        break;
+
+                        case "text":
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
+                            break;
+                        case "video":
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
+                        case "audio":
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
+                            break;
+                        default:
+                            mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file_48dp);
+                            mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
+
+                            break;
                     }
-                    break;
 
-                    case "text":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_file_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.fileColor));
-                        break;
-                    case "video":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_movie_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.movieColor));
-                    case "audio":
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_song_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.audioColor));
-                        break;
-                    default:
-                        mediaHolder.mediaIv.setImageResource(R.drawable.ic_action_folder_48dp);
-                        mediaHolder.mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.folderColor));
-
-                        break;
                 }
 
                 final String filePath = mediaInfo.getMediaPath();
@@ -373,7 +379,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public boolean onLongClick(View v) {
                         if (file.isFile()) {
-//                            showMenu(mediaHolder.mediaIv,mediaInfo,FILE_ID);
                             showMyPopUpWindow("Media", mediaHolder.mediaIv, mediaInfo);
                         } else {
                             showPropDialog(mediaInfo);
@@ -517,7 +522,6 @@ public class MediaAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mediaIv.setImageResource(R.drawable.ic_action_setting_48dp);
                 mediaIv.setCircleBackgroundColor(context.getResources().getColor(R.color.settingColor));
             }
-
         }
     }
 

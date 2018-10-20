@@ -18,7 +18,8 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp"         android:fontFamily="sans-serif"
+        android:paddingEnd="20dp"
+        android:fontFamily="sans-serif"
         android:checked="false"
         android:text="@string/top" />
 

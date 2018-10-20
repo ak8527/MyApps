@@ -150,7 +150,6 @@ public class SettingActivity extends AppCompatActivity {
         final RadioButton bottomBar;
         final RadioGroup radioGroup;
 
-//        View view = LayoutInflater.from(this).inflate(R.layout.layout_selection,null);
         View view = View.inflate(this, R.layout.layout_selection, null);
         final AlertDialog builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.search_bar_position)
